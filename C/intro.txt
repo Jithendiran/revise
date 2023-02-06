@@ -1,0 +1,9 @@
+# is preprocessor
+
+file name end with .h is header file it will only include function declaration not definition
+
+#include<stdio.h> means copy paste the file content of stdio.h to that line
+
+copy paste is the job of preprocessor
+
+Linker is going to map the functions from c standard library
