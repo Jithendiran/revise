@@ -1,0 +1,227 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+  <meta http-equiv="Content-Language" content="en-us">
+
+  <meta name="GENERATOR" content="Microsoft FrontPage 6.0">
+  <meta name="ProgId" content="FrontPage.Editor.Document">
+  <title>C Operator Precedence Table</title>
+</head>
+
+<body vlink="#0000ff">
+
+  <center>
+    <table border="0" cellpadding="0" cellspacing="0" width="640">
+      <tbody>
+        <tr>
+          <td width="100%">
+            <h1 style="margin-bottom: 0pt;">C Operator Precedence and Associativity</h1>
+
+
+
+
+            <blockquote>
+              This page lists all C operators in order of their precedence (highest to
+              lowest). Their associativity indicates in what order operators of equal
+              precedence in an expression are applied.</blockquote>
+
+
+
+            <div align="center">
+              <center>
+
+
+
+                <center>
+                </center>
+                <table style="border-collapse: collapse;" border="1" bordercolor="#111111" cellpadding="2"
+                  cellspacing="0" width="90%">
+                  <tbody>
+                    <tr>
+                      <th>
+                        <p align="center"><b>Operator</b></p>
+                      </th>
+                      <th>
+                        <b>Description</b>
+                      </th>
+                      <th>
+                        <p align="center"><b>Associativity</b></p>
+                      </th>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <font face="Courier New" size="3">()<br>
+                          []<br>
+                          .<br>
+                          -&gt;</font>
+                      </td>
+                      <td>Parentheses (grouping)<br>
+                        Brackets (array subscript)<br>
+                        Member selection via object name<br>
+                        Member selection via pointer</td>
+                      <td valign="top">
+                        <p align="center">left-to-right</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <font size="3">
+                          <font face="Courier New">++&nbsp;
+                            --<br>
+                            +&nbsp;
+                            -<br>
+                            !&nbsp;
+                            ~<br>
+                            (<i>type</i>)<br>
+                            *<br>
+                            &amp;<br>
+                            sizeof</font>&nbsp;
+                        </font>&nbsp;
+                      </td>
+                      <td>Unary preincrement/predecrement<br>
+                        Unary plus/minus<br>
+                        Unary logical negation/bitwise complement<br>
+                        Unary cast (change <i>type</i>)<br>
+                        Dereference<br>
+                        Address<br>
+                        Determine size in bytes</td>
+                      <td align="center" valign="top">right-to-left</td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <font face="Courier New">*&nbsp;
+                          /&nbsp;
+                          %</font>
+                      </td>
+                      <td>Multiplication/division/modulus</td>
+                      <td align="center" valign="top">left-to-right</td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <font face="Courier New" size="3">+&nbsp;
+                          -</font>
+                      </td>
+                      <td>Addition/subtraction</td>
+                      <td align="center" valign="top">left-to-right</td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <font face="Courier New" size="3">&lt;&lt;&nbsp;
+                          &gt;&gt;</font>
+                      </td>
+                      <td>Bitwise shift left,
+                        Bitwise shift right</td>
+                      <td align="center" valign="top">left-to-right</td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <font face="Courier New">&lt;&nbsp;
+                          &lt;=<br>
+                          &gt;&nbsp;
+                          &gt;=</font>
+                      </td>
+                      <td>Relational less than/less than or equal to<br>
+                        Relational greater than/greater than or equal to</td>
+                      <td align="center" valign="top">left-to-right</td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <font face="Courier New">==&nbsp;
+                          !=</font>
+                      </td>
+                      <td>Relational is equal to/is not equal to</td>
+                      <td align="center" valign="top">left-to-right</td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <font face="Courier New">&amp;</font>
+                      </td>
+                      <td>Bitwise AND</td>
+                      <td align="center" valign="top">left-to-right</td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <font face="Courier New">^</font>
+                      </td>
+                      <td>Bitwise exclusive OR</td>
+                      <td align="center" valign="top">left-to-right</td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <font face="Courier New" size="3">|</font>
+                      </td>
+                      <td>Bitwise inclusive OR</td>
+                      <td align="center" valign="top">left-to-right</td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <font face="Courier New">&amp;&amp;</font>
+                      </td>
+                      <td>Logical AND</td>
+                      <td align="center" valign="top">left-to-right</td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <font face="Courier New" size="3">||</font>
+                      </td>
+                      <td>Logical OR</td>
+                      <td align="center" valign="top">left-to-right</td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <font face="Courier New">?:</font>
+                      </td>
+                      <td>Ternary conditional</td>
+                      <td align="center" valign="top">right-to-left</td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <font face="Courier New">=<br>
+                          +=&nbsp;
+                          -=<br>
+                          *=&nbsp;
+                          /=<br>
+                          %=&nbsp;
+                          &amp;=<br>
+                          ^=&nbsp;
+                          |=<br>
+                          &lt;&lt;=&nbsp;
+                          &gt;&gt;=</font>
+                      </td>
+                      <td>Assignment<br>
+                        Addition/subtraction assignment<br>
+                        Multiplication/division assignment<br>
+                        Modulus/bitwise AND assignment<br>
+                        Bitwise exclusive/inclusive OR assignment<br>
+                        Bitwise shift left/right assignment</td>
+                      <td align="center" valign="top">right-to-left</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p align="center">
+                          <font face="Courier New">,</font>
+                        </p>
+                      </td>
+                      <td>Comma (separate expressions)</td>
+                      <td align="center" valign="top">left-to-right</td>
+
+                    </tr>
+                  </tbody>
+                </table>
+              </center>
+            </div>
+            &nbsp;
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </center>
+
+
+</body>
+
+</html>
