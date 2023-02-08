@@ -9,20 +9,11 @@ void main()
     {
         for (int j = 0; j < r; j++)
         {
-            if (n > i)
-            {
-                if (j >= n - i - 1 && j <= n + i - 1)
-                    printf("*");
-                else
-                    printf(" ");
-            }
+            if ((n > i && j >= n - i - 1 && j <= n + i - 1) ||
+                (n <= i && j >= (n - (r - i)) && j <= r - ((r - n - (r - i) + 2))))
+                printf("*");
             else
-            {
-                if (j >= (n - (r - i)) && j <= r - ((r - n - (r - i) + 2)))
-                    printf("*");
-                else
-                    printf(" ");
-            }
+                printf(" ");
         }
         printf("\n");
     }
