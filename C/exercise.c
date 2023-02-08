@@ -27,6 +27,49 @@ void main()
     int k;                                         // this is stored inside bss segment
     j = 77;                                        // t is allowed
     printf("K af is : %d, j af is : %d \n", k, j); // K af is : 0, j af is : 77
+
+    for (int i = 0; i < 20; i++)
+    {
+        switch (i)
+        {
+        case 0:
+            i = i + 1;
+        case 13:
+            i = i + 5;
+        case 2:
+            i = i + 2;
+        default:
+            i = i + 4;
+        }
+        printf("i :  %d\n", i);
+    }
+    /**
+     * Op
+        i :  12
+        i :  24
+    */
+
+    int i = 0;
+    for (printf("one\n"); i < 3 && printf(""); i++)
+    {
+        printf("Hi\n");
+    }
+    // Op: one
+    i = 0;
+    for (printf("one\n"); i < 3 && printf("1\n"); i++)
+    {
+        printf("Hi\n");
+    }
+    /**
+     * Op
+        one
+        1
+        Hi
+        1
+        Hi
+        1
+        Hi
+    */
 }
 
 // Reference https://www.youtube.com/watch?v=gegaS_gX3TY&list=PLBlnK6fEyqRggZZgYpPMUxdY1CYkZtARR&index=19
