@@ -18,13 +18,10 @@ void main()
             }
             else
             {
-                // printf("i : %d, j : %d , r : %d, n : %d\n", i, j, r - 1, n);
-                // if (j >= (r - 1 - i) && j <= ((r - 1) - (r - 1 - i)))
-                //     printf("*");
-                // else
-                //     printf(" ");
-                printf("i = %d, start = %d to %d\n", i, r - 1 - i);
-                break;
+                if (j >= (n - (r - i)) && j <= r - ((r - n - (r - i) + 2)))
+                    printf("*");
+                else
+                    printf(" ");
             }
         }
         printf("\n");
