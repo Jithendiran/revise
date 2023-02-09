@@ -1,3 +1,4 @@
+// gcc scope_of_var.c
 #include <stdio.h>
 int a = 5; // it is stored in initilized data segment in memory
 
@@ -5,6 +6,7 @@ int fun1(int);
 int fun2(int);
 
 // start doubt
+// also see static.c
 static int localfun()
 {
     int a;

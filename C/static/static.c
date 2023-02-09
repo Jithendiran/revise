@@ -46,6 +46,8 @@ void main()
 
     // static function call
     // statFunction(); Linker error  undefined reference to `statFunction'
-    localfun();  // A : 3
+    localfun();  // A : 3 why 3 ?
     localfun1(); // AS : 3
+
+    // see another file scope_of_var.c
 }
