@@ -1,6 +1,20 @@
 // gcc static.c static2.c
 #include <stdio.h>
 
+// start doubt
+static int localfun()
+{
+    int a;
+    printf("A : %d\n", a);
+}
+
+static int localfun1()
+{
+    int as;
+    printf("AS : %d\n", as);
+}
+// end doubt
+
 extern int g1;
 void main()
 {
@@ -29,4 +43,9 @@ void main()
     d = consins();
     d = consins();
     printf("D is : %d\n", d); // D is : 6
+
+    // static function call
+    // statFunction(); Linker error  undefined reference to `statFunction'
+    localfun();  // A : 3
+    localfun1(); // AS : 3
 }

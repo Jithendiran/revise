@@ -28,3 +28,9 @@ int consins()
     static int c = var; // even though it is initalized every time but is value is not changed
     return ++c;
 }
+
+// it is static function it will be access only inside this file
+static int statFunction()
+{
+    printf("ST function");
+}
