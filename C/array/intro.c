@@ -63,4 +63,7 @@ void main()
     }
 
     int g3[] = {1, 2, 3, [5] = 4}; // 0 -> 1, 1 -> 2, 2 -> 3, 3 -> 0, 4 -> 0, 5 -> 4
+
+    const int a1[2] = {1, 2};
+    // a1[1] = 3; error: assignment of read-only location 'a1[1]'
 }
