@@ -1,0 +1,11 @@
+Memory allocated during compile time is clled static memory.
+These static memory are fixed cannot be increased or decreased during run time
+
+The process of allocating memory at the time of execution is called dynamic memory allocation.
+Heap is the segment of memory where dynamic memory allocation takes place
+
+unlike stack where memory is allocated or deallocated in a defined order, 
+heap is an area of memory where memory is allocated or deallocated without any order or randomly
+
+dynamic memory allocation doesn't have an idea of what it is pointng to. so it will return (void *)
+so user can type cast to necessary data type 

@@ -7,3 +7,6 @@ file name end with .h is header file it will only include function declaration n
 copy paste is the job of preprocessor
 
 Linker is going to map the functions from c standard library
+
+
+Reference : https://www.youtube.com/playlist?list=PLBlnK6fEyqRggZZgYpPMUxdY1CYkZtARR
