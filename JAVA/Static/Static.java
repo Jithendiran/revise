@@ -1,3 +1,7 @@
+/**
+* Author: E.K.Jithendiran
+* Date: 20.02.2023
+*/
 package Static;
 
 import static java.lang.System.out; // static is because out is an static member

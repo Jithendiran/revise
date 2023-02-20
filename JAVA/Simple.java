@@ -1,5 +1,6 @@
 /**
- * Simple
+ * Author: E.K.Jithendiran
+ * Date: 20.02.2023
  */
 // Name of the class and File name must be same
 public class Simple {
