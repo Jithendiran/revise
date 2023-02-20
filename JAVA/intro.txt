@@ -1,0 +1,24 @@
+There are 3 editions of JAVA
+ - JAVA Standard (Desktop App)
+ - JAVA Enterprise (Server-side)
+ - JAVA Micro (Mobile App)
+
+ JDK (Java Development Kit)
+  - Set of programs that enable us to develop programs
+  - It Contains JRE (Java Runtime Environment) that is used to run programs
+  - JRE & JDK contains JVM (Java Virtual Machine)
+  - JVM will run programs
+
+When java is compilied using javac compilier it producese .class files it is bytecode
+JVM executes .class files here execution run's using interpertor
+
+each java program contains atleast one class
+
+Standard
+pascal case used for class, interface eg: ThisIsAName
+camel case used for variables, method eg: thisIsAName
+
+Working on openjdk version "17.0.6" 2023-01-17
+
+comiple command : javac FileName.java will produce FileName.class
+run command: java FileName
