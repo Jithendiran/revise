@@ -1,3 +1,6 @@
+/**
+ * Author: E.K.Jithendiran
+ */
 #include <stdio.h>
 #define PI 3.14159 // using # define
 // ; should not be use

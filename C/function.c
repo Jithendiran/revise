@@ -1,3 +1,6 @@
+/**
+ * Author: E.K.Jithendiran
+ */
 #include <stdio.h>
 // function syntax
 /**

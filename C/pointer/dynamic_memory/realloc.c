@@ -1,3 +1,6 @@
+/**
+ * Author: E.K.Jithendiran
+ */
 // 1st read calloc.c
 #include <stdio.h>
 #include <stdlib.h>

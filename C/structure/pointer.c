@@ -1,5 +1,7 @@
+/**
+ * Author: E.K.Jithendiran
+ */
 #include <stdio.h>
-
 struct a
 {
     int x;

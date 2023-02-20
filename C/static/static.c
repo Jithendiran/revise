@@ -1,3 +1,6 @@
+/**
+ * Author: E.K.Jithendiran
+ */
 // gcc static.c static2.c
 #include <stdio.h>
 

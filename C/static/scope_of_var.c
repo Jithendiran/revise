@@ -1,3 +1,6 @@
+/**
+ * Author: E.K.Jithendiran
+ */
 // gcc scope_of_var.c
 #include <stdio.h>
 int a = 5; // it is stored in initilized data segment in memory

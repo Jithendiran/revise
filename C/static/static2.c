@@ -1,3 +1,6 @@
+/**
+ * Author: E.K.Jithendiran
+ */
 int g;             // this is available to all the files when compiled
 static int g1 = 8; // this is visible to static2.c only
 // static is global but with in this file only

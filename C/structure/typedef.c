@@ -1,3 +1,6 @@
+/**
+ * Author: E.K.Jithendiran
+ */
 // typedef is used to define user data type
 #include <stdio.h>
 typedef int INTEGER; // typedef(keyword) old name(anything for change name) INTEGER(typedef new name)

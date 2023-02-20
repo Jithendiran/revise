@@ -1,3 +1,6 @@
+/**
+ * Author: E.K.Jithendiran
+ */
 // first read malloc.c
 // nxt realloc.c
 #include <stdio.h>

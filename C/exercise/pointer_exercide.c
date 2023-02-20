@@ -1,3 +1,6 @@
+/**
+ * Author: E.K.Jithendiran
+ */
 #include <stdio.h>
 int f(int x, int *py, int **ppz)
 {

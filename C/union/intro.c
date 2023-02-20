@@ -1,5 +1,7 @@
+/**
+ * Author: E.K.Jithendiran
+ */
 #include <stdio.h>
-
 /**
  * Union are sharing same memory location
  * size of the union is taken according to the largest member of the union

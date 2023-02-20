@@ -1,3 +1,6 @@
+/**
+ * Author: E.K.Jithendiran
+ */
 #include <stdio.h>
 // enumeration in c is also an user defined data type
 enum Bool

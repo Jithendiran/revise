@@ -1,3 +1,6 @@
+/**
+ * Author: E.K.Jithendiran
+ */
 // compile gcc var_modifier.c exten.c
 // run ./a.out
 #include <stdio.h>

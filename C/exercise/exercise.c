@@ -1,3 +1,6 @@
+/**
+ * Author: E.K.Jithendiran
+ */
 #include <stdio.h>
 // other than extern variable in global all are stored inside bss if not initlized. so only they have default value of 0
 static int i;      // stored in bss segment in memory

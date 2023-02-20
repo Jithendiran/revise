@@ -1,5 +1,7 @@
+/**
+ * Author: E.K.Jithendiran
+ */
 #include <stdio.h>
-
 int *getFist(int a[], int n)
 {
     printf("size of a func : %d\n", sizeof(a)); // size of a func : 8

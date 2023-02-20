@@ -1,5 +1,7 @@
+/**
+ * Author: E.K.Jithendiran
+ */
 #include <stdio.h>
-
 void call_by_value(int a, int b)
 {
     // here a, b, c variables are created when function is called and destroyed when it exit the function call
