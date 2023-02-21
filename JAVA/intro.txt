@@ -18,6 +18,10 @@ Standard
 pascal case used for class, interface eg: ThisIsAName
 camel case used for variables, method eg: thisIsAName
 
+Java Identifiers or variable names can contain alphabet, _, number, $
+Identifier must start with letter or _ or $. it cannot start with number
+Identifiers can't be an key word
+
 Working on openjdk version "17.0.6" 2023-01-17
 
 comiple command : javac FileName.java will produce FileName.class
