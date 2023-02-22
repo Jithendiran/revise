@@ -86,6 +86,7 @@ public class Object {
         long l1 = 4;
 
         // below converion are ok
+        // (implict casting) converting smaller to wider datatype
         l1 = i1 + s2 + b1;
         i1 = s2 + b1;
         s2 = b1;
@@ -187,6 +188,27 @@ public class Object {
         System.out.println("Enter string with space : " + input.nextLine());
         // next() is read until space nextLine() is read until new line
         input.close();
+
+        // casting
+        /**
+         * Implicit casting happens automatcally when narrow (small) data type is
+         * converted to wide data type
+         * eg: int -> double/float/long
+         */
+        double d1 = 4;
+        double d2 = 4.0f;
+        long l2 = 12;
+        /**
+         * Explicit casting is not automatic. when converting from wider to narrow data
+         * type eg: double/float/long -> int
+         */
+        // float f1 = 4.1; 4.1 is double f1 is float
+        // int i3 = 8l; // 8 is long 13 is int
+        float f1 = (float) 4.1;
+        int i3 = (int) 8l;
+        int i4 = (int) 4.5;
+        System.out.println("F1: " + f1 + " i3: " + i3 + " i4:" + i4);
+        // Op: F1: 4.1 i3: 8 i4:4
     }
 }
 
