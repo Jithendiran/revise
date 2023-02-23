@@ -8,6 +8,10 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class Array {
+    /**
+     * Before Start java array review c array concepts
+     * Java array is also based on address
+     */
     public static void main(String[] args) {
         // array is an class Array
         int[] a;// now a is point to NULL
@@ -161,6 +165,45 @@ public class Array {
         Arrays.sort(a3);
         System.out.println("5 is found in " + Arrays.binarySearch(a3, 5)); // Op:5 is found in 3
         System.out.println("4 is found in " + Arrays.binarySearch(a3, 4)); // Op:4 is found in -4
+
+        // Equals
+        int[] ar1 = { 1, 2, 3 };
+        int[] ar2 = { 1, 2, 3 };
+        int[] ar3 = { 2, 1, 3 };
+        int[] ar4 = { 9, 1, 2 };
+        System.out.println("Ar 2 " + Arrays.equals(ar1, ar2));// Ar 2 true
+        System.out.println("Ar 3 " + Arrays.equals(ar1, ar3));// Ar 3 false
+        System.out.println("Ar 4 " + Arrays.equals(ar1, ar4));// Ar 4 false
+
+        // for custom class
+        Test t1 = new Test(1, 2);
+        Test t2 = new Test(5, 6);
+        Test t3 = new Test(1, 2);
+
+        Test[] ta1 = { t1, t2 };
+        Test[] ta2 = { t1, t2 };
+        Test[] ta21 = { t3, t2 };
+
+        Test[] ta3 = { new Test(1, 3), new Test(5, 6) };
+        System.out.println("ta1 ta2 " + Arrays.equals(ta1, ta2));// t1 t2 true
+        System.out.println("ta1 ta21 " + Arrays.equals(ta1, ta21));// ta1 ta21 false
+        System.out.println("ta1 ta3 " + Arrays.equals(ta1, ta3));// t1 t3 false
+        System.out.println("T1 and T2 : " + t1.equals(t3));
+
+        // fill array
+        int[] ar5 = new int[8];
+        Arrays.fill(ar5, 3);
+        System.out.println("Ar5 fill : " + Arrays.toString(ar5));// Ar5 fill : [3, 3, 3, 3, 3, 3, 3, 3]
+
+        String[] sa1 = new String[5];
+        Arrays.fill(sa1, 2, 4, "Jith");
+        System.out.println("saa1 fill : " + Arrays.toString(sa1));// saa1 fill : [null, null, Jith, Jith, null]
+
+        System.out.println("SUM : " + sum(1)); // SUM : 1
+        System.out.println("SUM : " + sum(1, 2));// SUM : 3
+        System.out.println("SUM : " + sum(1, 2, 10));// SUM : 13
+        System.out.println("SUM : " + sum(new int[] { 1, 10, -1 }));// SUM : 10
+
     }
 
     private static int[] incrementArrayElement(int[] array) {
@@ -177,5 +220,32 @@ public class Array {
         for (int i : array) {
             System.out.println(i);
         }
+    }
+
+    /**
+     * Eg for vaiable length array
+     * Rules:
+     * * Only one variable length parameter may specfied in a method
+     * * It must be last parameter
+     * 
+     * @param values it is array of the values
+     * @return sum of all the value
+     */
+    private static int sum(int... values) {
+        int sum = 0;
+        for (int i : values) {
+            sum += i;
+        }
+        return sum;
+    }
+}
+
+class Test {
+    int x;
+    int y;
+
+    Test(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 }
