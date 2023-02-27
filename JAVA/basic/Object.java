@@ -150,6 +150,7 @@ public class Object {
          * Primitive types
          * byte, short, int, long, float, double and char
          * These are store simple values
+         * These values are created and stored in stack
          */
         int j1 = 3;
         int j2 = j1;
@@ -162,6 +163,7 @@ public class Object {
          * String, class
          * These are store complex values like object
          * It will hold address and that address contains actual value
+         * The value is created in Heap and that reference is stored in stack
          */
         // strings are immutable
         String s123 = new String("Hello");
@@ -209,6 +211,12 @@ public class Object {
         int i4 = (int) 4.5;
         System.out.println("F1: " + f1 + " i3: " + i3 + " i4:" + i4);
         // Op: F1: 4.1 i3: 8 i4:4
+
+        // represent binary number
+        int bin = 0B101;
+        int bin1 = 0b100_00_00;// _ is used for readable
+        System.out.println(bin);// 5
+        System.out.println(bin1);// 64
     }
 }
 

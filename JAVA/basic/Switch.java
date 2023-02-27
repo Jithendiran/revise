@@ -28,5 +28,15 @@ public class Switch {
                 System.out.println("Default");
                 break;
         }
+        String s = "hi";
+        switch (s) {
+            case "hi":
+                    System.out.println("HI printed"); //HI printed
+                break;
+        
+            default:
+            System.out.println("not matched");
+                break;
+        }
     }
 }

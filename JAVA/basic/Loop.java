@@ -69,5 +69,94 @@ public class Loop {
          * Bresk and continue : 6
          * Bresk and continue : 7
          */
+
+         // labeled break
+         labelbreak:
+         for (int j2 = 0; j2 < 5; j2++) {
+
+            for (int k = 0; k < 5; k++) {
+                if(k == 3 && j2 == 2) {
+                    break labelbreak; // it is labeled break
+                    /**
+                     * without label it will only break inner loop
+                     * when a label is passed it break loop of afer label located
+                     */
+                }
+                System.out.println("j2 = "+j2+" k = "+k);
+            }
+         }
+         /**
+          * j2 = 0 k = 0
+          * j2 = 0 k = 1
+          * j2 = 0 k = 2
+          * j2 = 0 k = 3
+          * j2 = 0 k = 4
+          * j2 = 1 k = 0
+          * j2 = 1 k = 1
+          * j2 = 1 k = 2
+          * j2 = 1 k = 3
+          * j2 = 1 k = 4
+          * j2 = 2 k = 0
+          * j2 = 2 k = 1
+          * j2 = 2 k = 2
+          */
+          // the above 2 loops are breaked 
+
+          for (int j3 = 0; j3 < 5; j3++) {
+              
+              labelbreak:
+            for (int k = 0; k < 5; k++) {
+                if(k == 3 && j3 == 2) {
+                    break labelbreak; // it is labeled break
+                }
+                System.out.println("j3 = "+j3+" k = "+k);
+            }
+         }
+         /**
+          * j3 = 0 k = 0
+          * j3 = 0 k = 1
+          * j3 = 0 k = 2
+          * j3 = 0 k = 3
+          * j3 = 0 k = 4
+          * j3 = 1 k = 0
+          * j3 = 1 k = 1
+          * j3 = 1 k = 2
+          * j3 = 1 k = 3
+          * j3 = 1 k = 4
+          * j3 = 2 k = 0
+          * j3 = 2 k = 1 // k = 3 is missing because label is used above inner loop so after this loop is contibue as usual 
+          * j3 = 2 k = 2
+          * j3 = 3 k = 0
+          * j3 = 3 k = 1
+          * j3 = 3 k = 2
+          * j3 = 3 k = 3
+          * j3 = 3 k = 4
+          * j3 = 4 k = 0
+          * j3 = 4 k = 1
+          * j3 = 4 k = 2
+          * j3 = 4 k = 3
+          * j3 = 4 k = 4
+          */
+
+          first:
+         for (int i1 = 0; i1 < 3; i1++) {
+            for (int j1 = 0; j1< 3; j1++){
+               if(i1 == 1){
+                  continue first;
+                  /**
+                   * Labeled continue is above 1st loop so when condition matched it will continue from 1st loop
+                   */
+               }      
+               System.out.println("[i1 = " + i1 + ", j1 = " + j1 + "]");
+            }
+         }
+         /**
+          * [i1 = 0, j1 = 0]
+          * [i1 = 0, j1 = 1]
+          * [i1 = 0, j1 = 2]
+          * [i1 = 2, j1 = 0]
+          * [i1 = 2, j1 = 1]
+          * [i1 = 2, j1 = 2]
+          */
     }
 }

@@ -57,6 +57,26 @@ public class TwoDimArray {
          * Index : [2][3] = 9
          * Index : [2][4] = 10
          */
+
+         int[][] ar4 = new int[3][];
+         ar4[0] = new int[2];
+         ar4[1] = new int[4];
+         ar4[2] = new int[3];
+        Arrays.fill(ar4[0], 2);
+        Arrays.fill(ar4[1], 3);
+        Arrays.fill(ar4[2], 4);
+        print2DArray(ar4);
+        /**
+         * Index : [0][0] = 2 
+         * Index : [0][1] = 2 
+         * Index : [1][0] = 3 
+         * Index : [1][1] = 3 
+         * Index : [1][2] = 3 
+         * Index : [1][3] = 3 
+         * Index : [2][0] = 4 
+         * Index : [2][1] = 4 
+         * Index : [2][2] = 4 
+         */
     }
 
     /**

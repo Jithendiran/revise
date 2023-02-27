@@ -13,6 +13,14 @@ public class Class {
     int b = 3;
 
     Class() {
+        /**
+         * There is no return Type for constructor
+         * The name of constructor is same name as class name 
+         * Constructor method is going to create memory in heap 
+         * new Class() -> 'Object creation'
+         * new -> it will allocate memory in heap
+         * Class() -> it will know how much memory it want
+         */
         System.out.println("Default constructor of Class");
     }
 

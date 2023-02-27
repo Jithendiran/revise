@@ -50,7 +50,7 @@ class Outer {
 
         void showVariables() {
             System.out.println("Inner x : " + x);
-            System.out.println("Outer x :");
+            System.out.println("Outer x :"); // not able to access outer variable with same name
             System.out.println("Outer b :" + b);
         }
 
