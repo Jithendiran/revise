@@ -4,6 +4,8 @@
 */
 package basic;
 
+// private and protected access modifiers cannot use with class
+// inner class can use private modifiers
 public class Class {
     /**
      * Class is an blueprint of object

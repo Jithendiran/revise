@@ -24,10 +24,14 @@ Identifiers can't be an key word
 
 Working on openjdk version "17.0.6" 2023-01-17
 
-comiple command : javac FileName.java will produce FileName.class
+comiple command : javac FileName.java will produce ClassName.class
 '''
 When comiple the .class name is from compiled java class name 
 When class access modifier is default we can give different name for file name and class name when program is compiled the byte code is generated in the name of class name
 When class access modifier is public we must give file same and class name must be same else it will throw an error 
 '''
 run command: java FileName
+
+can't get source code from byte code (ClassName.class)
+but we can get structure of the class from byte code using javap
+javap ClassName
