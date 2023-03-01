@@ -1,0 +1,41 @@
+Inheritance
+
+Inheritance is a mechanism in which one class acquires all the properties and behaviors of a parent class.
+Inherited class has the feature of their class and inheriting class
+child/sub/derived/extended class is a class which inherite from other class
+parent/super/base class is a class from where a subclass inherits the features
+
+Inheritance is 3 types
+ * Single
+ * Multiple
+ * Multilevel
+
+example
+ Single
+   Assume A is a parent class B is child class. It is single level
+
+ Multiple
+   Assume A,B is a parent class C is a child class. It is Multiple
+
+ Multilevel 
+   Assume C class is inherit feature from B class. B is inherit from A class
+   here A is Top level, C is Bottom level
+
+Multiple Inheritance is not supported in JAVA
+
+
+PolyMorphism
+ poly - many
+ morph - behaviour/form
+
+ There are two types of polymorphism in Java: 
+   * compile-time polymorphism also known as Static binding, Early binding (It is fixed in compile time)
+   * runtime polymorphism also known as Dynamic binding, Late binding (Decision is taken based on run time)
+
+  We can perform polymorphism in java by method overloading and method overriding.
+  If you overload a static method in Java, it is the example of compile time polymorphism.
+
+
+  overloading(compile-time) is explained in basic/Method.java
+  overriding(runtime polymorphism) is explained in inheritance/Parent.java
+  Run time polymorphism is done by Dynamic method dispathing
