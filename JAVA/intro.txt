@@ -35,3 +35,39 @@ run command: java FileName
 can't get source code from byte code (ClassName.class)
 but we can get structure of the class from byte code using javap
 javap ClassName
+
+Source: college, Youtube - Telusko
+
+start
+ 1. Simple.java
+ 2. basic
+    * Scope.java
+    * Class.java
+    * Object.java
+    * This.java
+    * Loop.java
+    * Method.java
+    * Switch.java
+    * Array.java
+    * TwoDimArray.java
+    * ArrayListSample.java
+    * InnerClass.java
+    * Encapsulation.java
+  3. Static
+    * Sample.java
+    * Static.java
+  4. testpackage
+    * Test1.java
+    * Test2.java
+  5. inheritance
+    * GrandParent.java
+    * Parent.java
+    * Child.java
+    * DynaminMethodDispatch.java
+    * Final.java
+    * Abstract.java
+    * Interface.java
+    * AdvancedInterface.java
+  6. accessModifiers
+
+  Every class will extend Object class
