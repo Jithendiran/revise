@@ -1,0 +1,15 @@
+Throwable class is used to handle all the exceptions
+
+Throwable class is extended by Exception and Error
+
+- Exception can be handled
+     There are two kinds of exceptions in Java:
+
+        * Checked exceptions: 
+                These are the exceptions that are checked by the compiler at compile time. 
+                If a method throws a checked exception, then the caller of the method must either handle the exception or declare it in the throws clause.
+
+        * Unchecked exceptions: 
+                These are the exceptions that are not checked by the compiler at compile time. They include runtime exceptions and errors.(eg: AirthmethicException, ArrayIndexOutOfBox,..)
+
+- Error can't be handled

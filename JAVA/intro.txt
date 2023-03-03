@@ -48,11 +48,13 @@ start
     * Loop.java
     * Method.java
     * Switch.java
+    * Wrapper.java 
     * Array.java
     * TwoDimArray.java
     * ArrayListSample.java
     * InnerClass.java
     * Encapsulation.java
+    * StringCustom.java
   3. Static
     * Sample.java
     * Static.java
@@ -69,5 +71,8 @@ start
     * Interface.java
     * AdvancedInterface.java
   6. accessModifiers
+  7. exception
 
   Every class will extend Object class
+
+  In java Object is created in heap memory and the reference is stored in variable that variables are stored in stack
