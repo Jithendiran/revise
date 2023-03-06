@@ -72,6 +72,7 @@ start
     * AdvancedInterface.java
   6. accessModifiers
   7. exception
+  8. multiThreading
 
   Every class will extend Object class
 
