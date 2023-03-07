@@ -2,7 +2,7 @@
 * Author: E.K.Jithendiran
 * Date: 23.02.2023
 */
-package basic;
+package collections;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,8 +16,11 @@ public class ArrayListSample {
     public static void main(String[] args) {
         ArrayList<Integer> ai;
         ai = new ArrayList<>();
+        // This type of syntax support only after 1.7 
         // ArrayList<Integer> ai = new ArrayList<>();
         // ArrayList ai = new ArrayList<Integer>();
+        // syntax for before 1.7
+        // ArrayList<Integer> ai = new ArrayList<Integer>()
 
         // add element
         // it will append in last
@@ -119,5 +122,21 @@ public class ArrayListSample {
         // find if element is find in Array list
         System.out.println(sa.contains("d"));// true
         System.out.println(sa.contains("j"));// false
+
+        // reverse sort
+        Collections.sort(sa);
+        Collections.reverse(sa);
+        for (String s : sa) {
+            System.out.println(s);
+        }
+        /**
+         * Op
+            z
+            e
+            d
+            c
+            b
+            a         
+         */
     }
 }
