@@ -10,15 +10,17 @@
 */
 #include<stdio.h>
 #include<stdlib.h>
+
+#pragma pack(1)
 struct node {
     int value;
-    struct *pre,*next;
+    struct node *pre,*next;
 };
 typedef struct node node;
 
 // This function will print options
 void print(){
-    printf("Select Option:\n1.\tInsert\n2.\tDelete\n3.\tPrint\n-1.\tExit\n");
+    printf("\nSelect Option:\n1.\tInsert\n2.\tDelete\n3.\tPrint\n-1.\tExit\n\nEnter Option: ");
 }
 
 /**
@@ -46,6 +48,75 @@ node* getLastNode(node* head){
     return head;    
 }
 
+/**
+ * This function is responsible for link new node and store value
+ * @param previous_node last node 
+ * @param new_node current node
+*/
+void insert(node* previous_node, node* new_node) {
+
+    if(previous_node != new_node) {
+        /**
+         * Mapping new node address to last node's next
+         * new node previous to last node address
+        */
+        previous_node->next = new_node;
+        new_node->pre = previous_node;
+    }
+    printf("Enter Value:");
+    scanf("%d",&new_node->value);
+}
+
+/**
+ * This function will responsible for get node at index
+ * @param index index of node
+ * @param head start node
+ * @returns index matched node's previous or last node
+*/
+node* get_node_at_index(int index, node* head){
+    int i = 0;
+    while(head && head->next) {
+        if(i == index) return head;
+        head = head->next;
+        i++;
+    }
+    return head;
+}
+/**
+ * This function is responsible for traverse linked list and print value
+ * @param head start node
+*/
+void traverse(node* head){
+    /**
+     * Inner Function to print node values
+     * @param nodevalue node
+    */
+    void print_node(node* nodevalue) {
+           printf("%d\n",nodevalue->value);
+    }
+
+    while (head && head->next)
+    {
+        print_node(head);
+        head = head->next;
+    }
+    if(head) {
+    print_node(head);
+    }
+}
+
+/**
+ * This function will responsible for map deleting previous node next to deleting node's next
+ * @param deleting_node deleting node
+*/
+void delete_node(node* deleting_node){
+    deleting_node->pre->next = deleting_node->next;
+    if(deleting_node->next){
+    deleting_node->next->pre = deleting_node->pre;
+    }
+    free(deleting_node);
+}
+
 void main() {
  node* head=NULL;
     int option;
@@ -64,13 +135,19 @@ void main() {
             insert(last_node, new_node);
             break;
         case 2:
-            printf("Enter Delete index greater that negative values:\n");
+            printf("Enter Delete index greater that negative values:");
             int index=-1;
             scanf("%d",&index);
             if(index == 0) {
+                if(head->next != NULL) {
                 node* tmp = head->next; 
                 free(head);
                 head = tmp;
+                head->pre = NULL;
+                } else {
+                free(head);
+                head = NULL;
+                }
             } else {
                 node* tmp = get_node_at_index(index,head);
                 delete_node(tmp);
