@@ -54,7 +54,7 @@ node *put(node *tail)
 }
 
 /**
- * This function is get element from queue
+ * This function is get element from queue and deallocate fetched memory
  * @param head top of the queue
  * @returns new top
  */
@@ -63,8 +63,11 @@ node *get(node *head)
     if (head)
     {
         printf("%d", head->value);
+        node *tmp = head;
+        head = head->next;
+        free(tmp);
     }
-    return head ? head->next : NULL;
+    return head;
 }
 
 void main()
