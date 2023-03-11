@@ -27,7 +27,7 @@ int hasElement(int *arr, int size, int element)
 
 /**
  * This function will traverse the graph by BFS
- * @param e no.of rows
+ * @param e no.of element
  * @param a pointer to array
  * @param start start element
  */
@@ -77,7 +77,7 @@ void bfs(int e, int a[][e], int start)
         }
     }
 
-    printf("Order of the Graph:\n");
+    printf("BFS Order of the Graph:\n");
     for (int i = 0; i < top; i++)
     {
         printf("%d\t", queue[i]);
@@ -85,6 +85,12 @@ void bfs(int e, int a[][e], int start)
     printf("\n");
 }
 
+/**
+ * This function will traverse the graph by DFS
+ * @param a pointer to array
+ * @param e no.of element
+ * @param start start element
+ */
 void dfs(int *a, int e, int start)
 {
     // DFS -> DEPTH FIRST SEARCH
@@ -93,6 +99,8 @@ void dfs(int *a, int e, int start)
     int index = 0;
     int stack[e];
     int visited[e];
+    int printQueue[e];
+    int printIndex = 0;
     for (int i = 0; i < e; i++)
     {
         stack[i] = -1;
@@ -100,14 +108,38 @@ void dfs(int *a, int e, int start)
     }
     stack[++top] = start;
     visited[index++] = start;
-    for (int i = 0; i < e; i++)
+    printQueue[printIndex++] = start;
+
+    int i = top;
+    while (i >= 0)
     {
+        int flag = 0;
         for (int j = 0; j < e; j++)
         {
-            printf("%d ", *((a + i * e) + j));
+            int element = *((a + stack[i] * e) + j);
+            if (element == 1 && hasElement(visited, e, j) == -1)
+            {
+                flag = 1;
+                stack[++top] = j;
+                visited[index++] = j;
+                printQueue[printIndex++] = j;
+                i = top;
+                break;
+            }
         }
-        printf("\n");
+        if (flag == 0)
+        {
+            --top;
+            --i;
+        }
     }
+
+    printf("DFS Order of the Graph:\n");
+    for (int i = 0; i < printIndex; i++)
+    {
+        printf("%d\t", printQueue[i]);
+    }
+    printf("\n");
 }
 
 void main()
@@ -133,7 +165,11 @@ void main()
     //     {0, 1, 0, 0, 1, 0}  // 5
     // };
     // graph traversal
-    bfs(e, a, 1);
-
-    dfs((int *)a, e, 0);
+    bfs(e, a, 3);
+    dfs((int *)a, e, 3);
 }
+
+/**
+ * Spanning Tree
+ * See: https://www.javatpoint.com/spanning-tree,https://www.youtube.com/watch?v=4ZlRH0eK-qQ
+ */
