@@ -52,6 +52,71 @@ void inorder(node *head)
 }
 
 /**
+ * This function will get node's height
+ * @param head root node
+ * @returns height of the node
+ */
+int node_height(node *head)
+{
+    int lh = 0, rh = 0;
+    if (head && head->lft)
+    {
+        lh = node_height(head->lft) + 1;
+    }
+    if (head && head->rit)
+    {
+        rh = node_height(head->rit) + 1;
+    }
+    if (head != NULL && !head->lft && !head->rit)
+    {
+        return 1;
+    }
+
+    return lh > rh ? lh : rh;
+}
+
+/**
+ * This function will calculate node's balancing factor
+ * Calculation: height_of_left_sub_tree - height_of_right_sub_tree
+ * @param head root node
+ * @return balancing factor value
+ */
+int get_balance(node *head)
+{
+    if (head == NULL)
+        return 0;
+    return node_height(head->lft) - node_height(head->rit);
+}
+
+/**
+ * This Function will rotate in left direction
+ * @param root node
+ * @returns updated root node
+ */
+node *leftRotate(node *head)
+{
+    node *tmp = head->lft->rit;
+    head->lft->rit = head;
+    head = head->lft;
+    head->rit->lft = tmp;
+    return head;
+}
+
+/**
+ * This Function will rotate in right direction
+ * @param root node
+ * @returns updated root node
+ */
+node *rightRotate(node *head)
+{
+    node *tmp = head->rit->lft;
+    head->rit->lft = head;
+    head = head->rit;
+    head->lft->rit = tmp;
+    return head;
+}
+
+/**
  * It will insert value to Binary Search Tree
  * @param head root node
  * @param value value to insert
@@ -74,6 +139,49 @@ node *insert(node *head, int value)
         // right subtree
         head->rit = insert(head->rit, value);
     }
+    // find balance factor
+    int balance = get_balance(head);
+    if (balance < -1 || balance > 1)
+    {
+        // node not balanced
+
+        if (balance > 0)
+        {
+            // left rotate
+
+            if (head->lft->value > value)
+            {
+                // left left rotate
+                //  if balancing factor is +ve and value is less than node->left->value
+                return leftRotate(head);
+            }
+            else
+            {
+                // left right rotate
+                // if balancing factor is +ve and value is greater than node->left->value
+                head->lft = rightRotate(head->lft);
+                return leftRotate(head);
+            }
+        }
+        else if (balance < 0)
+        {
+            // right rotate
+
+            if (head->rit->value < value)
+            {
+                // right right rotate
+                // if balancing factor is -ve and value is greater than node->right->value
+                return rightRotate(head);
+            }
+            else
+            {
+                // right left rotate
+                // if balancing factor is -ve and value is lessaer than node->right->value
+                head->rit = leftRotate(head->rit);
+                return rightRotate(head);
+            }
+        }
+    }
     return head;
 }
 
@@ -81,20 +189,14 @@ void main()
 {
     node *head = NULL;
     int option = 0;
-    int values[] = {11, 9, 10, 8, 5, 15, 12, 16};
+    int values[] = {21, 26, 30, 9, 4, 14, 28, 18, 15, 10, 2, 3, 7};
     for (int i = 0; i < sizeof(values) / sizeof(int); i++)
     {
         head = insert(head, values[i]);
     }
 
-    printf("\nDelete 10,8,11\n");
-    int delete_value[] = {10, 8, 11};
-    for (int i = 0; i < sizeof(delete_value) / sizeof(int); i++)
-    {
-        head = deletenode(head, delete_value[i]);
-    }
-    printf("Pre Order \n");
-    preorder(head);
+    printf("In Order \n");
+    inorder(head);
 }
 
 /**
