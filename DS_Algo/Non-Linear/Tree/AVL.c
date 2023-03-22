@@ -26,17 +26,6 @@ node *allocateMemory()
     return new_node;
 }
 
-// This function will print options
-void print()
-{
-    printf("\nSelect Option:\n\
-    1.\tInsert\n\
-    2.\tDelete\n\
-    3.\tInOrder\n\
-    -1.\tExit\n\n\
-Enter Option: ");
-}
-
 /**
  * Traverse Binary tree in IN-Order
  * Left, Root, Right
@@ -185,17 +174,150 @@ node *insert(node *head, int value)
     return head;
 }
 
+/**
+ * This function find predecessor node
+ * @param head node
+ * @returns predecessor node
+ */
+node *findPre(node *head)
+{
+    if (head->rit)
+    {
+        findPre(head->rit);
+    }
+    if (head->rit == NULL)
+    {
+        return head;
+    }
+}
+
+/**
+ * This function will delete give value's node
+ * @param head root node
+ * @param value value to be delete
+ * @returns root node
+ */
+node *deletenode(node *head, int value)
+{
+    if (head && head->value == value)
+    {
+        // delete case
+        if (head->lft == NULL && head->rit == NULL)
+        {
+            // no children
+            free(head);
+            head = NULL;
+        }
+        else if (head->lft == NULL || head->rit == NULL)
+        {
+            // has one child
+            node *tmp = head->lft ? head->lft : head->rit;
+            free(head);
+            head = tmp;
+        }
+        else
+        {
+            // has two child
+            node *tmp = findPre(head->lft); // replaceable node
+            head->value = tmp->value;
+            // delete tmp node
+            head->lft = deletenode(head->lft, tmp->value);
+        }
+    }
+    else
+    {
+        if (value < head->value)
+            head->lft = deletenode(head->lft, value);
+        else if (value > head->value)
+            head->rit = deletenode(head->rit, value);
+    }
+    return head;
+}
+
+/**
+ * This Function will balance nodes in tree
+ * @param head root node
+ * @returns root address
+ */
+node *balance_node(node *head)
+{
+    if (head->lft)
+    {
+        head->lft = balance_node(head->lft);
+    }
+
+    if (head->rit)
+    {
+        head->rit = balance_node(head->rit);
+    }
+
+    int balance = get_balance(head);
+
+    if (balance < -1 || balance > 1)
+    {
+        // node not balanced
+
+        if (balance > 0)
+        {
+            // left rotate
+
+            if (head->lft->lft)
+            {
+                // left left rotate
+                //  if balancing factor is +ve and value is less than node->left->value
+                return leftRotate(head);
+            }
+            else
+            {
+                // left right rotate
+                // if balancing factor is +ve and value is greater than node->left->value
+                head->lft = rightRotate(head->lft);
+                return leftRotate(head);
+            }
+        }
+        else if (balance < 0)
+        {
+            // right rotate
+
+            if (head->rit->rit)
+            {
+                // right right rotate
+                // if balancing factor is -ve and value is greater than node->right->value
+                return rightRotate(head);
+            }
+            else
+            {
+                // right left rotate
+                // if balancing factor is -ve and value is lessaer than node->right->value
+                head->rit = leftRotate(head->rit);
+                return rightRotate(head);
+            }
+        }
+    }
+    return head;
+}
+
 void main()
 {
     node *head = NULL;
     int option = 0;
-    int values[] = {21, 26, 30, 9, 4, 14, 28, 18, 15, 10, 2, 3, 7};
+    // int values[] = {21, 26, 30, 9, 4, 14, 28, 18, 15, 10, 2, 3, 7};
+    int values[] = {40, 20, 10, 30, 25, 60, 45, 42, 52, 50, 55, 75, 70, 80, 85};
     for (int i = 0; i < sizeof(values) / sizeof(int); i++)
     {
         head = insert(head, values[i]);
     }
 
     printf("In Order \n");
+    inorder(head);
+
+    int delete_value[] = {85, 40, 60, 30, 42, 45};
+    for (int i = 0; i < sizeof(delete_value) / sizeof(int); i++)
+    {
+        head = deletenode(head, delete_value[i]);
+        head = balance_node(head);
+    }
+    printf("\nIn Order \n");
     inorder(head);
 }
 
