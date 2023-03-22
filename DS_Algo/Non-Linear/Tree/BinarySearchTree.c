@@ -120,7 +120,6 @@ node *findPre(node *head)
     }
     if (head->rit == NULL)
     {
-        printf("%p", head);
         return head;
     }
 }
@@ -141,14 +140,13 @@ node *deletenode(node *head, int value)
             // no children
             free(head);
             head = NULL;
-            return head;
         }
         else if (head->lft == NULL || head->rit == NULL)
         {
             // has one child
             node *tmp = head->lft ? head->lft : head->rit;
             free(head);
-            return tmp;
+            head = tmp;
         }
         else
         {
@@ -157,17 +155,16 @@ node *deletenode(node *head, int value)
             head->value = tmp->value;
             // delete tmp node
             head->lft = deletenode(head->lft, tmp->value);
-            return head;
         }
     }
     else
     {
-        if (head->lft)
+        if (value < head->value)
             head->lft = deletenode(head->lft, value);
-        if (head->rit)
+        else if (value > head->value)
             head->rit = deletenode(head->rit, value);
-        return head;
     }
+    return head;
 }
 
 void main()
