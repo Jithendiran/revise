@@ -88,20 +88,20 @@ func main() {
 	// To Convert actual string format
 	fmt.Printf("%s %T\n", strconv.Itoa(in), strconv.Itoa(in)) //42 string
 
-	var HTTP = "http" // It is not exposed to other packages only package level will be exposed
-	println(HTTP) // http
+	var HTTP = "http" // It also exposed to outer packages
+	println(HTTP)     // http
 
 	// fmt.Println(int16(1) + int32(2));// Err: (mismatched types int16 and int32)
-	println("HI Hello"[3]) // 72
+	println("HI Hello"[3])         // 72
 	println(string("HI Hello"[3])) // H
-	str = "Hello rewrite";
+	str = "Hello rewrite"
 	println(str) // Hello rewrite
 	// str[2] = "i" // Err:  cannot assign to str[2] (value of type byte)
 	// str[2] = 65 // Err:  cannot assign to str[2] (value of type byte)
-	println("String "+"Concat"); // String Concat
+	println("String " + "Concat") // String Concat
 
 	// string to collection of bytes
-	byt := []byte(str);
+	byt := []byte(str)
 	fmt.Println(byt) // [72 101 108 108 111 32 114 101 119 114 105 116 101]
 
 	// "" -> string -> utf-8 -> uint8
