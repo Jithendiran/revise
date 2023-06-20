@@ -46,6 +46,7 @@ func main() {
 	fmt.Println(int2darray3, int2darray3copy2) // [[1 27] [3 4]] &[[1 27] [3 4]]
 
 	// slice
+	// slice will contains the address of 0th index array element
 	// slice not have fixed element
 	intslice1 := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 	fmt.Println(intslice1) // [1 2 3 4 5 6 7 8 9 10

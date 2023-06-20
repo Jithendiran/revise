@@ -4,6 +4,8 @@
  */
 package main
 
+// main function in Package main is the entry point for program
+
 // import "fmt"
 import (
 	"fmt"
@@ -107,6 +109,10 @@ func main() {
 	// "" -> string -> utf-8 -> uint8
 	// '' -> rune -> utf-32 -> uint32
 	// fmt.Println('i'+"i") // 'i' + "i" (mismatched types untyped rune and untyped string)
+
+	type counter int
+	var ic counter = 0
+	fmt.Printf("%d, %T\n", ic, ic) // 0, main.counter
 }
 
 // Run
