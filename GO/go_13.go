@@ -16,7 +16,10 @@ var counter = 0
 
 func main() {
 	// goroutine
+
 	// withoutSync()
+
+	// sync
 	// withWait()
 	// loop()
 
@@ -32,6 +35,7 @@ func withoutSync() {
 		fmt.Println(msg)
 	}()
 	msg = "bye" // go routine race condition
+	// race condition means when one process is using the value other process is changes
 	// when goroutine is initiated main goroutine (main thread) will continue on other works
 	// Op: Hi11
 
@@ -127,3 +131,8 @@ func incValueMutex() {
 	mrw.Unlock()
 	wg.Done()
 }
+
+// find race conditions in running
+// go run -race go_13.go
+// find race conditions in building
+// go build -race go_13.go

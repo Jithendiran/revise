@@ -113,6 +113,8 @@ func main() {
 	type counter int
 	var ic counter = 0
 	fmt.Printf("%d, %T\n", ic, ic) // 0, main.counter
+	ic1 := counter(1)
+	fmt.Printf("%d, %T\n", ic1, ic1) // 1, main.counter
 }
 
 // Run
