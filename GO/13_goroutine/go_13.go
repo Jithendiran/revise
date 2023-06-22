@@ -16,6 +16,7 @@ var counter = 0
 
 func main() {
 	// goroutine
+	// goroutine is managed by go runtime not by OS
 
 	// withoutSync()
 
@@ -50,13 +51,13 @@ func withoutSync() {
 
 func withWait() {
 	msg := "Hi"
-	wg.Add(1) // 1 more goroutine is running (that 1 is main)
+	wg.Add(1) // 1 more goroutine add
 	go func() {
 		// msg from closure memory
 		fmt.Println(msg)
 		wg.Done() // tell main goroutine sub routine is completed
 	}()
-	wg.Add(1) // 2 more goroutine is running (that 1 is main, 2 is previous func)
+	wg.Add(1) // 1 more is add
 	go func(str string) {
 		fmt.Println(str)
 		wg.Done()
@@ -67,7 +68,7 @@ func withWait() {
 
 func loop() {
 	for i := 0; i < 10; i++ {
-		wg.Add(2)
+		wg.Add(2) // 2 more is go routine is add
 		go printValue()
 		go incValue()
 	}

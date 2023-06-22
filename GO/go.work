@@ -1,0 +1,19 @@
+go 1.20
+
+use (
+	.
+	./10_pointer
+	./11_function
+	./12_interface
+	./13_goroutine
+	./14_channel
+	./1_variable
+	./2_constant
+	./3_array
+	./4_map
+	./5_struct
+	./6_if
+	./7_switch
+	./8_loop
+	./9_defer_panic_recover
+)

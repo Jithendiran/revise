@@ -78,6 +78,10 @@ func main() {
 	// Jith Welcome
 	fmt.Println(g)
 	// {Jith }
+
+	fc := closure()
+	fmt.Println(fc)   // 0x485280
+	fmt.Println(fc()) // HiClosure
 }
 
 // if function 1st letter is caps then it will be exported to outer packages
@@ -145,3 +149,10 @@ func (g *greeter) greetFuncPtr() {
 // 	fmt.Println(g)
 // }
 // Err:  invalid receiver type func(int)
+
+func closure() func() string {
+	msg := "Closure"
+	return func() string {
+		return "Hi" + msg
+	}
+}
