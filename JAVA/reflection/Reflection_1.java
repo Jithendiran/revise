@@ -1,5 +1,6 @@
 package reflection;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 class su {
@@ -71,6 +72,23 @@ class Detail extends su {
 
 }
 
+class TestFinalChange{
+    private final String name;
+    TestFinalChange(String name) {
+        this.name = name; 
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    private static void staticMethod() {
+        System.out.println("INside TestFinalChange static method");
+    }
+}
+
+//Reflection is even power full to modify final variable
+// using reflection it is possible to break the law
 public class Reflection_1 {
     public static void main(String[] args) throws Exception {
         // Reflection will give you information about a class
@@ -157,9 +175,22 @@ public class Reflection_1 {
         Class c2 = cls.loadClass("reflection.Detail");
         System.out.println(c2);
 
-         c = Class.forName("reflection.Detail");
-         // It uses class loader
-         System.out.println(c == c2); // true
-         // class loader will not load a class multiple times see `Static 1` is print 1 time only 
+        c = Class.forName("reflection.Detail");
+        // It uses class loader
+        System.out.println(c == c2); // true
+        // class loader will not load a class multiple times see `Static 1` is print 1 time only 
+
+        // change final value
+        TestFinalChange t = new TestFinalChange("a");
+        System.out.println("Bf change final : "+t.getName()); //Bf change final : a
+        //t.name = "b"; not possible
+        Field f = t.getClass().getDeclaredField("name");
+        f.setAccessible(true);
+        f.set(t, "b");
+        System.out.println("Af change final : "+t.getName()); //Af change final : b
+
+        m = t.getClass().getDeclaredMethod("staticMethod");
+        m.setAccessible(true);
+        m.invoke(null); //INside TestFinalChange static method
     }
 }
