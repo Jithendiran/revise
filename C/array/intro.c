@@ -8,7 +8,7 @@ void main()
     int n;
     int b[] = {1, 2, 3, 4, 5};
     int c[n];
-
+    printf("%d \n",n);
     int a[n = 5]; // here 5 is assigned to n and n no.of.element placed
     //  for 1 dimensional array must to give no.of.elements or define array values like b
     for (int i = 0; i < n; i++)

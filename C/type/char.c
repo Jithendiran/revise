@@ -17,10 +17,11 @@ int main()
 
     // for negative value left most bit is set to 1
     // Signed and unsigned
+    // signed
     // -128 is represented as
     // -2^(7)  2^6 2^5 2^4 2^3 2^2 2^1 2^0
     //   1       0   0   0   0   0   0   0  -> -128
-
+    // unsigned
     // 128 is represented as
     // 2^7  2^6 2^5 2^4 2^3 2^2 2^1 2^0
     //  1    0   0   0   0   0   0   0  -> 128

@@ -29,7 +29,7 @@ void main()
     extern int ed; // it will get value from extern.c file
     extern int ed; // multiple declare not going to show any error
     extern int ed;
-    ed = 7; // it will change value of ed that defined in ectern.c
+    ed = 7; // it will change value of ed that defined in extern.c
     // extern is just declare not define
     printf("Extern value : %d\n", ed); // Extern value : 7 (if any one file does not contain ed it will throw error)
     // extern int ed1; // Multiple  definition of `ed1'; error when compile

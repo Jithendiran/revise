@@ -9,3 +9,7 @@ heap is an area of memory where memory is allocated or deallocated without any o
 
 dynamic memory allocation doesn't have an idea of what it is pointng to. so it will return (void *)
 so user can type cast to necessary data type 
+
+1. malloc
+2. calloc
+3. realloc

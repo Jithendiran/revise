@@ -14,7 +14,7 @@ void call_by_reference(int *a, int *b)
 {
     // here a,b, c variables are created when function is called and destroyed when it exit the function call
     // But a and b are pointers which means it will store address
-    // a and b is storing address, to access alue of address use *
+    // a and b is storing address, to access value of address use *
     int c = *a;
     *a = *b;
     *b = c;

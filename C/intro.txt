@@ -8,5 +8,41 @@ copy paste is the job of preprocessor
 
 Linker is going to map the functions from c standard library
 
+1.type
+    int
+    float
+    char
+    const
+    scope
+    operator
+    bitwise
+    typecast
+2.IO
+    printf
+    scanf
+3. function
+4. pointer
+    intro
+    callByReference
+    void_pointer
+    array
+    2d
+    airthmetic
+    const
+    function_pointer
+    dynamic_memory
+4. array
+    intro
+    array
+    wholearraypointer
+    arrayofpointers
+    string
+5. extern
+    var_modifier
+
+
+missed 
+array of pointers, pointer array
+double pointer and airthmetic operation
 
 Reference : https://www.youtube.com/playlist?list=PLBlnK6fEyqRggZZgYpPMUxdY1CYkZtARR

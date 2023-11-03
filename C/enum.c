@@ -16,11 +16,14 @@ enum Test
 
 enum Test1 // two or mor enum can share same value
 {
+    // a = 0, // 'a' cannot use again
+    aa = 1,
     a1 = 3, // if a and b name is used  (redeclaration of enumerator ‘a’ error will be shown)
     b1 = 3,
     c, // c will get value 4 values is calculted based up on previous + 1
     d = 2,
     // e = 3.5 only int values are allowed
+    e = 'a'
 };
 void main()
 {
@@ -56,4 +59,6 @@ void main()
 
     int a = True;
     printf("A = %d\n", a); // A = 1
+
+    printf("aa = %d, e=%d\n",aa,e); //aa = 1, e=97
 }

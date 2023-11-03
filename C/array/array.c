@@ -38,14 +38,20 @@ void main()
      * (*(a+1)+1) refers to 116     *(*(a+1)+1) -> 5
      * (*(a+1)+2) refers to 120     *(*(a+1)+2) -> 6
      */
-    printf("a = %d : a+1 = %d\n", a, a + 1);             // a = 2134145568 : a+1 = 2134145580
-    printf("*a = %d : *a+1 = %d\n", *a, (*a + 1));       // *a = 2134145568 : *a+1 = 2134145572
+    printf("a = %d : a+1 = %d\n", a, a + 1);             // a = 1663167488 : a+1 = 1663167500 a[0] has total 12 bytes means can able to store 3 elements like wise a[1]
+    printf("*a = %d : *a+1 = %d\n", *a, (*a + 1));       // *a = 1663167488 : *a+1 = 1663167492
     printf("**a = %d : *(*a+1) = %d\n", **a, *(*a + 1)); // **a = 1 : *(*a+1) = 2
 
     // start doubt
     int **p = &a;
-    printf("p = %d : p+1 = %d\n", p, p + 1);             // p = 883990352 : p+1 = 883990360
-    printf("*p = %d : *p+1 = %d\n", *p, (*(p + 1)));     // *p = 1 : *p+1 = 5
-    printf("**p = %d : *(*p+1) = %d\n", **p, *(*p + 1)); // Segmentation fault
+    printf("p = %d : p+1 = %d\n", p, p + 1);             // p = 1663167488 : p+1 = 1663167496
+    printf("*p = %d : *p+1 = %d\n", *p, (*(p + 1)));     // *p = 1 : *p+1 = 3 // why 3 is *p is still pointer
+    printf("Size of p = %d, *p = %d, **p = %d\n",sizeof(p), sizeof(*p), sizeof(**p)); // Size of p = 8, *p = 8, **p = 4
+    // printf("**p = %d : *(*p+1) = %d\n", **p, *(*p + 1)); // Segmentation fault
     // end doubt
+
+    int **p1 = a;
+    printf("p1 = %d : p1+1 = %d\n", p1, p1 + 1);             // p1 = 1663167488 : p1+1 = 1663167496
+    printf("*p1 = %d : *p1+1 = %d\n", *p1, (*(p1 + 1)));     // *p1 = 1 : *p1+1 = 3
+    // printf("**p1 = %d : *(*p1+1) = %d\n", **p1, *(*p1 + 1)); // Segmentation fault
 }

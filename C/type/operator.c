@@ -7,7 +7,7 @@ void main()
   // , operator it will have least precedence
   int a = (3, 5, 8); // () has highest precedence over all
   // , operator will return right most value and others are rejected
-  printf("a is : %d\n", a);
+  printf("a is : %d\n", a); //a is : 8
 
   a = (printf("jithendiran\n"), 27); // here the expression is exected and then left values are rejected
   printf("a is %d \n", a);
@@ -30,7 +30,8 @@ void main()
   // int b = 3, 4, 5; error: expected identifier or '(' before numeric constant
   //  above expression is like int b = 3, int 4, int 5; variable name cannot start with number
   // int b, c, d = 3, 4, 5;  error: expected identifier or '(' before numeric constant
-
+  int b,c,d = (3,4,5);
+  printf("B = %d, C = %d, D = %d\n",b,c,d); // B = 0, C = 0, D = 5
   int num, var;
   num = (var = 27, var + 3);
   printf("num : %d, var : %d\n", num, var); // num : 30, var : 27

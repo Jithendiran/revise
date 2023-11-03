@@ -37,7 +37,7 @@ void main()
     printf("3 << 1 is : %d\n", c << 1); // 3 << 1 is : 6
     /**
      * value of 3 is 0000 0011
-     * 3 >> 1
+     * 3 << 1
      *  -> 0000 011_ (trailing bit is empty)
      *  -> trailing bit is filled with 0
      *  -> 0000 0110 is 6
