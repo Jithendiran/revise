@@ -7,7 +7,7 @@
 // start doubt
 static int localfun()
 {
-    int a;
+    int a; // these values are store in data segment? if so it need to be init with 0 only but it gives 3 why?
     printf("A : %d\n", a);
 }
 
@@ -51,6 +51,6 @@ void main()
     // statFunction(); Linker error  undefined reference to `statFunction'
     localfun();  // A : 3 why 3 ?
     localfun1(); // AS : 3
-
+    // why both has same value
     // see another file scope_of_var.c
 }

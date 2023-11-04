@@ -18,6 +18,7 @@ int incrementStatic()
 int incstc()
 {
     static int c; // This also declared and defined once. Then the state of the variable is maintained until program end
+    // default is 0
     // c is accessable only inside incstc
     return ++c;
 }

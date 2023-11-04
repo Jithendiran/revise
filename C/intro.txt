@@ -39,10 +39,37 @@ Linker is going to map the functions from c standard library
     string
 5. extern
     var_modifier
+6. static
+7. structure
+8. union
+9. preprocessor
 
+Memory segments of c
 
-missed 
-array of pointers, pointer array
-double pointer and airthmetic operation
+Text/code
+    compiled code store (bin file). It is read only section. It is in lower section. 
+    This section can be shared between multiple process. Process means any running program is called process 
+
+Data
+    It is divide into two
+    * UnInitialized
+            It contains global & staticvariables that are not initialized
+            Life time is through out the program
+
+    * Initialized
+            It contains global & static variables that are explictly initialized
+            Life time is through out the program
+            Variable can be changed if non constant
+
+Heap
+    Dynamic memory
+
+Stack
+    auto, register, functions are store in stack
+    life time until function execution
+
+Environment
+    env values and command line arguments
+
 
 Reference : https://www.youtube.com/playlist?list=PLBlnK6fEyqRggZZgYpPMUxdY1CYkZtARR

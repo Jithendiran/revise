@@ -12,7 +12,7 @@ int fun2(int);
 // also see static.c
 static int localfun()
 {
-    int a;
+    int a; 
     printf("A : %d\n", a);
 }
 
@@ -28,8 +28,9 @@ void main()
     int a = 5;             // it is local variable to main function
     a = fun1(a);           // 20
     printf("a : %d\n", a); // a : 20
-    localfun();            // A : 32733
-    localfun1();           // AS : 32733
+    localfun();            // A : 32733 (garbage)
+    localfun1();           // AS : 32733 (garbage)
+    // both has same value
 }
 
 int fun2(int b)

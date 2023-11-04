@@ -5,6 +5,16 @@
 // run ./a.out
 #include <stdio.h>
 
+/**
+ * It is Storage class
+ * It determine the default value, where value need to store, scope, life span
+ * Types of storage class are auto, register, extern, static
+ * default storage class is auto
+*/
+
+// auto int x = 30; // auto not allowed to init in global
+// auto, register variables store in stack
+// register int i = 0;
 int globe; // initlize with 0
 int j = 27;
 extern int def = 34; // not thow error bcz it defined globally. Here extern is going to declare and define
@@ -21,6 +31,7 @@ void main()
         int a = 1;
         auto int b = 2; // both are same and it destroy when the control exit the scope
     }
+    // extern is only for global variables
     // extern we will tell complier to not define
     // extern used when a particular file needs to access variable from another file.
     // when using extern we are going to reuse the varible value that defined some where.
@@ -35,6 +46,7 @@ void main()
     // extern int ed1; // Multiple  definition of `ed1'; error when compile
     // d1 has multiple definition in extern.c and extern2.c so it throw error
 
+    // extern will tell compiler go out of my scope and find replace the value
     extern int j;
     printf("J value : %d\n", j); // J value : 27
 
@@ -42,11 +54,26 @@ void main()
     // extern int def = 34;//error: 'def' has both 'extern' and initializer (error if define inside main function)
     printf("The def : %d\n", def); // The def : 34
 
+    // int gg=0;
+    // extern int gg; // error
+
+    // extern int gg = 90; // error: 'gg' has both 'extern' and initializer
+
     // register
     // register keyword hints the compiler to store a variable in a register memory
     // register  memory is very limited but it is very fast to access
     // This is the choice of compiler whether it puts the given variable in register or not
     // Compiler even automatically made necessary optmization
 
+    // default value is garbage, scope is block
+    // global declaration not allowed
+    // life time is end of the block
+    // locatoin cpu register
     register int i = 0;
+
+
+    int abc = 5;
+    register int  ji = 3;
+    // int *ptr = &ji; //error address of register variable 'ji' requested
+    register int *ptr = &abc;  // this is ok
 }
