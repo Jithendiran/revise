@@ -20,8 +20,10 @@ Linker is going to map the functions from c standard library
 2.IO
     printf
     scanf
-3. function
-4. pointer
+3. enum
+4. function
+5. preprocessor
+6. pointer
     intro
     callByReference
     void_pointer
@@ -31,26 +33,35 @@ Linker is going to map the functions from c standard library
     const
     function_pointer
     dynamic_memory
-4. array
+7. array
     intro
     array
     wholearraypointer
     arrayofpointers
     string
-5. extern
+8. extern
     var_modifier
-6. static
-7. structure
-8. union
-9. preprocessor
+9. static
+    scope_of_var.c
+    static.c 
+    static2.c
+10. structure
+    structure
+    typedef
+    pointer
+11. union
 
-Memory segments of c
 
+Memory segments of c (Not only for c, this is how a process see the space, it is depend on OS, Compiler, Language)
+
+    Each process assume that one process is only running on the system, Process are managed by OS
 Text/code
+    size can't change 
     compiled code store (bin file). It is read only section. It is in lower section. 
     This section can be shared between multiple process. Process means any running program is called process 
 
 Data
+    Size is calculated by compiler
     It is divide into two
     * UnInitialized
             It contains global & staticvariables that are not initialized
@@ -63,10 +74,12 @@ Data
 
 Heap
     Dynamic memory
+    size can vary in running
 
 Stack
     auto, register, functions are store in stack
     life time until function execution
+    size can vary in running
 
 Environment
     env values and command line arguments

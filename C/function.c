@@ -14,6 +14,8 @@
 int areaOfRectangle(int, int); // function declear or function prototype
 char test(int n);              // pararameter with variable name is optional
 
+void noFundef(); // no function definition for this function and also no error
+
 int areaOfSquare(int b)
 {
     // this fucntion is defined before calling function so need for function declearation
@@ -21,6 +23,10 @@ int areaOfSquare(int b)
 }
 void main()
 {
+    void print() {
+        printf("hi\n");
+    }
+   print(); // hi 
     printf("Area of square : %d\n", areaOfSquare(4));          // Area of square : 16
     printf("Area of rectangle : %d\n", areaOfRectangle(2, 4)); // Area of rectangle : 8
     // printf("Alphabet: %c\n", alphabet()); conflicting types for 'alphabet'; have 'char()'

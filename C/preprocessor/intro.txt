@@ -1,0 +1,7 @@
+Preprocessor is a occur befor compiler
+It is a text substitute program
+preprocessor commands are begins with #
+Preprocessor will repalce every thing in a file which begins in # to it's equalent code
+
+1. preprocessor_1
+2. preprocessor_2

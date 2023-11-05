@@ -14,6 +14,7 @@ struct vechicle
     char *type;
     float price;
     /**
+     * init of any variable will be error
      * char *type="xyz" // not a valid one
      */
 };
@@ -91,6 +92,54 @@ void main()
         char b;
     } bb1;
     printf("Sizeof : %d\n", sizeof(bb1)); // Sizeof : 2
+
+    struct stchchi
+    {
+        char a;
+        char b;
+        int c;
+    } stchchivar;
+
+     struct stchchi2
+    {
+        char a;
+        int c;
+        char b;
+    } stchchivar2;
+
+    struct stchchi3
+    {
+        int c;
+        char a;
+        char b;
+    } stchchivar3;
+
+    printf("size of stchchi = %d, stchchi2 = %d, stchchi3 = %d\n",sizeof(stchchivar), sizeof(stchchivar2), sizeof(stchchivar3)); // size of stchchi = 8, stchchi2 = 12, stchchi3 = 8
+
+    /**
+     * stchchi, stchchi2 and stchchi3
+     * all the 3 structure has same 2 char and 1 int but stchchi2 size is different
+     * This is default padding settings in structure for cpu optmization
+     * a cpu can access a 1 word at a time, 1 word is different fot 32 bit and 64 bit machine
+     * 1 word of 32 bit is 4 byte and 1 word of 64 bit is 8 byte
+     * 
+     * 
+     * char is 1 byte, int is 4 byte
+     * in stchchi 
+     *      in 1st cycle char a, char b, 2 bytes of c is accessed in 1st cycle and in second cycle remaining 2 byte of int is accessed
+     *      now char a and b is fully accessed in 1st cycle but int is hafly accessed to avoid this issue empty padding of 2 byte is added after char
+     *      so in 1st cycle char a,b and 2 empty byte is accessed, in 2nd cycle int is accessed
+     *      so size of stchchi is char a 1byte, char 1 1byte, 2 empty byte and int c 4 byte total 8 byte
+     * 
+     * stchchi2
+     *      in 1st cycle char a + 3 empty byte, in 2nd cycle int c andin 3rd cycle char b + 3empty byte is accessed
+     *      so size is char a 1byte, 3 empty byte, int c 4 byte and char b 1byte, 3 empty byte total 12 byte
+     * 
+     * stchchi3
+     *      1st cycle int c is accessed and 2nd cycle char a,b and 2 empty byte is accessed
+     *      so size is int c 4 byte, char a 1 byte, char b 1 byte and 2 empty byte total 8 byte
+    */
+    
 
 // structure packing
 // https://www.youtube.com/watch?v=VZBLCpQYchs&list=PLBlnK6fEyqRggZZgYpPMUxdY1CYkZtARR&index=158
