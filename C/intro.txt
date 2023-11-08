@@ -22,6 +22,7 @@ Linker is going to map the functions from c standard library
     scanf
 3. enum
 4. function
+    function
 5. preprocessor
 6. pointer
     intro
@@ -50,7 +51,13 @@ Linker is going to map the functions from c standard library
     typedef
     pointer
 11. union
-
+12. function
+    inline
+13. variable length arguments
+14. volatile
+15. __THROW
+16. __attribute(())__
+15. c program execution order
 
 Memory segments of c (Not only for c, this is how a process see the space, it is depend on OS, Compiler, Language)
 
@@ -83,6 +90,11 @@ Stack
 
 Environment
     env values and command line arguments
+
+
+
+C is heavly depend on the compiler, basically function overloading will not support in normal c compiler 
+but if we use g++ compiler to compile c program it will support function overloading
 
 
 Reference : https://www.youtube.com/playlist?list=PLBlnK6fEyqRggZZgYpPMUxdY1CYkZtARR
