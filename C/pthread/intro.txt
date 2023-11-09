@@ -1,0 +1,7 @@
+Process
+
+    Each process has it's own memory address space of processor register, program counters, stack pointers, memory pages,... If one process malfunction others will works fine
+
+Thread
+    Thread is inside a process, usually process has main thred by default. Each thread has it's own stack, register, program counters, 
+    But memory address space of process is shared between the threads. One malfunction of the thread could bring entire process down

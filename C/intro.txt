@@ -52,12 +52,13 @@ Linker is going to map the functions from c standard library
     pointer
 11. union
 12. function
-    inline
-13. variable length arguments
+     inline
+     variable length arguments
+13. pthread
 14. volatile
 15. __THROW
 16. __attribute(())__
-15. c program execution order
+17. c program execution order
 
 Memory segments of c (Not only for c, this is how a process see the space, it is depend on OS, Compiler, Language)
 
