@@ -5,3 +5,21 @@ Process
 Thread
     Thread is inside a process, usually process has main thred by default. Each thread has it's own stack, register, program counters, 
     But memory address space of process is shared between the threads. One malfunction of the thread could bring entire process down
+
+When more than one thread write on one variable it lead to the race condition.
+
+Mutex is a synchronization primitive that enforces limits on access to a shared resource
+when we have multiple threads of execution.
+
+Basically mustex what will do is lock the variable for the particular which is doing operations,
+Other threads will no access the value. Those thread will wait until the operation thread is completing it's execution
+
+volatile is a tell to a compiler that this value can be change in unpredicted way, 
+so don't do any optmization
+
+1. pthread1
+2. pthread2
+3. volatile
+ 
+// Ref: https://www.youtube.com/watch?v=uA8X5zNOGw8&list=PL9IEJIKnBJjFZxuqyJ9JqVYmuFZHr7CFM&index=2
+// https://www.youtube.com/watch?v=ldJ8WGZVXZk&list=PLA1FTfKBAEX4hblYoH6mnq0zsie2w6Wif&index=93
