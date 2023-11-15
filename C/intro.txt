@@ -97,5 +97,22 @@ Environment
 C is heavly depend on the compiler, basically function overloading will not support in normal c compiler 
 but if we use g++ compiler to compile c program it will support function overloading
 
+C Program execution
+
+a.c -> preprocessor -> Compiler -> assembler -> linker -> loader
+
+* preprocessor outputs expanded source code it's file extension is ".i", a.c -> a.i
+    // execute gcc -E a.c
+
+* compiler will check for syntax error and produce assembly file with extension of ".asm", a.i -> a.asm. or it may end with ".s"
+    // execute gcc -S a.c
+
+* assembler will generate object code with extension ".obj", a.asm -> a.obj. or it may end with ".o"
+    // execute gcc -c a.c
+
+* linker will link the system library. it will include definition of predefined functions and outputs executable file ".out" or ".exe", a.obj -> a.out or a.obj -> a.exe
+    // execute gcc a.c
+
+* loader will load the executable code to ram
 
 Reference : https://www.youtube.com/playlist?list=PLBlnK6fEyqRggZZgYpPMUxdY1CYkZtARR

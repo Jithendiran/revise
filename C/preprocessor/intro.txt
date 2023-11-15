@@ -5,3 +5,8 @@ Preprocessor will repalce every thing in a file which begins in # to it's equale
 
 1. preprocessor_1
 2. preprocessor_2
+
+file ending with .i is ouput of preprocessor
+file ending with .s is output of compiler
+file ending with .o is output of assembler
+file ending with .out or .exe is output of linker
