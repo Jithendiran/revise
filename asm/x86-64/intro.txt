@@ -1,0 +1,98 @@
+Using x86-64 assembly language
+This is using nasm assembler
+sudo apt install nasm
+https://www.youtube.com/watch?v=busHtSyx2-w&list=PLetF-YjXm-sCH6FrTz4AQhfH6INDQvQSn
+
+
+; -> is comment
+
+Registers 
+    Registers are part of processor that temporarily holds memory
+    in the x86_64 architecture, register holds 64 bits.
+
+    This mean each register can hold the values:
+    Unsingned: 0 to 18446744073709551615
+    signed: -9,223,372,036,854,775,808   to  9,223,372,036,854,775,807
+
+    view registers.png
+
+System call
+    A system call, or a syscall. is when a program request a service from the kernel.
+    system calls will differ by operating system
+    All syscall have an ID associated with them (a number).
+    Syscalls also takes arguments, meaning, a list of inputs.
+
+    system calls input by register
+    Arguments               Registers
+    ID                      rax
+    1                       rdi
+    2                       rsi
+    3                       rdx
+    4                       r10
+    5                       r8
+    6                       r9    
+
+    rax will store sys_call ID, this will indicate which syscall going to call
+    from rdi to r9 will tahe arguments  
+
+    refer the site for more reference
+    https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md#x86_64-64_bit
+
+Sections
+    There are 3 sections in x86_64, They are .data, .bss, .text section
+
+    The data section is where all data is defined before compilation
+    .data is where the content is readable and writeable but not executable
+
+    The bss section is where data is allocated for future use.
+    text is where the content is readable and executable but not writeable
+
+    The text section is where the actual code goes
+
+labels
+    A label is used to label the part of code, after compilation the name of the label will replace by location
+    the start label is essential for all programs
+    when your program is compiled and later executed, it is executed first at the location if _start
+
+    if the linker cannot find _start, it will throw error
+
+global
+    global is used when you want the linker to be able to know the address of some label
+
+    the object file generated will contain a link to every label declared global
+
+Flags
+    Flags, like registers, hold data.
+    Flags only hold 1 bit each. They are either true or false.
+    Individual falags are part of a larger register.
+
+    https://en.wikipedia.org/wiki/FLAGS_register
+
+Pointers
+    Pointers are also registers that hold data.
+    They store address, that address will have data
+
+    eg:
+    Pointer name    meaning             Desc
+    rip             Index pointer       Points to next address to be executed in the control flow.
+    rsp             Stack pointer       Points to the top address of the Stack
+    rbp             Stack base pointer  Points to the bottom of the stack
+    .....(more)
+
+    control flow of program is control by rip. it executes from _start in the flow of top to bottom
+
+Instructions
+    https://www.nasm.us/xdoc/2.15.05/html/nasmdocb.html
+
+Ref: 
+https://www.nasm.us/xdoc/2.15.05/html/nasmdoca.html
+http://6.s081.scripts.mit.edu/sp18/x86-64-architecture-guide.html
+https://flint.cs.yale.edu/cs421/papers/x86-asm/asm.html
+https://en.wikipedia.org/wiki/X86_assembly_language
+
+Todo
+
+what is linker (ld)
+what is file descriptor
+https://www.youtube.com/watch?v=dDwXnB6XeiA
+https://www.youtube.com/watch?v=rW_NV6rf0rM
