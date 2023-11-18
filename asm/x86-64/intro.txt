@@ -2,6 +2,7 @@ Using x86-64 assembly language
 This is using nasm assembler
 sudo apt install nasm
 https://www.youtube.com/watch?v=busHtSyx2-w&list=PLetF-YjXm-sCH6FrTz4AQhfH6INDQvQSn
+https://www.tutorialspoint.com/assembly_programming/index.htm
 
 
 ; -> is comment
@@ -42,12 +43,23 @@ Sections
     There are 3 sections in x86_64, They are .data, .bss, .text section
 
     The data section is where all data is defined before compilation
-    .data is where the content is readable and writeable but not executable
+    The data section is used for declaring initialized data. 
 
     The bss section is where data is allocated for future use.
-    text is where the content is readable and executable but not writeable
+    The text section is used for keeping the actual code.
+    bss sections values are filled with 0 
 
     The text section is where the actual code goes
+    This section must begin with the declaration global _start, which tells the kernel where the program execution begins.
+
+    segment and section word is equalent
+
+    Data segment − It is represented by .data section and the .bss. The .data section is used to declare the memory region, where data elements are stored for the program. This section cannot be expanded after the data elements are declared, and it remains static throughout the program.
+    The .bss section is also a static memory section that contains buffers for data to be declared later in the program. This buffer memory is zero-filled.
+
+    Code segment − It is represented by .text section. This defines an area in memory that stores the instruction codes. This is also a fixed area.
+
+    Stack − This segment contains data values passed to functions and procedures within the program.
 
 labels
     A label is used to label the part of code, after compilation the name of the label will replace by location
@@ -90,9 +102,19 @@ http://6.s081.scripts.mit.edu/sp18/x86-64-architecture-guide.html
 https://flint.cs.yale.edu/cs421/papers/x86-asm/asm.html
 https://en.wikipedia.org/wiki/X86_assembly_language
 
-Todo
 
-what is linker (ld)
-what is file descriptor
 https://www.youtube.com/watch?v=dDwXnB6XeiA
 https://www.youtube.com/watch?v=rW_NV6rf0rM
+
+Todo
+    airthmetic operations
+    addressing
+    stack
+    bss vs data vs text
+    object dump
+    virtual memory in objdump
+    register byte allocation
+    c function to asm
+    c local var, global var, stativ var see in asm
+    c see static function and it's var in asm
+    complete flow of fetch, decode, execute

@@ -22,13 +22,11 @@ print:
     mov rdi, 1         
     mov rsi, text      
     mov rdx, 12         
+    syscall ; this label is not ended with ret meaning call will execute unitl ret, but it must needed ret
+printEnd:   ; when ever print is call printEnd content is also execute because it is continuation
+    mov rax, 1          
+    mov rdi, 1         
+    mov rsi, text2      
+    mov rdx, 14         
     syscall   
     ret       
-
-; when ever call is used used rip will point to the label address and control goes There
-; in subroutine when ever ret is encounter control goes back to where it is called
-
-; when ever jmp is encounter, like call rip will point to the label address and control goes There
-; but control will not come back
-
-; call without ret is segmentfault

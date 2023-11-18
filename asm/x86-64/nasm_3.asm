@@ -1,3 +1,4 @@
+; user input and subroutine
 ; nasm -f elf64 -o a.o nasm_3.asm && ld a.o -o a.out
 
 section .data

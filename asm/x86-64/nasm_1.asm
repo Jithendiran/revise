@@ -1,5 +1,8 @@
+; basic
+
 ; compile nasm -f elf64 -o nasm_1.o nasm_1.asm
 ; ld nasm_1.o -o nasm_1
+; objdump -D nasm_1 ; to check compiled code
 
 section .data
         text db "Hello",10
@@ -36,3 +39,10 @@ _start:
 
 ; sys_exit takes 1 argument which is error code
 ; error code can be any number, 0 means no error
+
+; program without sys_exit will segmentfault
+
+; if we not specify _start; code will start execute from predefined address 0000000000401000
+
+; below is warning if we not specify _start
+; ld: warning: cannot find entry symbol _start; defaulting to 0000000000401000
