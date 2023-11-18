@@ -118,3 +118,5 @@ Todo
     c local var, global var, stativ var see in asm
     c see static function and it's var in asm
     complete flow of fetch, decode, execute
+
+    https://www.youtube.com/playlist?list=PL2EF13wm-hWCoj6tUBGUmrkJmH1972dBB

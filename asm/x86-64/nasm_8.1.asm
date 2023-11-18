@@ -1,4 +1,5 @@
 ; nasm_8.asm can write like this
+; nasm -f elf64 -o a.o nasm_8.1.asm && ld a.o -o a.out && ./a.out
 
 %include "nasm_8.1-header.asm"
 %include "nasm_8.1-footer.asm"
