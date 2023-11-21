@@ -1,8 +1,9 @@
 ; basic
 
-; compile nasm -f elf64 -o nasm_1.o nasm_1.asm
+; compile: nasm -f elf64 -o nasm_1.o nasm_1.asm
 ; ld nasm_1.o -o nasm_1
 ; objdump -D nasm_1 ; to check compiled code
+; for debugging set : echo "set disassembly-flavor intel" > ~/.gdbinit
 
 section .data
         text db "Hello",10

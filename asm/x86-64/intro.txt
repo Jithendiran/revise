@@ -45,7 +45,7 @@ Sections
     The data section is where all data is defined before compilation
     The data section is used for declaring initialized data. 
 
-    The bss section is where data is allocated for future use.
+    The bss(block starting symbol) section is where data is allocated for future use.
     The text section is used for keeping the actual code.
     bss sections values are filled with 0 
 
@@ -92,6 +92,10 @@ Pointers
     .....(more)
 
     control flow of program is control by rip. it executes from _start in the flow of top to bottom
+
+Intel, x86 follows little endian encoding
+values are stored from lower order to higher order (right to left)
+if 1,2,3,4 is to be stored in memory it is stored like 0x04030201
 
 Instructions
     https://www.nasm.us/xdoc/2.15.05/html/nasmdocb.html

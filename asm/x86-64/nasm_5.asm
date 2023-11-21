@@ -4,6 +4,7 @@
 ; pop will throw out the content from top of the stack
 ; rip will hold the address of the stack rip is a pointer
 ; to get the value of rip use [rip]
+; [] means pointer
 
 section .data
     text db "xcx cv",10
@@ -16,8 +17,8 @@ section .text
     global _start
 
 _start:
-    ;mov [text], "hi ji" ; not working
-    mov [tex], "hi ji"
+    ;mov [text], "hi ji" 
+    ;mov [tex], "hi ji"      ; not working because it does not know the size 
     call print
     push 1
     push 2

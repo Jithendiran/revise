@@ -9,6 +9,9 @@ section .bss
 ; this section is used to reserve data
     name resb 16 ; reserve 16  bytes of data for name memory
 
+; db is define bytes
+; resb is reserve bytes
+
 
 section .text
     global _start
