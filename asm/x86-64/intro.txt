@@ -1,7 +1,8 @@
 Using x86-64 assembly language
 This is using nasm assembler
 sudo apt install nasm
-https://www.youtube.com/watch?v=busHtSyx2-w&list=PLetF-YjXm-sCH6FrTz4AQhfH6INDQvQSn
+https://www.youtube.com/playlist?list=PLetF-YjXm-sCH6FrTz4AQhfH6INDQvQSn
+https://www.youtube.com/playlist?list=PL2EF13wm-hWCoj6tUBGUmrkJmH1972dBB
 https://www.tutorialspoint.com/assembly_programming/index.htm
 
 
@@ -93,6 +94,18 @@ Pointers
 
     control flow of program is control by rip. it executes from _start in the flow of top to bottom
 
+Data length
+    There are some defined data length in asm
+
+    DB  ->  Define Byte         ; 1 byte
+    DW  ->  Define Word         ; 2 bytes
+    DD  ->  Define Doubleword   ; 4 bytes
+    DQ  ->  Define Quadword     ; 8 bytes
+    DT  ->  Define Ten Bytes    ; 10 bytes
+
+    ref: https://www.tortall.net/projects/yasm/manual/html/nasm-pseudop.html
+
+
 Intel, x86 follows little endian encoding
 values are stored from lower order to higher order (right to left)
 if 1,2,3,4 is to be stored in memory it is stored like 0x04030201
@@ -103,6 +116,7 @@ Instructions
 Ref: 
 https://www.nasm.us/xdoc/2.15.05/html/nasmdoca.html
 http://6.s081.scripts.mit.edu/sp18/x86-64-architecture-guide.html
+https://www.cs.virginia.edu/~evans/cs216/guides/x86.html
 https://flint.cs.yale.edu/cs421/papers/x86-asm/asm.html
 https://en.wikipedia.org/wiki/X86_assembly_language
 
@@ -111,8 +125,9 @@ https://www.youtube.com/watch?v=dDwXnB6XeiA
 https://www.youtube.com/watch?v=rW_NV6rf0rM
 
 Todo
-    airthmetic operations
-    addressing
+    global in asm
+    linker how it is work
+    addressing, scale address
     stack
     bss vs data vs text
     object dump
