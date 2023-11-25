@@ -1,5 +1,5 @@
 ; print
-; nasm -f elf64 -o a.o nasm_2.asm && ld a.o -o a
+; nasm -f elf64 -o a.o nasm_2.asm && ld a.o -o a.out
 
 section .data
     text db "Hello world",10
@@ -32,3 +32,8 @@ print:
 ; but control will not come back
 
 ; call without ret is segmentfault
+
+; when a function is called the next line address of calling the function will pushed to stack
+; in _start `call print` is the calling the print function the address of `jup exit` is pushed to stack
+; when the function finished it's execution it will pop the address and return to it
+; we can see the return address is stored in rsp register

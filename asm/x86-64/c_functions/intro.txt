@@ -1,0 +1,44 @@
+start is the actual program start
+in start main is called
+
+Linux follows x86_64 AMD64 ABI and Stack Frame
+
+function calling
+1st arg = RDI
+2nd arg = RSI
+3rd arg = RDX
+4th arg = RCX
+5th arg = R8
+6th arg = R9
+
+return value in rax
+
+floating points arg calling reg
+1st arg = xmm0
+2nd arg = xmm1
+3rd arg = xmm2
+4th arg = xmm3
+5th arg = xmm4
+6th arg = xmm5
+
+after the 6th arguments then start pushing on to the stack in reverse order
+
+when function is calling return address is pushed to stack and then jump to the function
+
+stack is growing downwords in stack
+
+size    stack_memory
+4bytes  old rbp
+4bytes  ret address
+4bytes  calling rbp
+4bytes  loval var 1 (rbp - 4)
+4bytes  loval var 2 (rbp - 8)
+4bytes  loval var 3 (rbp - c)
+4bytes  loval var 4 (rbp - 10)
+....
+
+1. nasm_1.asm
+2. nasm_2.asm
+3. function.c
+4. main.c {main.s}
+4. main2.c

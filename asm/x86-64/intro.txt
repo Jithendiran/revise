@@ -125,6 +125,7 @@ https://www.youtube.com/watch?v=dDwXnB6XeiA
 https://www.youtube.com/watch?v=rW_NV6rf0rM
 
 Todo
+    diff of rsi, rsp
     global in asm
     linker how it is work
     addressing, scale address

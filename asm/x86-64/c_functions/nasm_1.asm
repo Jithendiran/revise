@@ -5,7 +5,7 @@
 
 ; to call custom c
 ; nasm -f elf64 -o a.o nasm_1.asm
-; gcc -z noexecstack -m64 -no-pie a.o pgm.c -o a.out
+; gcc -z noexecstack -m64 -no-pie a.o function.c -o a.out
 
 ; calling c standard functions
 ; for this compiling from nasm and running with gcc
@@ -13,7 +13,7 @@
 
 
 extern printf  ;extern keyword from c; printf function is defined outside
-;extern custom_function
+extern custom_function
 section .text
     global main
 
@@ -21,14 +21,19 @@ main:
 ; c function arguments are expected to be in stack
 ; 1st arugument of printf is fmt then msg
 ; stack is LIFO, so 1st push msg and format
-    push msg
-    PUSH fmt
+   
+    ;push msg
+    ;PUSH fmt
+    ;call printf         ; return value auto stored in rax
 
-    call printf         ; return value auto stored in rax
-    ;call custom_function 
+    push  2
+    push  3
+    call custom_function
+    add esp, 8
 
-    mov rax, 1      ;exit need 1 argument
-    ret
+    mov rbx, rax
+    mov rax, 1     
+    int 80h
 
 
 section .data
