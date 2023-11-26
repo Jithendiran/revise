@@ -126,15 +126,15 @@ https://www.youtube.com/watch?v=rW_NV6rf0rM
 
 Todo
     diff of rsi, rsp
+    UEFI boot process
+    EFI
     global in asm
     linker how it is work
     addressing, scale address
-    stack
     bss vs data vs text
     object dump
     virtual memory in objdump
     register byte allocation
-    c function to asm
     c local var, global var, stativ var see in asm
     c see static function and it's var in asm
     complete flow of fetch, decode, execute

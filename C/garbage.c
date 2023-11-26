@@ -72,6 +72,10 @@
 Int a =32554
 IN Int b =32554
 */
+/**
+ * The above behaviour is because of stack allocation
+ * ref: https://blog.holbertonschool.com/hack-virtual-memory-stack-registers-assembly-code/
+*/
 
 void ab()
 {

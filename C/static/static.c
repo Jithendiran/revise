@@ -52,5 +52,9 @@ void main()
     localfun();  // A : 3 why 3 ?
     localfun1(); // AS : 3
     // why both has same value
+    /**
+     * the same value because both functions have same amout of data in stack
+     * ref: https://blog.holbertonschool.com/hack-virtual-memory-stack-registers-assembly-code/
+    */
     // see another file scope_of_var.c
 }
