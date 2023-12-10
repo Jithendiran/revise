@@ -1,0 +1,17 @@
+Registers
+    SI (Source Index) -> points to source array
+    DI (Destination Index) -> points to destination array
+    CS (code segment) -> points to currently executing base address of code or text segment
+    IP (instruction pointer) -> points to offset address of current code segment
+    
+    CS:IP forms the current instruction address
+    IP will increment to fetch next instruction
+    DS (Data segment) -> points to currently executing process data segment
+    ES (Extra segment)
+    SS (Stack segment) -> has the base address of Stack
+    SP (Stack pointer) -> it the offset address of Stack pointer
+    SS:SP -> points to the top of the Stack
+    Stack will grow down words which means SP will decrement when content is pushed
+
+dd if=/dev/zero of=boot.img bs=512 count=2880
+dd if=boot0.img of=boot.img
