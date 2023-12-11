@@ -1,2 +1,10 @@
 Types of registers and it's use
 CS, SS,...
+
+;dd if=/dev/zero of=floppy.img bs=1024 count=1440
+;dd if=boot.img of=floppy.img seek=0 count=1 conv=notrunc
+;sudo mkfs.vfat -F 12 ./floppy.img
+;bochs -f ./bochs_config
+
+SEE
+https://www.youtube.com/watch?v=7LTB4aLI7r0&list=PLxN4E629pPnKKqYsNVXpmCza8l0Jb6l8-

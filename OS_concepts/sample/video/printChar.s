@@ -49,3 +49,8 @@ end:
 msg db "jith",0
 times 510-($-$$) db 0
 dw 0xAA55
+
+; cmp dst, src      ZF     CF
+; dst = src         1      0
+; dst < src         0      1
+; dst > src         0      0
