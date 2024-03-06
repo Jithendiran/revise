@@ -8,6 +8,12 @@
 SETUPLEN equ 4				; no.of setup sectors
 BOOTSEG  equ 0x07c0			; BIOS address of boot-sector
 INITSEG  equ 0x9000			; new boot-sector address
+SYSSEG	equ 0x1000			; kernel location
+SYSSIZE equ 0x3000			; 196kB
+ENDSEG	equ SYSSEG + SYSSIZE ; 1000+3000 => 4000
+
+section .data
+	secorts dw 0
 
 section .text
 	global _start
@@ -40,13 +46,24 @@ load_setup:
 	int	0x13			
 	jnc	ok_load_setup		
 
-	mov	dx,#0x0000	
-	mov	ax,#0x0000	;Reset disk		
+	mov	dx,0x0000	
+	mov	ax,0x0000	;Reset disk		
 	int	0x13
-	j	load_setup
+	jmp	load_setup
 
 ok_load_setup:
+	; Get drive param
+	mov	dl,0x00
+	mov	ax,0x0800		; AH=8 is get drive parameters
+	int	0x13
 
+	mov	ch,0x00
+	mov	[sectors],cx  	; CH is cleared and stored no.of. sectors to memory
+	mov	ax,INITSEG 	; ax has new boot location
+	mov	es,ax
+	; seem's like above code is only interested in secorts
+
+	; screen msg 
 	; Get page no, row no, column no
     mov	ah,0x03
 	int	0x10
@@ -58,7 +75,28 @@ ok_load_setup:
 	mov bl, 0x02 		
 	int 0x10
 
+	; Load system at 0x10000
+
+	mov ax, SYSSEG
+	mov es, ax
+
 	jmp $
+
+read_it:
+	mov ax, es
+	test ax, 0x0fff ; set ZF to 1 if ax and (&) #0x0fff return 0
+	; if ZF = 0 jump to die
+die:
+	jne die
+
+	mov bx, 0
+rp_read:
+	mov ax, es
+	cmp ax, ENDSEG
+	jb ok1_read
+	ret
+ok1_read:
+	
 
 msg db "ji OS Loading........",10,0
 msglen equ $-msg
