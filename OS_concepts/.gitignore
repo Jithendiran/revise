@@ -2,4 +2,9 @@
 **.img
 **.o
 **/bx_enh_dbg.ini
+*.ko*
+*.mod*
+*.cmd*
+Module.symvers
+modules.order
 /target

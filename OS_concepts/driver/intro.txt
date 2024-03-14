@@ -1,0 +1,63 @@
+Linux drivers
+    It is mostly run in kernel space, some driver can run in user space
+    Most of the system calls are run behalf of the user applications, interrups can run independent (not behalf of user app)
+    In driver kernel exported symbols(variable, functions,..) are used, user space library is not available
+    Kernel programming has limitation in floating point
+    Drivers are 3 types
+        1. Character (back and forth not possible)
+        2. Block     (back and forth possible)
+        3. Network
+
+commands
+    lsmod -> to view loaded modules
+    cat /proc/devices -> to view registered modules
+    ls -la /dev     -> to view driver files
+Character
+    dr_00.c
+
+
+sudo apt install qemu qemu-system qemu-system-x86 virt-manager
+
+qemu-img create -f qcow2 Image.img 25G
+qemu-system-x86_64 -enable-kvm -cdrom {OS_ISO.iso} -boot menu=on -drive file=Image.img -m 2G
+
+(-enable-kvm enables KVM, -cdrom selects an iso to load as a cd, -boot menu=on enables a boot menu, -drive file= selects a file for the drive, -m sets the amount of dedicated RAM)
+(Remember! Ctrl + Alt + G to exit capture, Ctrl + Alt + F to fullscreen!)
+
+
+
+Basic performance options
+
+ -cpu host (sets the CPU to the hosts' CPU)
+ -smp 2 (sets the numbers of cores)
+
+Basic Graphics Acceleration
+
+the -vga option can be used to specify one of various vga card emulators:
+
+"qxl" offers 2D acceleration but requires kernel modules "qxl" and "bochs_drm" to be enabled:
+
+-vga qxl
+
+"virtio" works much better and supports some 3D emulation:
+
+-vga virtio -display sdl,gl=on
+
+
+//start
+qemu-system-x86_64 -enable-kvm -boot menu=on -drive file=Image.img -m 2G
+
+// shared path
+
+-virtfs local,path=/path/to/share,mount_tag=host0,security_model=passthrough,id=host0
+-virtfs local,path=/home/jidesh/Project/revise,mount_tag=host0,security_model=passthrough,id=host0
+
+qemu-system-x86_64 -enable-kvm -boot menu=on -drive file=Image.img -m 2G -virtfs local,path=/home/jidesh/Project/revise,mount_tag=host0,security_model=passthrough,id=host0
+
+//fstab
+host0   /wherever    9p      trans=virtio,version=9p2000.L   0 0
+
+//ssh
+-device e1000,netdev=net0 -netdev user,id=net0,hostfwd=tcp::5555-:22
+
+in host  ssh localhost -p 5555
