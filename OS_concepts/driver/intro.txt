@@ -16,6 +16,9 @@ Character
     dr_00.c
 
 
+doubts
+register_chrdev_region vs register_chrdev
+--------------------------------------------------------------
 sudo apt install qemu qemu-system qemu-system-x86 virt-manager
 
 qemu-img create -f qcow2 Image.img 25G

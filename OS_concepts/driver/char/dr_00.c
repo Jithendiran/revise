@@ -3,9 +3,6 @@
  * Date  : 14 Mar 24
  */
 
-/**
- * Dynamic allocation
- */
 
 #include <linux/init.h>
 #include <linux/module.h>

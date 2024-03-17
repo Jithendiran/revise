@@ -1,11 +1,13 @@
-obj-m := dr_00.o
-
+obj-m := dr_06.o
+CONFIG_MODULE_SIG=n
 
 KERNELDIR := /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)
 
-default:
+modules:
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
 
-# clean:
-#     $(MAKE) -C $(KERNELDIR) M=$(PWD) clean
+clean:
+	rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions *.mod modules.order *.symvers
+
+.PHONY: modules  clean
