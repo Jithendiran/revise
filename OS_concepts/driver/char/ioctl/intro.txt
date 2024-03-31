@@ -1,0 +1,9 @@
+1. ioctl_dr.c
+2. use_app.c
+
+To Run:
+1. build ioctl_dr.c
+2. Load ioctl_dr module in kernel
+3. create module
+4. compile usr_app.c
+5. run usr_app
