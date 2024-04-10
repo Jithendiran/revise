@@ -1,22 +1,21 @@
 /**
  * Author: E.K. Jithendiran
- * Date  : 16 Mar 24
+ * Date  : 1 Apr 24
  */
 
+// using proc file system
 #include <linux/fs.h>
 #include <linux/cdev.h>
 #include <linux/init.h>
 #include <linux/kdev_t.h>
 #include <linux/module.h>
-
-// cdev is newer way
-// cdev's Major and Minor number can be more than 256
-
+#include <linux/proc_fs.h>
 
 dev_t deb_num = MKDEV(27, 0);
 struct cdev *my_cdev;
+static struct proc_dir_entry *ent;
 
-
+// proc file system is like dev 
 int open_callback(struct inode *inode, struct file *filp)
 {
     printk(KERN_INFO "open method\n");
@@ -34,25 +33,23 @@ ssize_t read_callback(struct file *filp, char __user *buff, size_t count, loff_t
     return 1;
 }
 
-ssize_t write_callback(struct file *filp, const char *buff, size_t count, loff_t *offp)
+ssize_t write_callback(struct file *filp, const char  *buff, size_t count, loff_t *offp)
 {
     printk(KERN_INFO "write method\n");
     return count;
 }
 
-// To get file_operation access need to point file_operation struct while register the device
 
-struct file_operations fops = {
-    .owner = THIS_MODULE,
-    .open = open_callback,
-    .read = read_callback,
-    .write = write_callback,
-    .release = releas_callback
+struct proc_ops fops = {
+    .proc_open = open_callback,
+    .proc_read = read_callback,
+    .proc_write = write_callback,
+    .proc_release = releas_callback
 };
 
 static __init int hello_init(void)
 {
-    printk(KERN_ALERT "Init dr_03\n");
+    printk(KERN_ALERT "Init dr_07\n");
     if (register_chrdev_region(deb_num, 1, "dr03 mod") < 0)
     {
         printk(KERN_ALERT "problem in register\n");
@@ -61,16 +58,8 @@ static __init int hello_init(void)
 
     printk(KERN_INFO "Major : %d, Minor : %d\n", MAJOR(deb_num), MINOR(deb_num));
 
-    // after this point a device file in /dev
-    // mknod /dev/dr03 c 27 0
 
-    // To register the char_dev internally we use cdev_alloc() //method
-    // once cdev_is allocated and added to kernel, kernel able to call file operations, so cdev_add method should call after the setup
-    // cdev_add can be fail, if failed need to unregister the device
-
-    my_cdev = cdev_alloc(); // allocate empty cdev
-    // point the function pointers with cdev
-    my_cdev->ops = &fops;
+    my_cdev = cdev_alloc(); 
 
     if (cdev_add(my_cdev, deb_num, 1) < 0)
     {
@@ -79,12 +68,22 @@ static __init int hello_init(void)
         return -1;
     }
 
+    /**
+    * 0th name of the file
+    * 1st mode
+    * 2nd is parent file structure
+    * 3rd is file operation structure 
+    */
+    ent = proc_create("ch_proc", 0666, NULL, &fops);
+
     return 0;
 }
 
 static __exit void hello_exit(void)
 {
-    printk(KERN_ALERT "exit dr_03\n");
+    printk(KERN_ALERT "exit dr_07\n");
+    // remove_proc_entry("ch_proc", NULL); // or below (neither works)
+    proc_remove(ent);
     cdev_del(my_cdev);
     unregister_chrdev_region(deb_num, 1);
 }
@@ -92,8 +91,3 @@ static __exit void hello_exit(void)
 module_init(hello_init);
 module_exit(hello_exit);
 MODULE_LICENSE("GPL");
-
-/**
- * Write command :echo 1 | tee /dev/dr03  -> this will call open, write and release function pointers
- * read command : cat /dev/dr03 -> open, read and release function pointers
- */

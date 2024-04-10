@@ -1,4 +1,4 @@
-obj-m := dr_06.o
+obj-m := dr_09.o
 CONFIG_MODULE_SIG=n
 
 KERNELDIR := /lib/modules/$(shell uname -r)/build

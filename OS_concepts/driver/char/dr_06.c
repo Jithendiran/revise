@@ -109,7 +109,7 @@ ssize_t read_callback(struct file *filp, char __user *buff, size_t count, loff_t
     return 1;
 }
 
-ssize_t write_callback(struct file *filp, const char __user *buff, size_t count, loff_t *offp)
+ssize_t write_callback(struct file *filp, const char *buff, size_t count, loff_t *offp)
 {
     printk(KERN_INFO "write method\n");
     return count;
