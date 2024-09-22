@@ -15,6 +15,11 @@
 dev_t deb_num = MKDEV(27,0);
 struct cdev my_cdev; // if cdev_init
 
+/**
+ * To view cdev structure, cat the below file 
+ * /usr/src/linux-headers-6.8.0/include/linux/cdev.h
+ */
+
 int open_callback(struct inode *inode, struct file *filp) {
     printk(KERN_INFO "open method\n");
     return 0;

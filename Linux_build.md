@@ -18,7 +18,14 @@
     V=1 for enable verbose (for better error detect)  
 
 5. Install kernel 
-    `$ make modules_install`  
+    `$ make modules_install`
+    `$ make olddefconfig`
+    `$ make prepare`
+    `$ make modules_prepare`
+    `$ make headers_install INSTALL_HDR_PATH=/usr/src/linux-headers-$(uname -r)`
+    `$ ln -sf /usr/src/linux-headers-$(uname -r) /lib/modules/$(uname -r)/build`  
+
+    ln -sf  /lib/modules/6.8.0/build /usr/src/linux-headers-6.8.0/
     This command will install the modules in  /lib/modules/<version> path
 
 6. Copy the kernel image

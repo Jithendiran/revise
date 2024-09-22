@@ -9,26 +9,12 @@
 #include <linux/init.h>
 #include <linux/kdev_t.h>
 #include <linux/module.h>
+#include "scull.h"
 
 dev_t deb_num = MKDEV(27, 0);
 struct cdev *my_cdev;
 
-//Internally, scull represents each device with a structure of type struct scull_dev (our purpose)
-struct scull_qset {
-    void **data;
-    struct scull_qset *next;
-};
-
-struct scull_dev
-{
-    struct scull_qset *data;    /* Pointer to first quantum set */
-    int quantum;                /* the current quantum size */
-    int qset;                   /* the current array size */
-    unsigned long size;         /* amount of data stored here */
-    unsigned int access_key;    /* used by sculluid and scullpriv */
-    struct semaphore sem;       /* mutual exclusion semaphore */
-    struct cdev cdev;           /* Char device structure*/
-};
+// For scull data structure see scull.h file
 
 // Important data structure
 // file_operation: It has the important callback functions like: open, read, write,....
@@ -138,7 +124,7 @@ static __init int hello_init(void)
     my_cdev = cdev_alloc(); 
     my_cdev->ops = &fops;
 
-    if (cdev_add(my_cdev, deb_num, 1) < 0)
+    if (cdev_add(my_cdev, deb_num, 1)  < 0)
     {
         printk(KERN_ALERT "problem in cdev_add\n");
         unregister_chrdev_region(deb_num, 1);

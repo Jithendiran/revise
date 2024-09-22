@@ -12,9 +12,37 @@ commands
     lsmod -> to view loaded modules
     cat /proc/devices -> to view registered modules
     ls -la /dev     -> to view driver files
+
+Build:
+    * Modify obj-m := dr_00.o in Makefile, here dr_00.o is the respective file to build
+    * To install module $ insmod dr_00.ko
+    * To remove module $ rmmod dr_00.ko
+
+    * special case
+    * here module.o is builded from file1.o file2.o
+    obj-m := module.o
+    module-objs := file1.o file2.o
+
 Character
     dr_00.c
+    dr_01.c
+    dr_02.c
+    dr_03.c
+    dr_04.c
+    dr_05.c
+    dr_06.c
+    dr_06_1.c
+    dr_07.c
+    Scull
+        sc_1.c
+    dr_interupt.c
+    dr_sleep.c
 
+Output:
+    $  dmesg #display at once
+    $  journalctl -f # continously reading
+
+-------------------------------------
 
 doubts
 register_chrdev_region vs register_chrdev
@@ -64,3 +92,8 @@ host0   /wherever    9p      trans=virtio,version=9p2000.L   0 0
 -device e1000,netdev=net0 -netdev user,id=net0,hostfwd=tcp::5555-:22
 
 in host  ssh localhost -p 5555
+
+
+
+# Todo
+https://www.youtube.com/watch?v=6l0ulgv1OJ4

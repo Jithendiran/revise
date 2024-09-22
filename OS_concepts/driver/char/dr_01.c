@@ -35,3 +35,11 @@ static __exit void hello_exit(void)
 module_init(hello_init);
 module_exit(hello_exit);
 MODULE_LICENSE("GPL");
+
+/**
+ * /proc/devices
+ * 
+ * lists all the registered devices with major number
+ * 
+ * register_chrdev_region/alloc_chrdev_region only allocate driver numbers 
+ */

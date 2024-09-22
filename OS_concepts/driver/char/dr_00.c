@@ -8,7 +8,7 @@
 #include <linux/module.h>
 #include <linux/moduleparam.h>
 
-// this will available in RAM untill initialization complete the it will remove
+// this will available in RAM untill initialization complete then it will remove
 int __initdata count = 2;
 // __exit & __exitdata is available only in exit time
 int __exitdata exitcount = 5;
@@ -26,6 +26,9 @@ module_param(text, charp, S_IRUGO);
 
 // (runtime modification) [it need's driver file in /dev]
 // echo 2 < | sudo tee /dev/filename
+
+// tee reads the standard input and writes it to both the standard output and one or more files 
+// here tee will write 2 to screen and  /dev/filename file
 
 // init function will removed from RAM after initilization
 static __init int hello_init(void)
@@ -68,10 +71,13 @@ MODULE_LICENSE("GPL");
 
 /**
  * Module                  Size  Used by
+    dr_00                  16384  0
     zfs                  6680576  6
     spl                   184320  1 zfs
 
 module column is Name, our case it is dr_oo
 size is size of the module
 used by is this module's exported symbol is used in some other modules, name of the modules that are using 
+
+lsmod list all the loaded modules, not only devices
 */

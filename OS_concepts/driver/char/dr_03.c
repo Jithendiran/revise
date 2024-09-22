@@ -12,6 +12,8 @@
 // cdev is newer way
 // cdev's Major and Minor number can be more than 256
 
+// cdev_add is initilize the driver opertaion to kernel
+
 
 dev_t deb_num = MKDEV(27, 0);
 struct cdev *my_cdev;
