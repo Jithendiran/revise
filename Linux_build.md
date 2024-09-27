@@ -18,33 +18,107 @@
     V=1 for enable verbose (for better error detect)  
 
 5. Install kernel 
-    `$ make modules_install`
-    `$ make olddefconfig`
-    `$ make prepare`
-    `$ make modules_prepare`
-    `$ make headers_install INSTALL_HDR_PATH=/usr/src/linux-headers-$(uname -r)`
-    `$ ln -sf /usr/src/linux-headers-$(uname -r) /lib/modules/$(uname -r)/build`  
+    `$ make modules_install`  
+    `$ make olddefconfig`  
+    `$ make prepare`  
+    `$ make modules_prepare`  
+    `$ make headers_install INSTALL_HDR_PATH=/usr/src/linux-headers-$(uname -r)`  
+    `$ ln -sf /usr/src/linux-headers-$(uname -r) /lib/modules/$(uname -r)/build`    
 
     ln -sf  /lib/modules/6.8.0/build /usr/src/linux-headers-6.8.0/
     This command will install the modules in  /lib/modules/<version> path
 
-6. Copy the kernel image
+6. Copy the kernel image  
     `$ sudo cp arch/x86/boot/bzImage /boot/vmlinuz-<kernel_version>`  
 
 7. Make initram file  
     `$ sudo mkinitcpio -k <kernel_version> -g /boot/initramfs-<kernel_version>.img`  
-    or   
+        or  
+    `$ sudo mkinitramfs -o initrd.img-6.8.0-debug 6.8.0`  
+        or   
     `$ sudo update-initramfs -c -k <kernel_version> `
 
-8. Copy the config file to boot location
+8. Copy the config file to boot location  
     `$ cp .config /boot/.config-<version>`  
 
-9. Copy system map file
-    `$ cp System.map /boot/System.map-6.8.0`
+9. Copy system map file  
+    `$ cp System.map /boot/System.map-6.8.0`  
 
-10 Make grub config 
+10 Make grub config   
    `$ grub-mkconfig -o /boot/grub/grub.cfg`  
     `$ update-grub`
+
+# Kernel Debug
+
+1. In .config these options needs to be enable
+```
+# Debug
+CONFIG_DEBUG_INFO=y
+CONFIG_DEBUG_INFO_SPLIT=y
+CONFIG_GDB_SCRIPTS=y
+CONFIG_KGDB=y
+CONFIG_FRAME_POINTER=y
+CONFIG_KGDB_SERIAL_CONSOLE=y
+CONFIG_DEBUG_INFO_REDUCED=n
+CONFIG_DEBUG_INFO_DWARF5=y
+
+# Module cert
+CONFIG_MODULE_SIG=n
+CONFIG_MODULE_SIG_FORCE=n
+CONFIG_SYSTEM_TRUSTED_KEYS=""
+CONFIG_SYSTEM_TRUSTED_KEYRING=n
+CONFIG_SYSTEM_EXTRA_CERTIFICATE=n
+```
+
+2. Make
+```
+$ make -j12
+```
+
+3. Qemu start up
+```
+$ qemu-system-x86_64 -kernel ./arch/x86_64/boot/bzImage -gdb tcp::1234 -S
+```
+Qemu will wait until client connect
+
+4. Client debugger  
+    4.1. Command line gdb  
+        `$ gdb vmlinux`  
+        `(gdb) target remote :1234 # Connect with qemu`  
+        `(gdb) hbreak start_kernel # adding break point`  
+        `(gdb) c                   # continue booting`  
+    4.2 Vscode gdb
+        open code in linux-6.8 folder  
+```
+    {
+    "version": "0.2.0",
+    "configurations": [
+            {
+                "name": "Kernel Debugging",
+                "type": "cppdbg",
+                "request": "launch",
+                "program": "${workspaceFolder}/vmlinux",
+                "miDebuggerServerAddress": ":1234",
+                "miDebuggerPath": "/usr/bin/gdb",
+                "stopAtEntry": false,
+                "cwd": "${workspaceFolder}",
+                "externalConsole": true,
+                "MIMode": "gdb",
+                "logging": {
+                    "engineLogging": true
+                }
+            }
+        ]
+    }
+```
+        place debug points  
+        click debug play icon in debug section  
+
+5. make modules_install
+6. mkinitramfs -o initrd.img-6.8.0-debug 6.8.0
+7. qemu-system-x86_64 -kernel arch/x86_64/boot/bzImage -initrd initrd.img-6.8.0-debug -m 2G -gdb tcp::1234 -S
+8. play debug in vscode
+
 
 error & solutions
 -------------------------

@@ -35,6 +35,8 @@ Character
     dr_07.c
     Scull
         sc_1.c
+        sc_1_c.c
+        sem_1.c
     dr_interupt.c
     dr_sleep.c
 
