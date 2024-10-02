@@ -98,4 +98,5 @@ in host  ssh localhost -p 5555
 
 
 # Todo
-https://www.youtube.com/watch?v=6l0ulgv1OJ4
+Debug : https://www.youtube.com/watch?v=6l0ulgv1OJ4
+https://github.com/d0u9/Linux-Device-Driver

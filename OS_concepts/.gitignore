@@ -5,6 +5,8 @@
 *.ko*
 *.mod*
 *.cmd*
+*.dwo
+*.o.d
 Module.symvers
 modules.order
 /target

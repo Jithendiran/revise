@@ -1,4 +1,4 @@
-FILNAM := sem_1
+FILNAM := mutex
 obj-m := $(FILNAM).o
 CONFIG_MODULE_SIG=n
 
@@ -16,6 +16,6 @@ uninstall:
 	rmmod $(FILNAM).ko
 
 clean:
-	rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions *.mod modules.order *.symvers
+	rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions *.mod modules.order *.symvers *.dwo *.o.d
 
 .PHONY: modules  clean
