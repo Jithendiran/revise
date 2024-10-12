@@ -249,7 +249,7 @@ struct file_operations fops = {
     .release = scull_release
 };
 
-static __init int hello_init(void)
+__init int hello_init(void)
 {
     printk(KERN_ALERT "Init sc_1\n");
     printk(KERN_INFO "Size of scull_dev : %d\n", sizeof(dev)); //  Size of scull_dev : 232
@@ -276,7 +276,7 @@ static __init int hello_init(void)
     return 0;
 }
 
-static __exit void hello_exit(void)
+__exit void hello_exit(void)
 {
     printk(KERN_ALERT "exit sc_1\n");
     cdev_del(&(dev.cdev));

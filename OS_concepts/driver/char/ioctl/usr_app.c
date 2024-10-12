@@ -12,31 +12,56 @@
 #include <sys/types.h>
 
 #define IOCTL_MAGIC  'k'
-#define IOCTL_R _IOR(IOCTL_MAGIC, 1, int32_t*)
-#define IOCTL_W _IOW(IOCTL_MAGIC, 2, int32_t*)
+
+#define IOCTL_ _IO(IOCTL_MAGIC, 0)
+
+#define IOCTL_WP _IOW(IOCTL_MAGIC, 1, int)
+#define IOCTL_RP _IOR(IOCTL_MAGIC, 1, int)
+
+#define IOCTL_WPG _IOW(IOCTL_MAGIC, 2, int)
+#define IOCTL_RPS _IOR(IOCTL_MAGIC, 2, int)
+
+#define IOCTL_DUAL _IOWR(IOCTL_MAGIC, 1, int)
 
 int main() {
     int a = 27;
-    int b;
-    printf("Executing user space app : a =  %d, %p, b = %d, % p\n", &a, &a, &b, &b);
+    int c;
+    int* b = &c;
     int fd = open("/dev/ioctl_dr",O_RDWR);
     if(fd < 0) {
         printf("No device file found \n");
         return -1;
     }
 
-    // read
-    ioctl(fd, IOCTL_R, &b);
-    printf("Device value is : %d\n", b); // Device value is : -1
+    // write 
 
-    // write
-    printf("Going to write : %d\n", a); // Going to write : 27
-    ioctl(fd, IOCTL_W, &a);
+    // write by value
+    a = ioctl(fd, IOCTL_, 112);
+    printf("Device value is : %d\n", a); // Device value is : 4
 
-    // read
-    ioctl(fd, IOCTL_R, &b);
-    printf("Device value is : %d\n", b); // Device value is : 27
+    // write by reference
+    *b = 12;
+    ioctl(fd, IOCTL_WP, b); 
+    printf("B value is : %d\n",*b);
 
+    // // Write by GET_USER
+    // *b = 14;
+    // ioctl(fd, IOCTL_WPG, b); 
+
+    
+    // // read
+
+    ioctl(fd, IOCTL_RP, b);
+    printf("Device value is : %d\n", *b); // Device value is : 521
+
+    ioctl(fd, IOCTL_RPS, b);
+    printf("Device value is : %d\n", *b); // Device value is : 123
+
+
+    // read & write
+    *b = 96;
+    ioctl(fd,IOCTL_DUAL, b);
+    printf("Device value is : %d\n", *b); // Device value is : 69
     close(fd);
     return 0;
 }

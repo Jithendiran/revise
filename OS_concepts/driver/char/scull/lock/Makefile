@@ -6,8 +6,12 @@ KERNELDIR := /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)
 DISTDIR := build
 
+# Add debugging and optimization flags
+EXTRA_CFLAGS += -g -O0 -fno-inline-functions -fno-optimize-sibling-calls
+
+
 modules:
-	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
+	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules 
 
 install:
 	insmod $(FILNAM).ko

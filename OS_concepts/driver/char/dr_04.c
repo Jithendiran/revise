@@ -20,20 +20,36 @@ struct cdev my_cdev; // if cdev_init
  * /usr/src/linux-headers-6.8.0/include/linux/cdev.h
  */
 
+// This is the first method when the device is called
+// -ve for error
 int open_callback(struct inode *inode, struct file *filp) {
     printk(KERN_INFO "open method\n");
     return 0;
 }
+
+// This is the last method tp be called when the device is freed 
 int releas_callback(struct inode *inode, struct file *filp) {
     printk(KERN_INFO "release method\n");
     return 0;
 }
 
+/**
+ * If the count = return, all the data has been transfered
+ * if count > return only some part of data is transfered, kernel going to retry based on the read type
+ * if return 0, EOD file is reached
+ * if return is -ve error happened
+ */
 ssize_t read_callback(struct file *filp, char __user *buff, size_t count, loff_t *offp) {
     printk(KERN_INFO "read method\n");
     return 1;
 }
 
+/**
+ * If the count = return, all the data has been transfered
+ * if count > return only some part of data is transfered, kernel going to retry based on the write type
+ * if return 0, kernel will retry
+ * if return is -ve error happened
+ */
 ssize_t write_callback(struct file *filp, const char *buff, size_t count, loff_t *offp) {
     printk(KERN_INFO "write method\n");
     return count;

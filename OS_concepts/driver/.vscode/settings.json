@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "module.h": "c",
+        "stdio.h": "c",
+        "kdev_t.h": "c",
+        "errno.h": "c"
+    }
+}

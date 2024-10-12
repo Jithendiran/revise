@@ -22,8 +22,8 @@
 5. Install kernel 
     `$ make modules_install`  
     `$ make modules_prepare`  
-    `$ make headers_install INSTALL_HDR_PATH=/usr/src/linux-headers-$(uname -r)`  
-    `$ ln -sf /usr/src/linux-headers-$(uname -r) /lib/modules/$(uname -r)/build`     ! not required  
+    `$ make headers_install`  
+    `$ ln -sf /lib/modules/$(uname -r)/build /usr/src/linux-headers-$(uname -r)` # 
 
     ln -sf  /lib/modules/6.8.0/build /usr/src/linux-headers-6.8.0/
     This command will install the modules in  /lib/modules/<version> path
@@ -37,15 +37,17 @@
 6. Copy the kernel image  
     `$ sudo cp arch/x86/boot/bzImage /boot/vmlinuz-<kernel_version>`  
 
-7. Make initram file  
+
+7. Copy the config file to boot location  
+    `$ cp .config /boot/.config-<version>` 
+
+8. Make initram file  
     `$ sudo mkinitcpio -k <kernel_version> -g /boot/initramfs-<kernel_version>.img`  
         or  
     `$ sudo mkinitramfs -o initrd.img-6.8.0-debug 6.8.0`  
         or   
     `$ sudo update-initramfs -c -k <kernel_version> `
-
-8. Copy the config file to boot location  
-    `$ cp .config /boot/.config-<version>`  
+ 
 
 9. Copy system map file  
     `$ cp System.map /boot/System.map-6.8.0`  
@@ -229,6 +231,13 @@ Guest:
             }
         ]
     }
+```
+```
+If add-symbol-file is not there in launch.json and still we able to give input to GDB in vscode by debugger console
+1. open debug console  
+2. In the bottom input text field type `-exec {options}`  
+    For eg:
+      -exec add-symbol-file /home/jidesh/Project/revise/OS_concepts/driver/char/scull/sc_1.ko address
 ```
 
 

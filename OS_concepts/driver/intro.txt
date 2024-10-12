@@ -42,7 +42,7 @@ Character
 
 Output:
     $  dmesg #display at once
-    $  journalctl -f # continously reading
+    $  journalctl -f or dmesg -w # continously reading
 
 -------------------------------------
 

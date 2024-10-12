@@ -1,0 +1,32 @@
+{
+    "files.associations": {
+        "fs.h": "c",
+        "module.h": "c",
+        "algorithm": "c",
+        "errno.h": "c",
+        "scull.h": "c",
+        "kdev_t.h": "c",
+        "cdev.h": "c",
+        "stdlib.h": "c"
+    }
+    // configurations": [
+    //     {
+    //         "name": "Linux",
+    //         "includePath": [
+    //             "${workspaceFolder}/**",
+    //             "${workspaceFolder}/include",
+    //             "${workspaceFolder}/arch/<arch>/include",
+    //             "${workspaceFolder}/arch/<arch>/include/generated"
+    //         ],
+    //         "forcedInclude": [
+    //             "${workspaceFolder}/BUILD/include/generated/autoconf.h"
+    //         ],
+    //         "defines": [
+    //             "__KERNEL__"
+    //         ],
+    //         "compilerPath": "/usr/bin/gg", # replace this with your compiler (also gcc cross-compiler)
+    //         "cStandard": "c11",
+    //         "intelliSenseMode": "gcc-x64"
+    //     }
+    // ],
+}
