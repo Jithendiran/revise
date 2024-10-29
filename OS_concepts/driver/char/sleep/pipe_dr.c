@@ -202,3 +202,5 @@ module_exit(pipe_exit);
 MODULE_LICENSE("GPL");
 
 // mknod /dev/sc_pipe c 27 0
+// new terminal $ cat /dev/sc_pipe
+// new terminal $ echo "Hi Hello Abdfojfsfsfjofvd" > /dev/sc_pipe

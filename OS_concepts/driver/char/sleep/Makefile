@@ -1,4 +1,4 @@
-FILNAM := poll_dr
+FILNAM := signal_dr
 obj-m := $(FILNAM).o
 CONFIG_MODULE_SIG=n
 

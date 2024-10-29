@@ -57,39 +57,23 @@ static int spacefree(struct scull_poll *dev)
     return ((dev->rh + (BUFF_SIZE)-dev->wh) % BUFF_SIZE) - 1;
 }
 
-// static int scull_getwritespace(struct scull_poll *dev)
-// {
-// 	if (spacefree(dev) == 0) { /* full */
-//         printk(KERN_ALERT "No space to write\n");
-// 		DEFINE_WAIT(wait);
-//         // change processor state and add to wait queue
-// 		prepare_to_wait(&dev->outq, &wait, TASK_INTERRUPTIBLE);
-// 		if (spacefree(dev) == 0)
-//             // yield processor
-// 			schedule();
-//         // This is change processor state to runnable, change the state is necessary if above of failed
-//         // remove from wait queue
-// 		finish_wait(&dev->outq, &wait);
-// 	}
-// 	return 0;
-// }
-
 ssize_t poll_write_ji(struct file *filp, const char __user *buf, size_t count,
-                   loff_t *f_pos)
+                      loff_t *f_pos)
 {
 
-    printk(KERN_ALERT "poll write : %d\n",count);
+    printk(KERN_ALERT "poll write : %d\n", count);
 
     struct scull_poll *dev = filp->private_data;
-    
-    if(spacefree(dev) == 0){
+
+    if (spacefree(dev) == 0)
+    {
         // poll
-        if (filp->f_flags & O_NONBLOCK){
+        if (filp->f_flags & O_NONBLOCK)
+        {
             printk(KERN_DEBUG "No space to write\n");
-			return -EAGAIN;
+            return -EAGAIN;
         }
     }
-
 
     count = min(count, (size_t)spacefree(dev));
     if (dev->wh >= dev->rh)
@@ -106,22 +90,24 @@ ssize_t poll_write_ji(struct file *filp, const char __user *buf, size_t count,
         dev->wh = dev->buf;
 
     // awake reader
-    // wake_up_interruptible(&dev->inq);
-    printk(KERN_DEBUG "write Count : %d\n",count);
+    wake_up_interruptible(&dev->inq);
+    printk(KERN_DEBUG "write Count : %d\n", count);
     return count;
 }
 
 ssize_t poll_read_ji(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
 {
-    printk(KERN_ALERT "poll read: %d\n",count);
+    printk(KERN_ALERT "poll read: %d\n", count);
 
     struct scull_poll *dev = filp->private_data;
 
-    if(dev->rh == dev->wh){
+    if (dev->rh == dev->wh)
+    {
         // poll
-        if (filp->f_flags & O_NONBLOCK){
+        if (filp->f_flags & O_NONBLOCK)
+        {
             printk(KERN_DEBUG "No data to read\n");
-			return -EAGAIN;
+            return -EAGAIN;
         }
     }
 
@@ -139,34 +125,35 @@ ssize_t poll_read_ji(struct file *filp, char __user *buf, size_t count, loff_t *
     if (dev->rh == dev->end)
         dev->rh = dev->buf; /* wrapped */
     // read has emptied some blocks of buffer, now writer might has some blocks to write
-    // wake_up_interruptible(&(dev->outq)); // This will change the state of fd and poll will check for IO possible
-    printk(KERN_DEBUG "Read Count : %d\n",count);
+    wake_up_interruptible(&(dev->outq)); // This will change the state of fd and poll will check for IO possible
+    printk(KERN_DEBUG "Read Count : %d\n", count);
     return count;
 }
 
 static unsigned int poll_ji(struct file *filp, poll_table *wait)
 {
-	struct scull_poll *dev = filp->private_data;
-	unsigned int mask = 0;
+    printk(KERN_DEBUG "In Poll\n");
+    
+    struct scull_poll *dev = filp->private_data;
+    unsigned int mask = 0;
 
-	poll_wait(filp, &dev->inq,  wait);
-	poll_wait(filp, &dev->outq, wait);
-	if (dev->rh != dev->wh)
-		mask |= POLLIN | POLLRDNORM;	/* readable */
-	if (spacefree(dev))
-		mask |= POLLOUT | POLLWRNORM;	/* writable */
-	return mask;
+    poll_wait(filp, &dev->inq, wait);
+    poll_wait(filp, &dev->outq, wait);
+    if (dev->rh != dev->wh)
+        mask |= POLLIN | POLLRDNORM; /* readable */
+    if (spacefree(dev))
+        mask |= POLLOUT | POLLWRNORM; /* writable */
+    return mask;
 }
-
 
 struct file_operations fops = {
     .owner = THIS_MODULE,
-	.poll =	poll_ji,
+    .poll = poll_ji,
     .open = poll_open_ji,
     .read = poll_read_ji,
     .write = poll_write_ji,
     .release = poll_release_ji
-    };
+};
 
 static __init int poll_init(void)
 {
@@ -190,7 +177,7 @@ static __init int poll_init(void)
     sc_poll.rh = sc_poll.wh = sc_poll.buf;
 
     init_waitqueue_head(&(sc_poll.inq));
-	init_waitqueue_head(&(sc_poll.outq));
+    init_waitqueue_head(&(sc_poll.outq));
 
     // Register driver in kernel
     if (cdev_add(&(sc_poll.cdev), deb_num, 1) < 0)
@@ -222,3 +209,7 @@ module_exit(poll_exit);
 MODULE_LICENSE("GPL");
 
 // mknod /dev/sc_poll c 27 0
+// run poll_c_r in new terminal
+// run poll_c_w in new terminal
+
+// when we trigger IO, before read or write poll method is called
