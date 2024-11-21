@@ -1,4 +1,4 @@
-FILNAM := dr_06_1
+FILNAM := usb_dr
 obj-m := $(FILNAM).o
 CONFIG_MODULE_SIG=n
 

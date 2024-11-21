@@ -39,6 +39,8 @@ Character
         sem_1.c
     dr_interupt.c
     dr_sleep.c
+    ioctl
+    sleep
 
 Output:
     $  dmesg #display at once

@@ -9,6 +9,7 @@
         "cdev.h": "c",
         "stdlib.h": "c",
         "select.h": "c",
-        "poll.h": "c"
+        "poll.h": "c",
+        "usb.h": "c"
     }
 }
