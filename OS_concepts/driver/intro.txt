@@ -41,6 +41,7 @@ Character
     dr_sleep.c
     ioctl
     sleep
+    usb
 
 Output:
     $  dmesg #display at once
