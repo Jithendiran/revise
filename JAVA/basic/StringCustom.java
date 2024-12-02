@@ -31,10 +31,7 @@ public class StringCustom {
         System.out.println(ss2); // Hi
         ss2 = new String("Hello");
         /**
-         * The above line also use string pool in in-directly
-         * when new keyword is used string pool memory is not used seprated heap memory is used assume it's memory is 2000
-         * Hello is searched in string pool it's is found in 1000 location
-         * now 2000 will store 1000 and ss2 is referened to 2000 
+         * new will force to create new entry
          *  */ 
 
 
