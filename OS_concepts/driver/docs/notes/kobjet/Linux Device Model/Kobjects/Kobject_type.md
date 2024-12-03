@@ -12,3 +12,9 @@ This kobject_type reference is found in two ways
 
 - Kobject itself contains the kobj_type reference
 - If Kobject is a member of Kset, then kobj_type reference is provided by kset instead of Kobject
+
+default_attrs is a list of [[Default_Attributes]]
+sysfs_ops provide methods to implement those attributes
+
+[[Attributes]]
+[[sysfs_ops]]

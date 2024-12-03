@@ -28,10 +28,10 @@ struct kset_hotplug_ops *hotplug_ops);`
 The above macro will create a subsystem with name given to the macro and appending *_subsys to it.* This macro also create the internam kset with given type and hotplugops
 
 ```c
-oid subsystem_init(struct subsystem *subsys);
+void subsystem_init(struct subsystem *subsys);
 int subsystem_register(struct subsystem *subsys);
 void subsystem_unregister(struct subsystem *subsys);
 struct subsystem *subsys_get(struct subsystem *subsys)
 void subsys_put(struct subsystem *subsys);
-Most of these operations just act upon the subsystem’s kset.
+// Most of these operations just act upon the subsystem’s kset.
 ```

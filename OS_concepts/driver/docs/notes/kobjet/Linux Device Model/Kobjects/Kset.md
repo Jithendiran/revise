@@ -7,7 +7,7 @@ Big grey box is kset
 ```c
 struct kset {
     struct kobject kobj;           // Embedded kobject, represents the kset in the kobject hierarchy.
-    const struct kset_uevent_ops *uevent_ops; // Optional, defines user-space uevent behavior for this kset.
+    const struct kset_hotplug_ops *hotplug_ops; // Optional, defines user-space uevent behavior for this kset.
     struct list_head list;         // List of kobjects belonging to this kset.
 };
 ```
@@ -61,3 +61,4 @@ kobject_set_name(&my_set->kobj, "The name");
 ```
 
 [subsystem](Subsystem.md)
+[[Hotplug_events]]
