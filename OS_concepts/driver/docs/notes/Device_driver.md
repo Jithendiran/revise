@@ -79,3 +79,4 @@ After registration drivers found `/sys/bus/<bus_name>/drivers/<driver_name>`
 Links
 [[Attributes]]
 [[Buses]]
+[[Kobjects]]

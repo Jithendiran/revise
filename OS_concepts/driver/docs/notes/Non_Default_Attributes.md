@@ -15,3 +15,5 @@ Attributes can be add at any will, it is not restricted to used default attribut
 
 >[!caution]
 >User-space application could have open descriptor for the removed attribute. Show and store call is possible
+
+[[Kobjects]]

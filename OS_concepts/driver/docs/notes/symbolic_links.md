@@ -10,3 +10,6 @@ For example `/sys/devices` represents all the devices and `/sys/bus` represents 
 
 *Remove symbolic link*
 `void sysfs_remove_link(struct kobject *kobj, char *name);`
+
+
+[[Kobjects]]

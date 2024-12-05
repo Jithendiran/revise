@@ -18,3 +18,4 @@ sysfs_ops provide methods to implement those attributes
 
 [[Attributes]]
 [[sysfs_ops]]
+[[Kobjects]]

@@ -25,3 +25,5 @@ To create binary attribute file
 
 To remove binary attribute file
 `int sysfs_remove_bin_file(struct kobject *kobj, struct bin_attribute *attr);` 
+
+[[Kobjects]]

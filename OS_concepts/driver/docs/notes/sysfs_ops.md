@@ -20,3 +20,6 @@ Same show and store method for all the attributes, operations for each attribute
 	- Rquired Write permission  
 	- It is to write to kernel or modify parameter, buffer contains user space data
 	- size is the size of buffer, It should not exceed `PAGE_SIZE`
+
+
+[[Kobjects]]

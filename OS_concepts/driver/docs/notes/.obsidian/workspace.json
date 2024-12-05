@@ -4,17 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "2605a280ac2484bd",
+        "id": "cbb74296a3475194",
         "type": "tabs",
         "children": [
           {
-            "id": "b1bf8f54a46bc884",
+            "id": "91929ecd9b3a6483",
             "type": "leaf",
             "state": {
-              "type": "empty",
+              "type": "graph",
               "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           }
         ]
@@ -73,8 +73,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "2e8058a40c1aec25",
@@ -160,25 +159,31 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "b1bf8f54a46bc884",
+  "active": "91929ecd9b3a6483",
   "lastOpenFiles": [
-    "Device_driver.md",
+    "classes/class_interface.md",
+    "sysfs_ops.md",
+    "symbolic_links.md",
+    "Non_Default_Attributes.md",
+    "Hotplug_events.md",
     "Devices.md",
+    "Device_driver.md",
+    "Default_Attributes.md",
+    "classes/class_device.md",
     "Buses.md",
+    "Binary_Attributes.md",
+    "kobjet/Linux Device Model/Kobjects.md",
+    "kobjet/Linux Device Model/Kobjects/Subsystem.md",
+    "kobjet/Linux Device Model/Kobjects/Kset.md",
+    "kobjet/Linux Device Model/Kobjects/Kobject_type.md",
     "kobjet/Linux Device Model/Kobjects/Attributes.md",
+    "classes/class.md",
     "kobjet/Linux Device Model.md",
+    "classes/Regular_class.md",
+    "classes/class_simple.md",
+    "classes",
     "Untitled.canvas",
     "2024-12-03.md",
-    "kobjet/Linux Device Model/Kobjects/Kobject_type.md",
-    "sysfs_ops.md",
-    "Hotplug_events.md",
-    "kobjet/Linux Device Model/Kobjects.md",
-    "kobjet/Linux Device Model/Kobjects/Kset.md",
-    "symbolic_links.md",
-    "Default_Attributes.md",
-    "Binary_Attributes.md",
-    "Non_Default_Attributes.md",
-    "kobjet/Linux Device Model/Kobjects/Subsystem.md",
     "kobjet%2FLinux Device Model%2FKobjects%2FKobject_type.md",
     "kobjet/Linux/ Device/ Model/Kobjects/Kobject_type.md",
     "kobjet/Linux/ Device/ Model/Kobjects",

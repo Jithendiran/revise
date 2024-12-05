@@ -18,3 +18,4 @@ We are starting with bottom-up approach for better understanding
 
 [[Kobjects]]
 [[symbolic_links]]
+[[class]]

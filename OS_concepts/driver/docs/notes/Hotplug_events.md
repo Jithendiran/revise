@@ -33,3 +33,5 @@ This struct is defined in kset, If given kobject is not contained in kset, it wi
 
  > [!IMPORTANT]  
 > Order of the flow is `filter` -> `name`->`hotplug`
+
+[[Kobjects]]

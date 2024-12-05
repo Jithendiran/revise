@@ -62,3 +62,4 @@ kobject_set_name(&my_set->kobj, "The name");
 
 [subsystem](Subsystem.md)
 [[Hotplug_events]]
+[[Kobjects]]
