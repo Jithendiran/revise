@@ -1,0 +1,35 @@
+{
+	"nodes":[
+		{"id":"e13e273f06f90377","x":-1500,"y":1110,"width":320,"height":60,"type":"text","text":"sysfs directory creation for PCI in `/sys/bus/pci_bus`"},
+		{"id":"e705b95709cb32ca","x":-1500,"y":1240,"width":320,"height":60,"type":"text","text":"Expose *match*  function to PCI core"},
+		{"id":"e67e9246cd44dc0e","x":-920,"y":1170,"width":250,"height":60,"type":"text","text":"**PCI core** looking for new device in PCI bus"},
+		{"id":"30ddc6eb20aeba2d","x":-1400,"y":1622,"width":440,"height":262,"type":"text","text":"Device register process will initilize some values like kobject, update this device parent's child list with this device\n\n`device->parent->child = [..., this_device]`\n\nThis device is added to bus_specific device list\n\n`pci_bus_type->devices = [..., this_device]`. This is necessary for `match function call`"},
+		{"id":"6b905dfcac0776c8","x":-920,"y":2100,"width":400,"height":140,"type":"text","text":"Device driver pointer is updated with matched driver. Then **Driver core**\nwill call the driver's *probe* function \n\n`device->driver = matched_driver`"},
+		{"id":"f735d8894aa2789d","x":-725,"y":1535,"width":361,"height":175,"type":"text","text":"pci_bus_type `match` function called by **Driver core**\n\nMatch function will validate added device with all driver"},
+		{"id":"b27e63bbb5a4f860","x":-850,"y":1824,"width":250,"height":60,"color":"4","type":"text","text":"Success"},
+		{"id":"764e8b10873c227a","x":-1349,"y":2143,"width":250,"height":60,"color":"4","type":"text","text":"Success"},
+		{"id":"728119ac55603123","x":-180,"y":1753,"width":250,"height":60,"color":"1","type":"text","text":"Failed"},
+		{"id":"b6318ca226c3b99c","x":-1400,"y":2360,"width":351,"height":172,"type":"text","text":"Update Driver's managing device list with the new device.\n\nCreate symlink form the driver directory to the controlling device in device direcory"},
+		{"id":"f7eff21ce13e360f","x":-1040,"y":860,"width":440,"height":200,"type":"text","text":"Driver registration process, It is Initilize by **PCI Core** Driver's bus type is pointed to the PCI bus\n\nIt's *Probe* and *remove* function points to function with in the **PCI core**\n\ndriver ready to server\n"},
+		{"id":"c16b7b62a0ff90ed","x":-2000,"y":900,"width":250,"height":60,"type":"text","text":"PCI Bus  type register"},
+		{"id":"1f979bfeec686447","x":-2060,"y":1491,"width":370,"height":262,"type":"text","text":"PCI core will create memory for new device and initilize bus specific fields and Device parent pointer is pointing to the PCI bus. \n\nCall device register"}
+	],
+	"edges":[
+		{"id":"442a13c40e29d623","fromNode":"c16b7b62a0ff90ed","fromSide":"right","toNode":"e13e273f06f90377","toSide":"left","color":"6","label":"Registr process"},
+		{"id":"34c9aa85c6a49dbc","fromNode":"c16b7b62a0ff90ed","fromSide":"right","toNode":"e705b95709cb32ca","toSide":"left","color":"6","label":"Registr process"},
+		{"id":"f8f6e6c8a5ba9d25","fromNode":"e13e273f06f90377","fromSide":"right","toNode":"e67e9246cd44dc0e","toSide":"left","label":"Register complete"},
+		{"id":"e7e44b75ea945ba2","fromNode":"e705b95709cb32ca","fromSide":"right","toNode":"e67e9246cd44dc0e","toSide":"left","label":"Register complete"},
+		{"id":"70f7109b4269b650","fromNode":"e67e9246cd44dc0e","fromSide":"bottom","toNode":"1f979bfeec686447","toSide":"top","color":"2","label":"New device found"},
+		{"id":"f3ea06c2c2fb09d5","fromNode":"1f979bfeec686447","fromSide":"right","toNode":"30ddc6eb20aeba2d","toSide":"left","color":"6","label":"Registr to Driver core"},
+		{"id":"196e11f8603c5788","fromNode":"30ddc6eb20aeba2d","fromSide":"right","toNode":"f735d8894aa2789d","toSide":"left","label":"match"},
+		{"id":"00fca5f22ccd9241","fromNode":"f735d8894aa2789d","fromSide":"right","toNode":"728119ac55603123","toSide":"left","color":"1"},
+		{"id":"e7552d6d81176c77","fromNode":"728119ac55603123","fromSide":"top","toNode":"f735d8894aa2789d","toSide":"top"},
+		{"id":"a6c0f56d48982bfa","fromNode":"f7eff21ce13e360f","fromSide":"right","toNode":"f735d8894aa2789d","toSide":"top","color":"6"},
+		{"id":"5f17201a42d5a00b","fromNode":"b27e63bbb5a4f860","fromSide":"bottom","toNode":"6b905dfcac0776c8","toSide":"top"},
+		{"id":"7058bb749949d5e2","fromNode":"6b905dfcac0776c8","fromSide":"left","toNode":"764e8b10873c227a","toSide":"right","color":"4"},
+		{"id":"944e90bd108822b1","fromNode":"6b905dfcac0776c8","fromSide":"right","toNode":"728119ac55603123","toSide":"bottom","color":"1"},
+		{"id":"ec33d9f5ba978018","fromNode":"764e8b10873c227a","fromSide":"bottom","toNode":"b6318ca226c3b99c","toSide":"top"},
+		{"id":"53b4520735f38412","fromNode":"e705b95709cb32ca","fromSide":"right","toNode":"f735d8894aa2789d","toSide":"top"},
+		{"id":"f811374519a30c49","fromNode":"f735d8894aa2789d","fromSide":"bottom","toNode":"b27e63bbb5a4f860","toSide":"top"}
+	]
+}

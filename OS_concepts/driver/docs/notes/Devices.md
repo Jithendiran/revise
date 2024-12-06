@@ -7,6 +7,7 @@ struct device {
 	struct device_driver *driver;
 	void *driver_data;
 	void (*release)(struct device *dev);
+	struct list_head  devres_head;
 	...
 };
 ```
@@ -42,6 +43,11 @@ At lowest level ever devices in system is represented by `struct device`. This s
 **release**
 
 	This method is called when last reference of the device is removed
+
+**devres_head**
+
+	The resources list of device
+
 
 >[!important]
 >Minimum of parent, bus_id, bus and release fields are must to set, before registration.
