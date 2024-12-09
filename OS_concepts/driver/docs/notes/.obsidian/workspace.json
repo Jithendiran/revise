@@ -8,52 +8,37 @@
         "type": "tabs",
         "children": [
           {
-            "id": "e503b4fd643489e5",
+            "id": "78da53321322e498",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "hotplug/sbin_hotplug.md",
+                "file": "Memory_Mapping_and_DMA/memory_management.md",
                 "mode": "source",
                 "backlinks": false,
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "sbin_hotplug"
+              "title": "memory_management"
             }
           },
           {
-            "id": "f0bd6040f1c8617d",
+            "id": "0aea48665fac4bdf",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "hotplug/Linux_hotplug_script.md",
+                "file": "Memory_Mapping_and_DMA/High_And_Low_memory.md",
                 "mode": "source",
                 "backlinks": false,
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Linux_hotplug_script"
-            }
-          },
-          {
-            "id": "915e232e29e1fd21",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "hotplug/udev.md",
-                "mode": "source",
-                "backlinks": false,
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "udev"
+              "title": "High_And_Low_memory"
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -196,38 +181,40 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "915e232e29e1fd21",
+  "active": "0aea48665fac4bdf",
   "lastOpenFiles": [
-    "hotplug/Linux_hotplug_script.md",
-    "hotplug/udev.md",
-    "hotplug/sbin_hotplug.md",
-    "hotplug/Hotplug_events.md",
-    "hotplug/hotplug.md",
-    "kobjet/Linux Device Model/Kobjects/Kset.md",
+    "Memory_Mapping_and_DMA/memory_management.md",
+    "Memory_Mapping_and_DMA/High_And_Low_memory.md",
+    "Untitled",
+    "Linux_Device_Model/Binary_Attributes.md",
+    "Memory_Mapping_and_DMA",
+    "Linux_Device_Model/Buses.md",
+    "Linux_Device_Model/kernel_firmware.md",
+    "Linux_Device_Model/Linux Device Model.md",
+    "Linux_Device_Model/hotplug/sbin_hotplug.md",
+    "Linux_Device_Model/hotplug/Linux_hotplug_script.md",
+    "Linux_Device_Model/hotplug/udev.md",
+    "Linux_Device_Model/hotplug/Hotplug_events.md",
+    "Linux_Device_Model/hotplug/hotplug.md",
+    "Linux_Device_Model/Kobjects/Kset.md",
     "sbin/hotplug.md",
     "sbin",
-    "hotplug",
-    "Linux_device_Model.canvas",
-    "Device_driver.md",
-    "Devices.md",
-    "Buses.md",
-    "classes/class_interface.md",
-    "sysfs_ops.md",
-    "symbolic_links.md",
-    "Non_Default_Attributes.md",
-    "Default_Attributes.md",
-    "classes/class_device.md",
-    "Binary_Attributes.md",
-    "kobjet/Linux Device Model/Kobjects.md",
-    "kobjet/Linux Device Model/Kobjects/Subsystem.md",
-    "kobjet/Linux Device Model/Kobjects/Kobject_type.md",
-    "kobjet/Linux Device Model/Kobjects/Attributes.md",
-    "classes/class.md",
-    "kobjet/Linux Device Model.md",
-    "classes/Regular_class.md",
-    "classes/class_simple.md",
-    "classes",
-    "2024-12-03.md",
+    "Linux_Device_Model/hotplug",
+    "Linux_Device_Model/Linux_device_Model.canvas",
+    "Linux_Device_Model/Device_driver.md",
+    "Linux_Device_Model/Devices.md",
+    "Linux_Device_Model/classes/class_interface.md",
+    "Linux_Device_Model/sysfs_ops.md",
+    "Linux_Device_Model/symbolic_links.md",
+    "Linux_Device_Model/Non_Default_Attributes.md",
+    "Linux_Device_Model/Default_Attributes.md",
+    "Linux_Device_Model/classes/class_device.md",
+    "Linux_Device_Model/Kobjects.md",
+    "Linux_Device_Model/Kobjects/Subsystem.md",
+    "Linux_Device_Model/Kobjects/Kobject_type.md",
+    "Linux_Device_Model/Kobjects/Attributes.md",
+    "Linux_Device_Model/classes/class.md",
+    "Linux_Device_Model/classes",
     "kobjet/Linux/ Device/ Model/Kobjects",
     "kobjet/Linux/ Device/ Model",
     "kobjet/Linux/ Device",

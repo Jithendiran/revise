@@ -29,7 +29,7 @@ struct attribute {
 [`kobject_add`](Kset.md) will add kobject to kset and also create entries in sysfs 
 
 - kobjects are always a directory, it can be a empty directory with out attributes
-- Name of the kobject directory is name of the kobject that set with  [`kobject_set_name`](../Kobjects) . Name of the kobject in same level must be unique
+- Name of the kobject directory is name of the kobject that set with  [`kobject_set_name`](Kobjects.md) . Name of the kobject in same level must be unique
 
 ### Directory Location
 

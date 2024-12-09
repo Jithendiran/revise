@@ -12,7 +12,7 @@ struct kset {
 };
 ```
 
-Kset looked like an extension of [`kobj_type`](../Kobjects), kset is a collection of kobject embedded within structure of the same type. Every kobject represented in sysfs is a member of kset and it is not necessary every kobject show up in sysfs
+Kset looked like an extension of [`kobj_type`](Kobjects.md), kset is a collection of kobject embedded within structure of the same type. Every kobject represented in sysfs is a member of kset and it is not necessary every kobject show up in sysfs
 
 kset is treated as container of kobject’s, kset have it’s own kobject
 
