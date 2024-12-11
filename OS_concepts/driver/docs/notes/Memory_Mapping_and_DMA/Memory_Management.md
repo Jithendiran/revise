@@ -30,10 +30,6 @@ Kernel is not owning high memory, it is accessing by using kernel virtual addres
 	- `malloc` will allocate in high memory, kernel will be accessing it by using `valloc` or `kmap`
 	- Non continous memory
 
-## Pages
-
-Physical memory is segmented into pages. Internal handling of memory is in the form of pages. Page size will be varied from architecture. Most 32 bit architectures are using 4096 bytes as page size. It is maintained in `PAGE_SIZE`  constant `<asm/page.h>`
-
-if 4096 page size is used then 12 least significant bits are the offset and remaining higher bits are the page number, If the 12 bits are removed and remaining bits are shifted to right then it results in `page frame number`. This operation will done by a macro called `PAGE_SHIFT`.
-
 [[Addressing]]
+[[page]]
+[[Virtual_memory_areas]]
