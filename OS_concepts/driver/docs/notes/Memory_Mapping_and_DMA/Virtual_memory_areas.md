@@ -60,3 +60,4 @@ simply `memory with it's own property`
 	Name of the file that has beem mapped
 
 [[vm_area_struct]]
+[[process_memory_map]]
