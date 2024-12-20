@@ -53,10 +53,23 @@ There are two ways to build the page table (pg:)
 	`nopage` works well for ISA memory regions, it won't work for PCI memory, because it mapped above high mem, there no entries in the system memory map for those address, if there is no struct page to return to `nopage`. in this case it must use `remap_pfn_range`
 
 	if `nopage` is not implemented, kernel allocate new page as zero page with copy on write 
-	 
+
+`remap_pfn_range` has some limitations
+
+	- It only access to reservered page and physical address above physical memory
+	- physical address above means I/O device memory (PCI memory,..). It is not part of RAM
+	- Reserved pages are not available for regular memory management (40KB to 1MB are reserved page)
+	- So remap_pfn_range won't allow to remap pages from `get_free_page`. Instead it remap with parivate zero pages rather than remapped RAM
+
+using `nopage` RAM pages can be mapped
+
+If mapping needs to done in RAM page use `nopage`
+if mapping needs to for device memory and reserved memory use `remap_pfn_range`
+
+
 >[!warning]
 > Memory mapped area should not use caching
 
 
-
+[[DirectIO]]
 Chapter 15, page: 422
