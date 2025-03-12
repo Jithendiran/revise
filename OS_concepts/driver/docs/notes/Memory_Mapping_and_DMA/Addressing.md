@@ -19,7 +19,8 @@ To refer memory linux uses it's memory address.
 
 **Bus address**
 
-	- This address is used between peripheral buses and memory. Often this is same as physical address, but this is not always necessary
+	- This address is used between peripheral buses and memory. Often this is same as physical address, but this is not always necessary. It is architecture specific  
+	- Fo example: DMA based hardware uses BUS address, ISA and PCI bus uses physical address
 	- Some architecture provided IOMMU it remaps the address between main memory and bus
 
 **Kernel logical address**

@@ -33,3 +33,4 @@ Kernel is not owning high memory, it is accessing by using kernel virtual addres
 [[Addressing]]
 [[page]]
 [[Virtual_memory_areas]]
+[[Direct_Memory_Access]]

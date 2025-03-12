@@ -2,10 +2,10 @@
  * Author: E.K.Jithendiran
  */
 #include <stdio.h>
-int globe = 10;
+int globe = 10;     // data segment 
 void main()
 {
-    int a = 1, b = 2;
+    int a = 1, b = 2;   // stack segment
     float c = 9.7;
     printf("Global BF modify : %d\n", globe); // Global BF modify : 10
     globe = 11;
@@ -13,7 +13,7 @@ void main()
     printf("C is float : %f\n", c);           // C is float : 9.700000
     printf("a : %d , b : %d\n", a, b);        // a : 1 , b : 2
     {
-        int a = 5;
+        int a = 5;  // stack segment
         printf("a : %d , b : %d\n", a, b); // a : 5 , b : 2
         b = 3;
         printf("B af change : %d\n", b); // B af change : 3

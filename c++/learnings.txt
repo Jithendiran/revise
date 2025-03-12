@@ -1,0 +1,52 @@
+Syntax & Basics (Skip if familiar with C)
+-----------------------------------------------
+
+Variables, Data Types, Operators
+Control Flow (if, switch, loops)
+Functions & Parameter Passing
+===============================================================
+
+Memory Management (Key Differentiator from Java/Python)
+-----------------------------------------------
+Pointers & References
+new and delete (Manual Memory Management)
+Smart Pointers (unique_ptr, shared_ptr)
+===================================================================
+
+Object-Oriented Programming (OOP in C++ Style)
+-----------------------------------------------------------------
+Classes & Objects
+Constructors, Destructors
+Inheritance & Polymorphism
+Virtual Functions & Vtable
+Abstract Classes & Interfaces
+============================================================
+
+STL (Standard Template Library) - Saves Time!
+----------------------------------------------------------
+Vectors (std::vector)
+Maps (std::map, std::unordered_map)
+Strings (std::string)
+Iterators & Algorithms (std::sort, std::find, std::for_each)
+=============================================================
+
+RAII & Resource Management
+-------------------------------------
+Constructor-Destructor Pattern
+Exception Safety with RAII
+=======================================================
+
+Multithreading (If Needed for Work)
+-----------------------------------------
+std::thread
+Mutex & Locking (std::mutex, std::lock_guard)
+Condition Variables (std::condition_variable)
+======================================================
+
+Learn Later (Optional, Based on Work Needs)
+----------------------------------------------
+Templates (Beyond STL usage)
+Move Semantics & Rvalue References
+Lambdas & Functional Programming
+Advanced Memory Management (Placement New, Custom Allocators)
+Low-Level Optimization

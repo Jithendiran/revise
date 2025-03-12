@@ -53,4 +53,11 @@ void main()
     // below are explicit type conversion
     double eg3 = (int)2.17 + 5; // here double is converted to int
     printf("Eg3 : %lf\n", eg3); // Eg3 : 7.000000
+
+    // implict conversion
+    // c compiler automaticlly convert the data type
+    // happens when smaller data is assigned to larger data type or when airthmetic operation involved
+    
+    // explicit conversion
+    // typecast by programmer
 }
