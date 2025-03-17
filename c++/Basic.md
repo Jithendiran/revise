@@ -41,6 +41,22 @@ if not aligned
 for char if start address is 1001, it wont read from 1000-1003, it directly read 1001
 
 # job
+    Each program executed by the shell is started in a new process.
+
+    All major shells, except the Bourne shell, provide an interactive feature called job
+    control, which allows the user to simultaneously execute and manipulate multiple
+    commands or pipelines. In job-control shells, all of the processes in a pipeline are
+    placed in a new process group or job.
+
+    Each process in a process group has the same integer process group
+    identifier, which is the same as the process ID of one of the processes in the group,
+    termed the process group leader.
+
+    Job control permits a shell user to simultaneously execute multiple commands (jobs),
+    one in the foreground and the others in the background.
+
+    A session is a collection of process groups ( jobs)
+
     A job in Linux is a process (or a group of processes) that is managed by the shell. This means the shell keeps track of the job and allows you to control it using commands like jobs, fg, bg, and kill.
 
     Jobs exists only in shell level, process exists in OS level
