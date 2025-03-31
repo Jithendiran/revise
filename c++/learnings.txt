@@ -1,3 +1,8 @@
+Start with C
+
+1. basic_01.cpp
+2. access_specifier.cpp
+
 Syntax & Basics (Skip if familiar with C)
 -----------------------------------------------
 
