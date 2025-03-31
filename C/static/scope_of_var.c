@@ -8,7 +8,6 @@ int a = 5; // it is stored in initilized data segment in memory
 int fun1(int);
 int fun2(int);
 
-// start doubt
 // also see static.c
 static int localfun()
 {
@@ -21,7 +20,6 @@ static int localfun1()
     int as;
     printf("AS : %d\n", as);
 }
-// end doubt
 
 void main()
 {
@@ -30,6 +28,11 @@ void main()
     printf("a : %d\n", a); // a : 20
     localfun();            // A : 32733 (garbage)
     localfun1();           // AS : 32733 (garbage)
+    // why both have same garbage value is because of stack work
+    // both function have same structure and same int variable
+    // when localfunc() is loaded in stack, it will allocate a memory for 'a' suppose memory will be address will be 10001 and function is completed, stack pop out
+    // now localfun1() is loaded in stack, it also have int, since before function also have int and that function is poped out and now this function will ocupy that space
+    // so this function 'as' also have same value as a
     // both has same value
 }
 

@@ -7,7 +7,9 @@
 // start doubt
 static int localfun()
 {
-    int a; // these values are store in data segment? if so it need to be init with 0 only but it gives 3 why?
+    // static in function meaning function can't access outside of this file, no other special meaning. 
+    // Function code will  be stored in text section. local var will be stored in stack segmant and static var will be stored in data segment.
+    int a;
     printf("A : %d\n", a);
 }
 
@@ -34,6 +36,7 @@ void main()
     printf("B is : %d\n", b); // B is : 11
 
     // g1++;warning: relocation against `g1' in read-only (Linker error)
+    // printf("g1 = %d\n",g1); // collect2: error: ld returned 1 exit status
 
     int c;
     c = incstc();

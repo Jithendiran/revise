@@ -19,8 +19,12 @@ int globe; // initlize with 0
 int j = 27;
 extern int def = 34; // not thow error bcz it defined globally. Here extern is going to declare and define
 // above extern just throw warning (warning: 'def' initialized and declared 'extern')
+// extern static int stat_ex = 345; // error: multiple storage classes in declaration specifiers
+static int stat_ex = 345;
 void main()
 {
+    extern int stat_ex; // take value from global
+    printf("global static, here extern : %d\n",stat_ex); //global static, here extern : 345
     int inmain;
     printf("inmain value : %d\n", inmain); // some garbage value
     printf("globe value : %d\n", globe);   // 0

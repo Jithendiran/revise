@@ -17,6 +17,7 @@ Linker is going to map the functions from c standard library
     operator
     bitwise
     typecast
+    memalign
 2.IO
     printf
     scanf
@@ -46,6 +47,8 @@ Linker is going to map the functions from c standard library
     scope_of_var.c
     static.c 
     static2.c
+    Basic.md
+    scope
 10. structure
     structure
     typedef

@@ -1,14 +1,13 @@
 #include<stdio.h>
 
-
 int main(){
 
     int z; // start address 0x7ffcbd8f370c, end address 0x7ffcbd8f370f
     int a; // start 0x7ffcbd8f3710
-    char c;
+    char c; // padding
     float f;
     char cc1,cc2,cc3, cc4;
-    // expected total is 4 + 4+ 1+ 4+ 1+ 1+1 = 
+    
 
     printf("sizeof(int): %d, sizeof(char): %d, sizeof(float): %d\n",sizeof(int), sizeof(char), sizeof(float)); // sizeof(int): 4, sizeof(char): 1, sizeof(float): 4
     // stack grows down so mem address is decreasing 
