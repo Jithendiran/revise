@@ -20,6 +20,10 @@ using namespace std;
         Can't be accessed by object of class.
     * Public members are accessible outside the class.
         Can be accessed with object of class.
+
+    C++ does not have a `public class A` like Java.
+    c++'s protected member are not accessible by object of the class, but Java can access by object of class.
+    c++ does not support `static class A` like java, static member and methods are possible
 */
 
 class A {
