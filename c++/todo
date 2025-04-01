@@ -1,4 +1,7 @@
 constructor and destructor
+object creation, A, A(), new A()
+
+struct inheritance
 abstract class
 nested class, static nested class
 Class A has static member, class B extends a, now class B has static member of A?

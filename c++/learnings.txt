@@ -2,6 +2,8 @@ Start with C
 
 1. basic_01.cpp
 2. access_specifier.cpp
+3. struct.cpp
+3. constructor.cpp
 
 Syntax & Basics (Skip if familiar with C)
 -----------------------------------------------
