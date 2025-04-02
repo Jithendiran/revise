@@ -6,10 +6,6 @@
 #include <iostream>
 using namespace std;
 
-/**
- * Construtor call from Top to Down
- * Destructor call from Bottom to Top
- */
 class A {
     // constructor can be private
     public:
@@ -28,8 +24,10 @@ class A {
         A(const A &obj) {
             // don't change value of obj so it is const
             value = obj.value;
+            // obj.value = 1; // error read only value
             cout << "Copy Constructor called" << endl;
         }
+        
         A(A &&obj) {
             // after move, obj is reset so no const
             value = obj.value;

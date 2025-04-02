@@ -7,12 +7,18 @@
 #include<stdio.h>
 using namespace std;
 
+
+/**
+ * Construtor call from Top to Down
+ * Destructor call from Bottom to Top
+ */
 struct a{
     int i = 12;
     void fun(){
         cout << "In func : " << i << endl;
     }
 };
+
 struct A{
     int i = 10;
     A() {
@@ -108,6 +114,53 @@ struct D {
     int a;
 };
 
+// struct support inheritance
+struct c: public a, private D
+{
+
+};
+
+
+struct M{
+    int i;
+    const float f;
+    M() :i(1), f(2.9) // :i (1)  member initializer, It is used to initialize member variables before the constructor body executes.
+    { }
+
+    /**
+     * 
+    const members -> const int i; must be initialized at declaration.
+
+    Reference members -> int& ref; must be initialized at declaration.
+
+    Objects -> To avoid extra default construction.
+
+
+     */
+    M(int i, float f): f(f){ 
+        this->i = i; // this points to current object
+        (*this).i = i; // this can work
+        // this is always pointer in c++, so this.i will not work
+    }
+
+    M (M &&obj): f(obj.f){
+         // // without constructor, move constructor throws error, bcz required valid way to initilize the value
+        // any one constructor is required
+        // obj is rvalue, meaning it don't copy value to this stack space instead refering 
+        
+        // reseting of f is not possible because of const
+        cout << "Move cons of M" << endl;
+        i = obj.i;
+        obj.i = 0;
+    }
+};
+
+ostream& operator<<(ostream& os, M& m) {
+    os << "M: i: " << m.i << " f : " << m.f;
+    return os;
+}
+
+
 int main() {
 
     struct a aa;
@@ -171,6 +224,13 @@ int main() {
 
     D d;
     // cout << d.a << endl; // error: int D::a’ is private within this context 
+
+    M m(27,1.0f);
+    cout << m << endl; // M: i: 27 f : 1
+
+    M m1 = std::move(m); // Move cons of M
+    cout << m1 << endl; // M: i: 27 f : 1
+    cout << m << endl; // M: i: 0 f : 1
 
     /*
     C destructor
