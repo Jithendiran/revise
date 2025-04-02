@@ -1,5 +1,4 @@
-constructor and destructor
-object creation, A, A(), new A()
+smart pointers
 
 struct inheritance
 abstract class

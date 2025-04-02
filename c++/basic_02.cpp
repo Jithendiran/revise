@@ -78,7 +78,12 @@ void rvalue(int &&a){
 
 void changeaddrrvalue(int*&& a){
     //     int*&& (rvalue reference to a pointer is valid)
+    printf("Address of a = %p\n",&a);
+    printf("Address of globe = %p\n",&globe);
 
+    a = &globe;
+
+    printf("Address of a after change = %p\n",&a);
 }
 
 int main(){
@@ -255,24 +260,49 @@ int main(){
     // rvalue
     // rvalue(a); // error
     rvalue(10);
+    // rvalue of 10 is stored in local variable, that address is passed to the function
+    /**
+     1886:	c7 45 e4 0a 00 00 00 	movl   $0xa,-0x1c(%rbp)  # Store the value 10 in a local variable
+     188d:	48 8d 45 e4          	lea    -0x1c(%rbp),%rax  # Load the address of the local variable into RAX
+     1891:	48 89 c7             	mov    %rax,%rdi         # Move the address into the first argument register (RDI)
+     1894:	e8 5e fb ff ff       	call   13f7 <_Z6rvalueOi> # Call the rvalue function
+     */
     /**
     Inside rvalue func 
     0x7ffc4b8eb2a4, 10
     0x7ffc4b8eb2a4, 100
      */
     printf("a is = %d\n",a); // a is = 2
+    // move is not effective in primitive data type
+    // if string, vector,.. is used after move, object will have empty data
     rvalue(std::move(a)); // force a to send as rvalue, rvalue don't do copy
+    // value a is passed to mov
+    /*
+    18b2:	48 8d 45 e0          	lea    -0x20(%rbp),%rax  # Load the address of 'a' into RAX
+    18b6:	48 89 c7             	mov    %rax,%rdi         # Move the address into the first argument register (RDI)
+    18b9:	e8 8f 00 00 00       	call   194d <_ZSt4moveIRiEONSt16remove_referenceIT_E4typeEOS2_>  # Call std::move
+    18be:	48 89 c7             	mov    %rax,%rdi         # Move the result of std::move into RDI
+    18c1:	e8 31 fb ff ff       	call   13f7 <_Z6rvalueOi> # Call the rvalue function
+    */
     /*
     Inside rvalue func 
     0x7ffc4b8eb2a0, 2
     0x7ffc4b8eb2a0, 100
     */
     printf("a is = %d\n",a); // a is = 100
-    // use case in online they telling effective, need to check more indepth later  
+    // it is dealing with local address, so it is 100
 
     // rvalue pointer
-    // changeaddrrvalue()
-    
-
+    int z = 10;
+    int *p = &z;
+    changeaddrrvalue(std::move(p));
+    /**
+        Address of a = 0x7ffd046529d0
+        Address of globe = 0x5614cba79050
+        Address of a after change = 0x7ffd046529d0
+     */
+    printf("Z is = %d\n",z); // Z is = 10
+    printf("*p is = %d\n",*p); // *p is = 1234
+    printf("ptr %p, %p\n",p, &p); //ptr 0x5614cba79050, 0x7ffd046529d0
     return 0;
 }
