@@ -1,7 +1,9 @@
-smart pointers
-
+virtual
 struct inheritance
-abstract class
+
+diff between delete and destructor
+abstract class, is there abstract struct
 nested class, static nested class
 Class A has static member, class B extends a, now class B has static member of A?
-A a  = A(); vs A a = new A();
+smart pointers
+Lambda

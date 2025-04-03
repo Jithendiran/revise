@@ -1,0 +1,42 @@
+/**
+ * Access scopes
+------------------------------------------------------------------------------------------------
+Inheritance Type  |	Public Members of Base |Protected Members of Base |	Private Members of Base|
+------------------------------------------------------------------------------------------------
+Public	            Public	                    Protected	                Not Inherited
+Protected       	Protected	                Protected	                Not Inherited
+Private	            Private	                    Private	                    Not Inherited
+*/
+
+/*
+
+Types of inheritance
+====================
+* Single Inheritance
+* Multiple Inheritance
+* Multilevel Inheritance
+* Hierarchical Inheritance (same as single, parent class has many child class)
+* Hybrid Inheritance
+* Multipath Inheritance
+
+Key Differences Between struct and class in Inheritance
+========================================================
+Default Access Specifier
+------------------------------
+struct -> Members are public by default
+
+class  -> Members are private by default
+
+Inheritance Access Mode
+------------------------------
+struct Derived : Base {} -> Default is public inheritance
+
+class Derived : Base {}  -> Default is private inheritance
+
+
+
+When to Use struct vs class?
+============================
+* Use struct when want a simple data container with public access by default.
+* Use class when  need encapsulation, abstraction, and control over data access.
+*/

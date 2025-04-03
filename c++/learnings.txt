@@ -1,12 +1,86 @@
 Start with C
 
-1. basic_01.cpp
-2. access_specifier.cpp
-3. struct.cpp
-3. constructor.cpp
+basic
+    1. basic_01.cpp
+    2. access_specifier.cpp
+    2. basic_02.cpp
+    3. struct.cpp
+    4. constructor.cpp
+inheritance
+    1. intro.txt
+    2. single_inh.cpp
 
 Syntax & Basics (Skip if familiar with C)
 -----------------------------------------------
+
+1. Inheritance
+Basics of inheritance (public, private, protected)
+
+Constructor and destructor behavior in inheritance
+
+Multiple inheritance and diamond problem
+
+Virtual base classes
+
+2. Polymorphism
+Function overloading vs. function overriding
+
+Virtual functions and runtime polymorphism
+
+Abstract classes and pure virtual functions
+
+Virtual table (vtable) and virtual pointer (vptr) mechanism
+
+3. Exception Handling
+try, catch, throw
+
+Standard exceptions (std::exception, std::runtime_error, etc.)
+
+Custom exception classes
+
+noexcept keyword
+
+4. Smart Pointers
+std::unique_ptr
+
+std::shared_ptr
+
+std::weak_ptr
+
+How smart pointers manage memory
+
+5. Templates & STL
+Function templates and class templates
+
+Variadic templates
+
+STL (Standard Template Library) - vector, map, set, unordered_map, etc.
+
+6. Move Semantics & Advanced Memory Management
+Move constructor and move assignment
+
+std::move and std::forward
+
+RAII (Resource Acquisition Is Initialization)
+
+Memory management techniques (allocators, new vs malloc)
+
+7. Multithreading & Concurrency
+std::thread, std::mutex, std::lock_guard
+
+Condition variables and atomic operations
+
+Thread synchronization and race conditions
+
+8. Modern C++ Features (C++11, C++14, C++17, C++20)
+Lambda functions
+
+std::optional, std::variant, std::any
+
+constexpr, std::tuple
+
+Ranges and coroutines (C++20)
+
 
 Variables, Data Types, Operators
 Control Flow (if, switch, loops)
