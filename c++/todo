@@ -1,5 +1,7 @@
-virtual
-struct inheritance
+abstract
+Singleton
+Virtual Inheritance (Solving Diamond Problem)
+final
 
 diff between delete and destructor
 abstract class, is there abstract struct

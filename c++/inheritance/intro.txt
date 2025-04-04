@@ -1,14 +1,14 @@
-/**
- * Access scopes
+Access scopes
 ------------------------------------------------------------------------------------------------
 Inheritance Type  |	Public Members of Base |Protected Members of Base |	Private Members of Base|
 ------------------------------------------------------------------------------------------------
 Public	            Public	                    Protected	                Not Inherited
 Protected       	Protected	                Protected	                Not Inherited
 Private	            Private	                    Private	                    Not Inherited
-*/
 
-/*
+
+Class is an extension of struct, what ever struct supports all are supported by class
+
 
 Types of inheritance
 ====================
@@ -39,4 +39,3 @@ When to Use struct vs class?
 ============================
 * Use struct when want a simple data container with public access by default.
 * Use class when  need encapsulation, abstraction, and control over data access.
-*/
