@@ -15,7 +15,9 @@ struct Abstract
     }
     virtual void pure_1() = 0;  // pure virtual // 	Must be overridden
     virtual void pure_2() = 0;  // pure
-    virtual void non_pure();
+    // virtual void non_pure(); this is not valid
+    // virtual void non_pure() {} = 0; this not valid
+
     virtual void nonpure() {
         // non pure, can be over ride
         cout << "Non Pure Abstract \n";
@@ -45,6 +47,8 @@ struct Concrete: Abs2 {
     Concrete () {
         cout << "Concrete cons\n";
     }
+    
+    virtual void non_pure() = 0;
 
     void pure_2 () {
         cout << "Pure 2 in Concrete\n";
@@ -59,7 +63,6 @@ struct Concrete2: Concrete{
     Concrete2(){
         cout << "Concrete2 cons\n";
     }
-
     void non_pure() {
         cout << "non_pure \n";
     }
@@ -68,25 +71,58 @@ struct Concrete2: Concrete{
     }
 };
  
- 
+
+void func (Abstract &a){
+    // `Abstract a` param like this won't work because, for Abstract can't create object
+    a.pure_1();
+
+}
+
+struct concrete_ch:  Abstract
+{
+    void pure_1(){
+        cout << "Pure one in concrete_ch\n";
+    }
+
+    void pure_2 () {
+        cout << "Pure 2 in concrete_ch\n";
+    }
+};
+
+
 int main()
 {
     // Abstract a; //  error: cannot declare variable ‘a’ to be of abstract type ‘Abstract’ pure_1 and pure_2 must ober ride
+    Abstract *a;
     // Abs2 a;  // error: cannot declare variable ‘a’ to be of abstract type ‘Abs2, pure_2 must override
-    // Concrete c; // Linker error
+    // Concrete c; // cannot declare variable ‘c’ to be of abstract type ‘Concrete’
 
     Concrete2 c;
-}
+    cout << endl;
+    /*
+    Abstract default cons
+    Abs2 cons
+    Concrete cons
+    Concrete2 cons
 
-/*
-/usr/bin/ld: /tmp/cchi8aMY.o: warning: relocation against `_ZTV8Abstract' in read-only section `.text._ZN8AbstractD2Ev[_ZN8AbstractD5Ev]'
-/usr/bin/ld: /tmp/cchi8aMY.o: in function `Abstract::Abstract()':
-abstract.cpp:(.text._ZN8AbstractC2Ev[_ZN8AbstractC5Ev]+0xf): undefined reference to `vtable for Abstract'
-/usr/bin/ld: /tmp/cchi8aMY.o: in function `Abstract::~Abstract()':
-abstract.cpp:(.text._ZN8AbstractD2Ev[_ZN8AbstractD5Ev]+0xf): undefined reference to `vtable for Abstract'
-/usr/bin/ld: /tmp/cchi8aMY.o:(.data.rel.ro._ZTV8Concrete[_ZTV8Concrete]+0x20): undefined reference to `Abstract::non_pure()'
-/usr/bin/ld: /tmp/cchi8aMY.o:(.data.rel.ro._ZTV4Abs2[_ZTV4Abs2]+0x20): undefined reference to `Abstract::non_pure()'
-/usr/bin/ld: /tmp/cchi8aMY.o:(.data.rel.ro._ZTI4Abs2[_ZTI4Abs2]+0x10): undefined reference to `typeinfo for Abstract'
-/usr/bin/ld: warning: creating DT_TEXTREL in a PIE
-collect2: error: ld returned 1 exit status
-*/
+    Concrete2 dest
+    Concerete dest
+    Abs2 dest
+    Abstract Dest
+    */
+   func(c); // Pure one in Abs2
+
+   c.pure_1(); // Pure one in Abs2
+   c.pure_2(); // Pure 2 in Concrete
+   c.nonpure(); // Non Pure Abstract
+   c.non_pure(); // non_pure
+
+   concrete_ch ch;
+
+   func(ch); // Pure one in concrete_ch
+
+//    a = new Abstract(); //  error: invalid new-expression of abstract class type ‘Abstract’
+    a = new concrete_ch();
+
+    a->nonpure(); //Non Pure Abstract
+}

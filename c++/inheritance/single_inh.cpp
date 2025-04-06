@@ -112,6 +112,45 @@ struct B: A{
     }
 };
 
+
+// class inherit struct
+
+class cls: public A{
+public:
+    cls() {
+        a = 1;
+        cout << "cls default const "<<endl;
+    }
+
+    cls(int a) {
+        this->a = a; // this is object ref
+        cout << "cls Param const "<<endl;
+    }
+
+    cls(cls& obj){
+        this->a = obj.a;
+        cout << "cls Copy cons" << endl;
+    }
+
+    cls(cls&& obj){
+        this->a = obj.a;
+        obj.a = 0;
+        cout << "cls Move cons" << endl;
+    }
+
+    void cls_method(){
+        cout << "Cls method" << endl;
+    }
+
+    void virtual_common() {
+        cout << "cls common virtual" << endl;
+    }
+
+    ~cls() {
+        cout << "cls Destructor " <<endl;
+    }
+};
+
 int main(){
 
     A a;            // A default const
@@ -358,6 +397,13 @@ int main(){
     B Destructor 
     A Destructor 
     */
+
+    cls c;
+    /*
+    A default const 
+    cls default const 
+    */
+    c.a_method();
 }
 
 /**
