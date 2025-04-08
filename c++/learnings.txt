@@ -7,6 +7,8 @@ basic
     4. struct.cpp
     5. static.cpp
     6. constructor.cpp
+    7. enum.cpp
+    7. reference.cpp
 inheritance
     1. intro.txt
     2. single_inh.cpp

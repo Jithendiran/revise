@@ -21,13 +21,13 @@ struct singleton{
     }
 
     private:
-        static singleton* obj;
+        inline static singleton* obj = nullptr;
         singleton(){
             cout << "Singleton cons" << endl;
         }
 };
 
-singleton* singleton::obj = nullptr; // without this cause linker error
+// singleton* singleton::obj = nullptr; // or inline is mandatory// without this cause linker error
 
 /*
 /usr/bin/ld: /tmp/ccIVXQsK.o: warning: relocation against `_ZN9singleton3objE' in read-only section `.text._ZN9singleton11getInstanceEv[_ZN9singleton11getInstanceEv]'

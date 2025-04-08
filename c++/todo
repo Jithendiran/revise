@@ -1,11 +1,14 @@
-static
-::
+enum
 this
-singleton
+final / override
+nested class
+multi level inheritance, multiple inheritance
 Virtual Inheritance (Solving Diamond Problem)
-final
+template functions
+template classes
+pointers smart (smart pointers, smart pointer with virtual and non virtual destructor)
+Lambda
+STL
 
 nested class, static nested class
 Class A has static member, class B extends a, now class B has static member of A?
-smart pointers, smart pointer with virtual and non virtual destructor
-Lambda
