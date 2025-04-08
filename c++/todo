@@ -1,11 +1,11 @@
-abstract
-Singleton
+static
+::
+this
+singleton
 Virtual Inheritance (Solving Diamond Problem)
 final
 
-diff between delete and destructor
-abstract class, is there abstract struct
 nested class, static nested class
 Class A has static member, class B extends a, now class B has static member of A?
-smart pointers
+smart pointers, smart pointer with virtual and non virtual destructor
 Lambda

@@ -87,7 +87,17 @@ void changeaddrrvalue(int*&& a){
 }
 
 int main(){
+
     int a = 1, b = 2, c = 3;
+    const int c_a = 1; // this can set at both run time and compile time
+    const int c_a_a = a + 2; // ok
+
+    constexpr int c_e_a = 2; // this is only assign at compile time
+    // constexpr int c_e_a_a = a; // error
+    // constexpr int ce_a = c_a_a; // error
+    constexpr int ce_a = c_a; // this is ok
+    // const init at compile time is valid
+
     // int &ap; // error required initialize
     int &ap = a; // both ap and a points to same address
     // ap is reference not pointer, so it can store a not &ap

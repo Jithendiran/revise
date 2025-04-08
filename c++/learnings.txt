@@ -3,9 +3,10 @@ Start with C
 basic
     1. basic_01.cpp
     2. access_specifier.cpp
-    2. basic_02.cpp
-    3. struct.cpp
-    4. constructor.cpp
+    3. basic_02.cpp
+    4. struct.cpp
+    5. static.cpp
+    6. constructor.cpp
 inheritance
     1. intro.txt
     2. single_inh.cpp

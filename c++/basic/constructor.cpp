@@ -11,8 +11,11 @@ Stack Allocation: Memory allocated on the stack is automatically managed by the 
 
 Heap Allocation: Memory allocated on the heap must be manually deallocated using delete.
 
-1. new is used to create in heap
+new is used to create in heap
 
+delete
+------
+Operator to deallocate memory (free memory) and call destructor, Destroying objects created with new, delete automatically calls destructor
 
  */
 class A {

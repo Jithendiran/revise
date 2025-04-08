@@ -27,15 +27,8 @@ struct singleton{
         }
 };
 
+singleton* singleton::obj = nullptr; // without this cause linker error
 
-int main() {
-
-    // singleton s; // ‘singleton::singleton()’ is private within this context
-    singleton *s, *s1;
-    s = singleton::getInstance();
-    s1 = singleton::getInstance();
-    cout << "Addr " << s << "\t" << s1;
-}
 /*
 /usr/bin/ld: /tmp/ccIVXQsK.o: warning: relocation against `_ZN9singleton3objE' in read-only section `.text._ZN9singleton11getInstanceEv[_ZN9singleton11getInstanceEv]'
 /usr/bin/ld: /tmp/ccIVXQsK.o: in function `singleton::getInstance()':
@@ -45,3 +38,12 @@ singleton.cpp:(.text._ZN9singleton11getInstanceEv[_ZN9singleton11getInstanceEv]+
 /usr/bin/ld: warning: creating DT_TEXTREL in a PIE
 collect2: error: ld returned 1 exit status
 */
+
+int main() {
+
+    // singleton s; // ‘singleton::singleton()’ is private within this context
+    singleton *s, *s1;
+    s = singleton::getInstance();
+    s1 = singleton::getInstance();
+    cout << "Addr " << s << "\t" << s1 << endl;
+}
