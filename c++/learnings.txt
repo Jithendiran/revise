@@ -6,9 +6,14 @@ basic
     3. basic_02.cpp
     4. struct.cpp
     5. static.cpp
-    6. constructor.cpp
-    7. enum.cpp
-    7. reference.cpp
+    6. this.cpp
+    7. constructor.cpp
+    8. enum.cpp
+    9. reference.cpp
+
+intermidiate
+    1.nestedclass.cpp
+    
 inheritance
     1. intro.txt
     2. single_inh.cpp

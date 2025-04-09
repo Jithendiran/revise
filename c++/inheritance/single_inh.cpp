@@ -14,6 +14,7 @@ Destructor order of execution is from bottom child (Bottom to top)
 struct A {
 
     int a;
+    inline static int st = 67; 
     A() {
         a = 1;
         cout << "A default const "<<endl;
@@ -164,6 +165,7 @@ int main(){
     A Destructor 
     */
 
+   cout << "Parent static from B class : " << B::st << endl; // Parent static from B class : 67
     B b;
     /*
     A default const 
