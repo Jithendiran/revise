@@ -31,6 +31,21 @@ class A {
             value = 0;
             cout << "Default Constructor called" << endl;
         }
+        // A() = default; // Let the compiler define a default constructor
+        /*
+        This default is only used for special members function
+
+        Member	                Example
+        Default                 constructor	A() = default;
+        Destructor	            ~A() = default;
+        Copy constructor	    A(const A&) = default;
+        Move constructor	    A(A&&) = default;
+        Copy assignment	        A& operator=(const A&) = default;
+        Move assignment	        A& operator=(A&&) = default;
+
+         int x = default; → ❌ Compiler error
+         void print() = default; → ❌ Compiler error
+        */
         A(int a) {
             // called: A obj(1)
             value = a;
