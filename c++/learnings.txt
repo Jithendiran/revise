@@ -10,6 +10,7 @@ basic
     7. constructor.cpp
     8. enum.cpp
     9. reference.cpp
+    10. constexpr.cpp
 
 intermidiate
     1.nestedclass.cpp

@@ -8,3 +8,12 @@ try/exception
 STL
 mutable
 co-routine, concepts, ranges
+
+
+
+
+
+doubts 
+-------------
+* is operator overloading functions are static functions?
+* how after nullying pointer still's members are callable?
