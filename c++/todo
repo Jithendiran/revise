@@ -1,5 +1,3 @@
-multi level inheritance, multiple inheritance
-Virtual Inheritance (Solving Diamond Problem)
 template functions
 template classes
 pointers smart (smart pointers, smart pointer with virtual and non virtual destructor)

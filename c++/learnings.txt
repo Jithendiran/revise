@@ -14,10 +14,14 @@ basic
 
 intermidiate
     1.nestedclass.cpp
+    2. friend.cpp
+    3. type.cpp
     
 inheritance
     1. intro.txt
     2. single_inh.cpp
+    3. multilevel.cpp
+    4. multiple.cpp
 
 Syntax & Basics (Skip if familiar with C)
 -----------------------------------------------

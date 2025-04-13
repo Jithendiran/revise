@@ -178,6 +178,7 @@ int main(){
     B method
     */
     b.common_method(); // Common B
+    b.A::common_method(); // A Common
 
     /*
     B Destructor 
