@@ -1,8 +1,8 @@
+try/exception
+pointers smart (smart pointers, smart pointer with virtual and non virtual destructor)
 template functions
 template classes
-pointers smart (smart pointers, smart pointer with virtual and non virtual destructor)
 Lambda
-try/exception
 STL
 mutable
 co-routine, concepts, ranges

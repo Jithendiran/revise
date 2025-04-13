@@ -103,7 +103,6 @@ struct C : public A {
 // Diamond inheritance!
 struct D : public B, public C {
     D() {cout << "D's  default constructor" << endl;};
-    
     virtual ~D() {cout << "D's  destructor" << endl;}
 };  
 
@@ -169,6 +168,21 @@ struct D2 : public B2, public C2{
     virtual ~D2() {cout << "D2's  destructor" << endl;}
 };
 
+//
+
+struct Base0 {
+    void hello() { cout << "Hello from Base\n"; }
+};
+
+struct Base01 {
+    void hello() { cout << "Hello from Base1\n"; }
+};
+
+struct Sub0 : Base0, Base01 {
+    using Base0::hello;  // Resolves ambiguity: now hello() means Base1::hello
+};
+
+
 
 int main() {
     Sub s;
@@ -210,6 +224,20 @@ int main() {
     D's  default constructor
     */
     // d.greet(); // error: request for member ‘greet’ is ambiguous
+
+    // work around
+    d.B::greet(); // call greet from B's A object 
+    // Hello from A
+    d.C::greet(); // call greet from C's A object 
+    // Hello from A
+    cout<<"---------------------------------------------------------------------------------"<<endl;
+    // casting will work
+    B* bc = static_cast<B*>(&d);
+    bc->greet(); // calling from A's object   
+    // Hello from A
+    // dynamic_cast can use if it has vtable 
+    cout<<"---------------------------------------------------------------------------------"<<endl;
+
     // d.common_method(); // request for member ‘common_method’ is ambiguous
     /*
     D's  destructor
@@ -247,4 +275,8 @@ int main() {
     // d2.greet(); // error: request for member ‘greet’ is ambiguous
     // d2.common_method(); // error: request for member ‘common_method’ is ambiguous
     cout << endl;
+
+    Sub0 s1;
+    s1.hello(); // Calls Base0::hello()
+    // Hello from Base
 }

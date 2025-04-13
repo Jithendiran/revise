@@ -103,7 +103,8 @@ int main() {
     B's common method
     A's common method
     */
-    apc->~A();
+    // apc->~A(); this is not recommanded 
+    delete apc; // This is recommanded
     /*
     C's default destructor
     B's default destructor
