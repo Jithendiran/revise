@@ -16,6 +16,7 @@ intermidiate
     1.nestedclass.cpp
     2. friend.cpp
     3. type.cpp
+    4. exception.cpp
     
 inheritance
     1. intro.txt

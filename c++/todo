@@ -1,4 +1,3 @@
-try/exception
 pointers smart (smart pointers, smart pointer with virtual and non virtual destructor)
 template functions
 template classes
@@ -6,12 +5,12 @@ Lambda
 STL
 mutable
 co-routine, concepts, ranges
-
+overload function call operator
 
 
 
 
 doubts 
 -------------
-* is operator overloading functions are static functions?
+* is operator overloading functions are static functions or global?
 * how after nullying pointer still's members are callable?

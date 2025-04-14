@@ -17,7 +17,7 @@ Types of inheritance
 * Multilevel Inheritance
 * Hierarchical Inheritance (same as single, parent class has many child class)
 * Hybrid Inheritance
-* Multipath Inheritance
+* Multipath Inheritance (Diamond inheritance)
 
 Key Differences Between struct and class in Inheritance
 ========================================================
