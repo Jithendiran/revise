@@ -35,9 +35,7 @@ class Logger {
                 cout << "Deleted" << endl;
             }
         }
-
-
-        
+     
     private:
         // NULL is just 0 integer, NULL == 0   
         // nullptr it is type safety, it is nullptr != 0
@@ -64,6 +62,7 @@ class Logger {
 
 };
 
+// address of Logger::ins will always same because of static nature
 ostream& operator<< (ostream& cout, Logger& log) /*const*/ { // using const is allowed inside class or struct
     cout << "Called << log &";
     // Logger::ins or log.ins; same result
@@ -78,6 +77,41 @@ ostream& operator<< (ostream& cout, Logger* log) {
     cout << log->ins; // this will call this function `operator<<` recursively till memory fill up
     */
     cout << " " << &(Logger::ins) << " content " << static_cast<void*>(log->ins);
+    return cout;
+}
+
+//--------------------Non static
+class LoggerNs {
+    public:
+    LoggerNs(){
+        cout << "LoggerNs Initiated" << endl;
+    }
+
+    // delete copy constructor
+    LoggerNs(const LoggerNs&) = delete;
+    LoggerNs& operator=(const LoggerNs&) = delete;
+
+    void info(string s) {
+        cout << s << endl;
+    }
+
+    ~LoggerNs() {
+        cout << "LoggerNs Destroyed" << endl;
+    }
+    friend ostream& operator<< (ostream& cout, LoggerNs& log);
+    friend ostream& operator<< (ostream& cout, LoggerNs* log);
+
+};
+
+ostream& operator<< (ostream& cout, LoggerNs& log) {
+    cout << "Called << log &";
+    cout << " " << static_cast<void*>(&log);
+    return cout;
+}
+
+ostream& operator<< (ostream& cout, LoggerNs* log) { 
+    cout << "Called << log *" ;
+    cout << " " << static_cast<void*>(log);
     return cout;
 }
 
@@ -157,4 +191,26 @@ int main(){
     }
     */
    
+    
+    cout << "----------------------Non static" << endl;
+    // cout << "Logger NS : " << &(LoggerNs);
+    LoggerNs * ns = new LoggerNs(); // LoggerNs Initiated
+    cout << "Non logger is " << ns << endl; // Non logger is Called << log * 0x5d2d980492c0
+    // ns = nullptr; // with this destructor won't call and object won't properly freed
+    delete ns; // LoggerNs Destroyed
+
+    LoggerNs * ns1 = new LoggerNs(); // LoggerNs Initiated
+    cout << "Non logger is " << ns1 << endl; // Non logger is Called << log * 0x5d2d980492c0
+    delete ns1; // LoggerNs Destroyed
+
+    LoggerNs * ns3 = new LoggerNs(); // LoggerNs Initiated
+    cout << "Non logger is " << ns3 << endl; //Non logger is Called << log * 0x5d2d980492c0
+
+    LoggerNs * ns4 = new LoggerNs(); // LoggerNs Initiated
+    cout << "Non logger is " << ns4 << endl; // Non logger is Called << log * 0x5d2d980492e0
+    // ns3 = nullptr;
+    delete ns3; // LoggerNs Destroyed
+
+    // ns4 = nullptr;
+    delete ns4; // LoggerNs Destroyed
 }

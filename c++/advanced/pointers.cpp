@@ -22,9 +22,29 @@ struct A {
 
 struct B {
     // uncomment shared_ptr, comment weak_ptr and check for destructor call for A and B and vice versa
-    shared_ptr<A> a_ptr; // this will cause circular problem 
-    // weak_ptr<A> a_ptr; // doesn't increase ref count, so when object goes out of scope destructor will called
+    // shared_ptr<A> a_ptr; // this will cause circular problem 
+    weak_ptr<A> a_ptr; // doesn't increase ref count, so when object goes out of scope destructor will called
     ~B() { cout << "B destroyed\n"; }
+};
+
+struct Base {
+    virtual ~Base() {
+        cout << "Base destroyed\n";
+    }
+};
+
+struct Derived : Base {
+    ~Derived() {
+        cout << "Derived destroyed\n";
+    }
+};
+
+// only smart pointer object creation
+struct Foo : std::enable_shared_from_this<Foo> {
+    void print() {
+        auto self = shared_from_this(); // get shared_ptr<Foo> from `this`
+        cout << "Inside print: use_count = " << self.use_count() << endl;
+    }
 };
 
 int main() {
@@ -71,6 +91,7 @@ int main() {
     std::shared_ptr<int> sp2 = sp1;  // shared
     *sp2 = 2;
     cout << *sp1 << " " << *sp2 << endl; // 2 2
+    cout << "shared_ptr use_count: " << sp1.use_count() << " " <<  sp2.use_count() << endl; // shared_ptr use_count: 2 2
     // sp1 and sp2 are refered to one memory location, that has two owners so, that memory reference count is 2
     // when reference count becomes 0 mean, it is out of scope and it will be freed
     // delete sp1;  // don't work like normal delete
@@ -95,7 +116,49 @@ int main() {
       2. use weak_ptr, no need of mauanl clear
     */
 //    a->b_ptr = nullptr; // manual clear 
-}
+    
+    // weak_pointer
+    /*
+    weak_ptr don't own thw memory, So it won't increase the reference 
+    It only observe the object
+    Since it don't own, before use of the weak_ptr must need to lock the object and then do the function 
+    */
+   // correct usage is
 
-// todo weak and lock
-// virtual destructor
+    shared_ptr<int> sp = make_shared<int>(42);
+    weak_ptr<int> wp = sp; // doesn't increase ref count
+
+    cout << "shared_ptr use_count: " << sp.use_count() << endl; // shared_ptr use_count: 1
+    cout << "weak_ptr expired? " << wp.expired() << endl;  // weak_ptr expired? 0
+
+    if (auto locked = wp.lock()) {
+        cout << "Value: " << *locked << endl; // Value: 42
+    }
+    sp.reset(); // now object is destroyed
+    cout << "weak_ptr expired? " << wp.expired() << endl;       // weak_ptr expired? 1
+
+    if (auto locked = wp.lock()) {
+        cout << "Value: " << *locked << endl;
+    } else {
+        cout << "Object no longer exists\n"; // Object no longer exists
+    }
+
+    // object creation 
+    std::unique_ptr<Base> p = std::make_unique<Derived>();
+    // without virtual keyword, only base class destructor is called
+
+    //p------------------------------------------------------------------
+    auto f = std::make_shared<Foo>();
+    cout << "Outside: use_count = " << f.use_count() << endl; // Outside: use_count = 1
+    f->print(); // Inside print: use_count = 2
+    cout << "After print: use_count = " << f.use_count() << endl; // After print: use_count = 1
+
+    Foo* raw = new Foo();
+    // raw->print();
+    /*
+    error
+    terminate called after throwing an instance of 'std::bad_weak_ptr'
+    what():  bad_weak_ptr
+    Aborted (core dumped)
+    */
+}

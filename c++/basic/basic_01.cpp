@@ -32,6 +32,14 @@ class C: public B{
 
 };
 
+class D {
+    int a,b,c,d,e,f; // 24 bytes for int
+    // 8 bytes for vtable pointer
+    virtual void fun(){
+
+    }
+};
+
 int main()
 {
     cout<<"Size of class : "<<sizeof(Empty)<<endl; 
@@ -67,6 +75,11 @@ int main()
      Size of class : 4
      Size of object : 4
      */
+
+     cout<<"Size of class : "<<sizeof(D)<<endl; // Size of class : 32
+     //D has virtual table, so it's size is equal to size of pointer
+     D do1 = D();
+     cout<<"Size of object : "<<sizeof(do1)<<endl; //Size of object : 32
 
     return 0;
 }
