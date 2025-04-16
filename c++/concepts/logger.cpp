@@ -48,10 +48,6 @@ class Logger {
         Logger(const Logger&) = delete;
         Logger& operator=(const Logger&) = delete;
 
-        // deal with move constructor
-
-        // shallow copy/ deep copy
-
         ~Logger() {
             cout << "Logger Destroying" << endl;
             ins = nullptr;
