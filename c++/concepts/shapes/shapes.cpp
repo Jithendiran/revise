@@ -140,26 +140,56 @@ void print(std::unique_ptr<AShape> &obj){
 }
 
 int main(){
-    int n = 0;
+    int n = 0, choice;
+    std::unique_ptr<AShape> shape;
+    AShape * a;
     cout << "Enter number of lines : ";
     cin >> n;
-    // AShape * a = new Lprymid(n);
-    // print(a);
-    // delete a; // if missed memory leak
-    std::unique_ptr<AShape> a = std::make_unique<Lprymid>(n);
-    print(a);
 
-    // a = new Rprymid(n);
-    // print(a);
-    // delete a;
-    a = std::make_unique<Rprymid>(n);
-    print(a);
 
-    // a = new Diamond(n);
+    // a = std::make_unique<Diamond>(n);
     // print(a);
-    // delete a;
-    a = std::make_unique<Diamond>(n);
-    print(a);
+
+    do {
+        cout << "\n--- Shape Menu ---\n";
+        cout << "1. Left Pyramid\n";
+        cout << "2. Right Pyramid\n";
+        cout << "3. Diamond\n";
+        cout << "4. Exit\n";
+        cout << "Choose a shape: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                // a = new Lprymid(n);
+                // print(a);
+                // delete a; // if missed memory leak
+                shape = std::make_unique<Lprymid>(n);
+                break;
+            case 2:
+                // a = new Rprymid(n);
+                // print(a);
+                // delete a;
+                shape = std::make_unique<Rprymid>(n);
+                break;
+            case 3:
+                // a = new Diamond(n);
+                // print(a);
+                // delete a;
+                shape = std::make_unique<Diamond>(n);
+                break;
+            case 4:
+                cout << "Exiting...\n";
+                break;
+            default:
+                cout << "Invalid choice!\n";
+        }
+
+        if (choice >= 1 && choice <= 3) {
+            print(shape);
+        }
+
+    } while (choice != 4);
 }
 
 /*
