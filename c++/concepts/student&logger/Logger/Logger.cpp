@@ -7,7 +7,7 @@ class Student;
 
 class Logger : public AbsLog {
     public:
-        static Logger& getInstance(){
+        static AbsLog& getInstance(){
             if(ins == nullptr ){
                 cout << "No OBJ " << endl;
                 ins = new Logger();
@@ -22,6 +22,7 @@ class Logger : public AbsLog {
         void infoNonFriend(Student & s);
 
         static void deleteInstance(){
+            cout << "Derived class" << endl;
             if(ins == nullptr ){
                 cout << "No OBJ no delete" << endl;
             } else {
@@ -31,7 +32,6 @@ class Logger : public AbsLog {
         }
      
     private:
-        inline static Logger* ins = nullptr;
         Logger(){
             cout << "Logger Initiated" << endl;
         }
