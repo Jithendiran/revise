@@ -1,3 +1,4 @@
+#include <memory>
 #include <iostream>
 using namespace std;
 
@@ -99,19 +100,18 @@ class Diamond: public AShape {
 
     void shape(){
         cout << "Diamond" << endl;
-        n = n / 2;
-        for(int i = 0; i < n-1; i++) {
+        int h = n /2;
+        for(int i = 0; i < h; i++) {
             for (int j = 0; j < n; j++){
-                if (j >= n-(i+1)) cout << " *  "; // // back one extra space
-                else cout << "  ";
+                if (j >= h-i && j <= h+i) cout << " * "; 
+                else cout << "   ";
             }
             cout << endl;
         }
-
-        for(int i = n-1; i >= 0; i--) {
+        for(int i = (n%2 == 0) ? h -1 : h; i >= 0; i--) {
             for (int j = 0; j < n; j++){
-                if (j >= n-(i+1)) cout << " *  "; // last one extra space
-                else cout << "  ";
+                if (j >= h-i && j <= h+i) cout << " * ";
+                else cout << "   ";
             }
             cout << endl;
         }
@@ -130,25 +130,40 @@ void print(AShape *obj){
     }
 }
 
+// T& obj is using reference don't change owner, T obj is like copying has new owner for new object, unique pointer don't allow that
+void print(std::unique_ptr<AShape> &obj){
+    if(obj != nullptr){
+        obj->shape();
+    } else {
+        cout << "NO object" << endl;
+    }
+}
+
 int main(){
     int n = 0;
     cout << "Enter number of lines : ";
     cin >> n;
-    AShape * a = new Lprymid(n);
+    // AShape * a = new Lprymid(n);
+    // print(a);
+    // delete a; // if missed memory leak
+    std::unique_ptr<AShape> a = std::make_unique<Lprymid>(n);
     print(a);
-    delete a; // if missed memory leak
 
-    a = new Rprymid(n);
+    // a = new Rprymid(n);
+    // print(a);
+    // delete a;
+    a = std::make_unique<Rprymid>(n);
     print(a);
-    delete a;
 
-    a = new Diamond(n);
+    // a = new Diamond(n);
+    // print(a);
+    // delete a;
+    a = std::make_unique<Diamond>(n);
     print(a);
-    delete a;
 }
 
 /*
-OP
+OP: raw pointer
 Enter number of lines : 8
 AShape Param constructor
 Lprymid param constructor
@@ -179,13 +194,65 @@ AShape destructor
 AShape Param constructor
 Diamond param constructor
 Diamond
-       *  
-     *   *  
-   *   *   *  
- *   *   *   *  
-   *   *   *  
-     *   *  
-       *  
+             *          
+          *  *  *       
+       *  *  *  *  *    
+    *  *  *  *  *  *  * 
+    *  *  *  *  *  *  * 
+       *  *  *  *  *    
+          *  *  *       
+             * 
+Diamond destructor
+AShape destructor
+*/
+
+/*
+OP: smart pointer
+
+Enter number of lines : 10
+AShape Param constructor
+Lprymid param constructor
+Lprymid
+ * 
+ *  * 
+ *  *  * 
+ *  *  *  * 
+ *  *  *  *  * 
+ *  *  *  *  *  * 
+ *  *  *  *  *  *  * 
+ *  *  *  *  *  *  *  * 
+ *  *  *  *  *  *  *  *  * 
+ *  *  *  *  *  *  *  *  *  * 
+AShape Param constructor
+Rprymid param constructor
+Lprymid destructor
+AShape destructor
+Rprymid
+                            * 
+                         *  * 
+                      *  *  * 
+                   *  *  *  * 
+                *  *  *  *  * 
+             *  *  *  *  *  * 
+          *  *  *  *  *  *  * 
+       *  *  *  *  *  *  *  * 
+    *  *  *  *  *  *  *  *  * 
+ *  *  *  *  *  *  *  *  *  * 
+AShape Param constructor
+Diamond param constructor
+Rprymid destructor
+AShape destructor
+Diamond
+                *             
+             *  *  *          
+          *  *  *  *  *       
+       *  *  *  *  *  *  *    
+    *  *  *  *  *  *  *  *  * 
+    *  *  *  *  *  *  *  *  * 
+       *  *  *  *  *  *  *    
+          *  *  *  *  *       
+             *  *  *          
+                *             
 Diamond destructor
 AShape destructor
 */
