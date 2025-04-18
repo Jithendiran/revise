@@ -24,6 +24,10 @@ inheritance
     3. multilevel.cpp
     4. multiple.cpp
 
+advanced
+    1. pointers.cpp
+    2. templates.cpp
+
 Syntax & Basics (Skip if familiar with C)
 -----------------------------------------------
 

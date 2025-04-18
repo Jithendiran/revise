@@ -124,8 +124,9 @@ struct c: public a, private D
 struct M{
     int i;
     const float f;
-    M() :i(1), f(2.9) // :i (1)  member initializer, It is used to initialize member variables before the constructor body executes.
-    { }
+    M() :i(1), f(2.9) // :i (1)  member initializer, It is used to initialize member variables before the constructor body executes. this->i(1) will throw error because, no object is created at that time
+    { //this->i = 1; // here this can be used because object is created, now assigning the member values
+    }
 
     /**
      * 

@@ -43,8 +43,8 @@ class A {
         Copy assignment	        A& operator=(const A&) = default;
         Move assignment	        A& operator=(A&&) = default;
 
-         int x = default; → ❌ Compiler error
-         void print() = default; → ❌ Compiler error
+         int x = default;  Compiler error
+         void print() = default;  Compiler error
         */
         A(int a) {
             // called: A obj(1)
@@ -112,6 +112,27 @@ A* createA() {
     cout << "factory called" << endl;
     return new A();
 }
+
+struct B {
+  int a;
+  int b;
+  B() {
+    a = -1;
+    b = -1;
+    cout << "B's default constructor" << endl;
+  }
+  B(int a, int b = 10) {
+    /*
+    If this param constructor has only one param and that has default value it will conflict with default constructor while creating object
+    B(int a = 1){}
+    // obj
+    B b1; // this will compile error, It don't know which constructor to call because B() also matched and B( a =1) also matched
+    */
+    cout << "Param constructor" << endl;
+    this->a = a;
+    this->b = b;
+  }
+};
 
 int main(){
     A a1; // Default constructor
@@ -216,5 +237,11 @@ int main(){
     // or when the program ends
     // Destructor for a1, a2, a3, a4 will be called here
 
+    // class b
+    B b; // B's default constructor
+    cout << b.a << " , " << b.b << endl; // -1 , -1
+
+    B b1(1);
+    cout << b1.a << " , " << b1.b << endl; // 1 , 10
     return 0;
 }
