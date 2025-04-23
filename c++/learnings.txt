@@ -28,50 +28,76 @@ advanced
     1. pointers.cpp
     2. templates.cpp
 
-Syntax & Basics (Skip if familiar with C)
------------------------------------------------
+see concepts/sharedlib/intro.txt
 
-1. Inheritance
-Basics of inheritance (public, private, protected)
 
-Constructor and destructor behavior in inheritance
+Linker
+-------------
+A linker in C++ (and most compiled languages) is a tool that combines multiple object files into a single executable.
+Linking (.o + libraries -> executable)
 
-Multiple inheritance and diamond problem
+```
+// main.cpp
+extern void hello();
+int main() { hello(); }
 
-Virtual base classes
+// hello.cpp
+#include <iostream>
+void hello() { std::cout << "Hello\n"; }
+```
 
-2. Polymorphism
-Function overloading vs. function overriding
+1. Each is compiled separately into .o files.
+2. The linker connects main() to hello().
+3. Handles relocations and address patching, Updates memory addresses so function calls go to the correct locations.
 
-Virtual functions and runtime polymorphism
 
-Abstract classes and pure virtual functions
+// file1.cpp
+int global = 42;
+void print();
+int main() {
+    print();
+    return global;
+}
 
-Virtual table (vtable) and virtual pointer (vptr) mechanism
+// file2.cpp
+#include <iostream>
+extern int global;
+void print() {
+    std::cout << global << "\n";
+}
 
-3. Exception Handling
-try, catch, throw
+g++ -c file1.cpp  # → file1.o
+g++ -c file2.cpp  # → file2.o
 
-Standard exceptions (std::exception, std::runtime_error, etc.)
+When compiling file2.cpp, the compiler sees: extern int global; // we don't know its address yet!
+So in file2.o, it leaves a placeholder in the instructions saying: “Please insert the address of global here later.”
+This is called a relocation entry.
 
-Custom exception classes
 
-noexcept keyword
+[ file1.o ]                [ file2.o ]
+-------------             -------------------
+| main()     |            | print()          |
+| calls print|            | uses 'global'    |
+-------------             -------------------
+      \                          /
+       \________________________/
+                |
+                V
+         [ Linker starts ]
+                |
+                |
+       ----------------------------------------
+       |  1. Combines both object files       |
+       |  2. Creates a symbol table           |
+       |     global → 0x1000                  |
+       |     print  → 0x2000                  |
+       ----------------------------------------
+                |
+                |
+    Updates all code that says "where is global?"
+    ➜ Replaces it with actual address 0x1000
 
-4. Smart Pointers
-std::unique_ptr
-
-std::shared_ptr
-
-std::weak_ptr
-
-How smart pointers manage memory
-
-5. Templates & STL
-Function templates and class templates
-
-Variadic templates
-
+------------------------------------------------------------------------------------------------------------------
 STL (Standard Template Library) - vector, map, set, unordered_map, etc.
 
 6. Move Semantics & Advanced Memory Management

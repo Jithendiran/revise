@@ -1,0 +1,119 @@
+A shared library (.so on Linux, .dll on Windows) is a compiled binary that can be used by multiple programs at runtime, without being copied into each executable.
+
+* It saves memory and disk space.
+
+* Allows updates without recompiling all programs.
+
+// libmath.cpp
+int add(int a, int b) {
+    return a + b;
+}
+
+g++ -fPIC -c libmath.cpp -o libmath.o // compile
+g++ -shared -o libmath.so libmath.o // create as shared lib
+-c tells the compiler to compile only, not link, it produces object file not executable file. (You can compile multiple .cpp files separately and link them later, possibly into a shared library)
+-fPIC — Position Independent Code (required for shared libs)
+-shared — Create .so file
+
+// main.cpp
+#include <iostream>
+
+extern int add(int, int); // declaration only
+
+int main() {
+    std::cout << add(3, 4) << std::endl;
+    return 0;
+}
+
+g++ main.cpp -L. -lmath -o app
+
+-L. — Look for libraries in current directory
+
+-lmath — Link to libmath.so (omit lib prefix and .so extension)
+Understanding -l and -L
+------------------------
+✅ -l<name>
+Means: link with lib<name>.so or lib<name>.a
+So, -lmath → looks for lib**math**.so or lib**math**.a
+
+Run:
+LD_LIBRARY_PATH=. ./app
+
+LD_LIBRARY_PATH=. tells Linux where to find libmath.so at runtime
+
+
+
+At Compile Time:
+-----------------
+The linker sees a symbol add that is externally defined
+
+1. It does not embed the add function in app
+2. It just records a symbol reference saying:
+3. "I need add() from libmath.so at runtime"
+
+At Run time
+--------------
+[ app ]             [ libmath.so ]
+  |                       |
+  | needs add() --------->|
+  |                       | loads to memory
+  \------ dynamic linker patches call
+
+The dynamic linker (ld.so):
+1. Loads libmath.so into memory
+2. Resolves symbol addresses like add
+3. Updates your app’s function call table to point to libmath.so:add
+
+
+
+
+
+// eg2
+ 
+// sci.cpp
+#include <cmath>
+
+double square(double x) {
+    return x * x;
+}
+g++ -c -fPIC sci.cpp -o sci.o
+g++ -shared -o libsci.so sci.o
+// main.cpp
+#include <iostream>
+
+extern double square(double);
+
+int main() {
+    std::cout << square(4.0) << std::endl;
+    return 0;
+}
+g++ main.cpp -L. -lsci -o app
+
+
+So, -lsci → looks for lib**sci**.so or lib**sci**.a
+
+🔸 If your library is named libsci.so → use -lsci
+🔸 If your library is named libsci_math.so → use -lsci_math
+
+✅ -L<path>
+Tells the compiler where to look for the .so file (shared lib)
+
+For example:
+g++ main.cpp -L/path/to/lib -lsci
+
+
+⚠️ At Runtime: Library Not Found?
+error while loading shared libraries: libsci.so: cannot open shared object file
+
+Fix: Add the path to LD_LIBRARY_PATH:
+export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH // adding current path to the LB_LIBRARY
+./app
+
+
+
+
+
+Tools to inspect
+nm libmath.so         # Shows symbols
+ldd app               # Shows which shared libs are linked
+readelf -d app        # Shows dynamic section (.so dependencies)

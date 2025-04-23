@@ -40,6 +40,8 @@ class D {
     }
 };
 
+class E : public D {};
+
 int main()
 {
     cout<<"Size of class : "<<sizeof(Empty)<<endl; 
@@ -80,6 +82,31 @@ int main()
      //D has virtual table, so it's size is equal to size of pointer
      D do1 = D();
      cout<<"Size of object : "<<sizeof(do1)<<endl; //Size of object : 32
+    /*
+    * GDB 
+    > p do1
+    $1 = {_vptr.D = 0x555555557d50 <vtable for D+16>, a = 0, b = 0, c = 0, d = 0, e = 0, f = 0}
 
+    > x/16x 0x555555557d50
+    0x555555557d50 <_ZTV1D+16>:	0x5555556a	0x00005555	0xf7e1dc30	0x00007fff
+    0x555555557d60 <_ZTI1E+8>:	0x55556027	0x00005555	0x55557d70	0x00005555
+    0x555555557d70 <_ZTI1D>:	0xf7e1cfa0	0x00007fff	0x5555602a	0x00005555
+    0x555555557d80:	0x00000001	0x00000000	0x0000019c	0x00000000
+    */
+    E eo = E();
+    cout<<"Size of object : "<<sizeof(eo)<<endl; //Size of object : 32
+
+    /*
+    GDB from VSCODE
+    -exec p eo
+    $2 = {<D> = {_vptr.D = 0x555555557d38 <vtable for E+16>, a = 0, b = 0, c = 0, d = 0, e = 0, f = 0}, <No data fields>}
+
+
+    -exec x/16x 0x555555557d38
+    0x555555557d38 <_ZTV1E+16>:	0x5555556a	0x00005555	0x00000000	0x00000000
+    0x555555557d48 <_ZTV1D+8>:	0x55557d70	0x00005555	0x5555556a	0x00005555
+    0x555555557d58 <_ZTI1E>:	0xf7e1dc30	0x00007fff	0x55556027	0x00005555
+    0x555555557d68 <_ZTI1E+16>:	0x55557d70	0x00005555	0xf7e1cfa0	0x00007fff
+    */
     return 0;
 }
