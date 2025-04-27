@@ -27,7 +27,7 @@ inheritance
 advanced
     1. pointers.cpp
     2. templates.cpp
-
+    3. custom_pointers.cpp
 see concepts/sharedlib/intro.txt
 
 
