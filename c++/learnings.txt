@@ -30,6 +30,7 @@ advanced
     3. custom_pointers.cpp
 see concepts/sharedlib/intro.txt
 
+visit docs folder
 
 Linker
 -------------
