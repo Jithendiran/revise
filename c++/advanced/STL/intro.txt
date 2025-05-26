@@ -1,0 +1,10 @@
+Standard Template Library 
+    It's parts are
+    * Containers
+        To store data, eg: vectors, map
+    * Algorithms 
+        To perform manipulations in containers like search, sort,..
+    * functors
+        To perform custom algorithms 
+    * Iterators 
+        A way of accessing the containers, eg: get next elements from containers 

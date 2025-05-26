@@ -26,8 +26,11 @@ inheritance
 
 advanced
     1. pointers.cpp
-    2. templates.cpp
-    3. custom_pointers.cpp
+    2. custom_pointers.cpp
+    3. templates.cpp
+    STL
+        1. list
+
 see concepts/sharedlib/intro.txt
 
 visit docs folder
