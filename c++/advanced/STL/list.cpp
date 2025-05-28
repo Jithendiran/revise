@@ -18,6 +18,8 @@ int main(){
    l.push_front(1); // push as 1st element
    l.push_back(2); // push at last
 
+   // This is a range-based for loop (introduced in C++11).
+   // Internally, it uses iterators
     for(int i:l){
         cout << i << endl;
     }
@@ -54,6 +56,12 @@ int main(){
 
     // const_iterator is more secure
     for(list<int>::const_iterator it = l1.begin(); it != l1.end(); it++){
+        // *it = *it+1; NOT ALLOWED due to const_iterator
+        cout << *it << endl;
+    } // 2 4 2
+
+    // cbegin() and cend() are const_iterator
+    for(list<int>::const_iterator it = l1.cbegin(); it != l1.cend(); it++){
         // *it = *it+1; NOT ALLOWED due to const_iterator
         cout << *it << endl;
     } // 2 4 2

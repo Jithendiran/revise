@@ -30,6 +30,7 @@ advanced
     3. templates.cpp
     STL
         1. list
+        2. vectors
 
 see concepts/sharedlib/intro.txt
 
