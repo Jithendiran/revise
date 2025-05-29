@@ -29,8 +29,10 @@ advanced
     2. custom_pointers.cpp
     3. templates.cpp
     STL
-        1. list
-        2. vectors
+        1. list.cpp
+        2. vectors.cpp
+        3. map.cpp
+        4. thread.cpp
 
 see concepts/sharedlib/intro.txt
 
