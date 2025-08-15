@@ -1,0 +1,29 @@
+{
+  "app-id": "org.example.Factorial",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "48",
+  "sdk": "org.gnome.Sdk",
+  "command": "factorial",
+  "finish-args": [
+    "--share=ipc",
+    "--socket=fallback-x11",
+    "--socket=wayland",
+    "--device=dri"
+  ],
+  "modules": [
+    {
+      "name": "factorial",
+      "buildsystem": "simple",
+      "build-commands": [
+        "mkdir -p /app/bin",
+        "gcc -g -O0 main.c -o /app/bin/factorial"
+      ],
+      "sources": [
+        {
+          "type": "dir",
+          "path": "src"
+        }
+      ]
+    }
+  ]
+}
