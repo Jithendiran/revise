@@ -1,0 +1,35 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Flatpak Factorial",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/usr/bin/flatpak",
+            "args": [
+                "run",
+                "--command=/app/bin/factorial",
+                "--devel",
+                "--filesystem=${workspaceFolder}",
+                "org.example.Factorial"
+            ],
+            "stopAtEntry": false,
+            "cwd": "/media/ssd/Project/revise/flatpak",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/flatpak-spawn",
+            "miDebuggerArgs": "--host gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "sourceFileMap": {
+                "/app/src": "${workspaceFolder}/src"
+            }
+        }
+    ]
+}
