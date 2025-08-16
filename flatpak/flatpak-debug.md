@@ -44,3 +44,61 @@ in host machine
 6. dir /media/ssd/Project/revise/flatpak/src
 7. break main
 8. continue
+
+
+1. flatpak-builder --share=network --run /tmp/build-dir/ ./org.example.Factorial.json bash
+2. gdbserver :12345 /app/bin/factoria
+3. Host
+```
+gdb
+dir /media/ssd/Project/revise/flatpak/src
+```
+
+1. flatpak-builder --user --force-clean --state-dir=/tmp/flatpak-state /tmp/build-dir org.example.Factorial.json
+1. flatpak-builder --share=network --run /tmp/build-dir/ ./org.example.Factorial.json bash
+2. Host
+```
+sudo sysctl -w kernel.yama.ptrace_scope=0
+gdb
+attach <pid-of-1'st-process>
+```
+
+Below is failure method need more info
+```
+
+HOST
+1. flatpak-builder --user --force-clean --state-dir=/tmp/flatpak-state /tmp/build-dir org.example.Factorial.json
+2. flatpak-builder --share=network  --run /tmp/build-dir/ ./org.example.Factorial.json factorial
+now you may see factorial output in the screen
+
+HOST
+3. sudo sysctl -w kernel.yama.ptrace_scope=0
+4. gdb -p <pid-of factorial>
+4. file /tmp/build-dir/files/bin/factorial
+5. symbol-file /tmp/build-dir/files/lib/debug/bin/factorial.debug 
+7. set sysroot /var/lib/flatpak/runtime/org.gnome.Sdk/x86_64/48/active/files
+8. set debug-file-directory /var/lib/flatpak/runtime/org.gnome.Sdk/x86_64/48/active/files/lib/debug
+9. set solib-search-path /var/lib/flatpak/runtime/org.gnome.Sdk/x86_64/48/active/files/lib/x86_64-linux-gnu
+6. dir /media/ssd/Project/revise/flatpak/src
+9. break main
+10.run
+
+```
+
+success method
+```
+HOST
+1. flatpak-builder --user --force-clean --state-dir=/tmp/flatpak-state /tmp/build-dir org.example.Factorial.json
+2. flatpak-builder --share=network  --run /tmp/build-dir/ ./org.example.Factorial.json bash
+
+Flatpak
+3. gdbserver :12345 /app/bin/factorial 
+
+HOST
+4. gdb
+5. (gdb) target remote :12345
+6. (gdb) symbol-file /tmp/build-dir/files/lib/debug/bin/factorial.debug
+7. (gdb) dir /media/ssd/Project/revise/flatpak/src
+8. (gdb) b main.c:factorial:8
+9. c
+```

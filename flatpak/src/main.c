@@ -1,13 +1,23 @@
 #include <stdio.h>
+#include <unistd.h> // For sleep function
 
+// Function to calculate factorial
 unsigned long long factorial(int n) {
-    if (n == 0 || n == 1) return 1;
-    return n * factorial(n - 1); // Recursive factorial
+    unsigned long long result = 1;
+    for (int i = 1; i <= n; ++i) {
+        result *= i;
+    }
+    return result;
 }
 
 int main() {
-    int n = 20; // Large input to cause overflow
-    unsigned long long result = factorial(n);
-    printf("Factorial of %d is %llu\n", n, result);
+    while (1) {
+        for (int i = 1; i <= 20; ++i) {
+            printf("Factorial of %d is %llu\n", i, factorial(i));
+        }
+
+        printf("Restarting loop...\n\n");
+    }
+
     return 0;
 }
