@@ -1,0 +1,39 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Flatpak App",
+      "type": "shell",
+      "command": "flatpak-builder",
+      "args": [
+        "--user",
+        "--force-clean",
+        "--state-dir=/tmp/flatpak-state",
+        "/tmp/build-dir",
+        "${workspaceFolder}/org.example.Factorial.json"
+      ],
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "Run Flatpak with gdbserver",
+      "type": "shell",
+      "dependsOn": "Build Flatpak App",
+      "command": "flatpak-builder",
+      "args": [
+        "--share=network",
+        "--run",
+        "/tmp/build-dir",
+        "${workspaceFolder}/org.example.Factorial.json",
+        "gdbserver",
+        ":12345",
+        "/app/bin/factorial"
+      ],
+      "problemMatcher": [],
+      "isBackground": true,
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    }
+  ]
+}

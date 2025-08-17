@@ -1,35 +1,34 @@
 {
-    "version": "0.2.0",
-    "configurations": [
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Flatpak (gdbserver)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "/tmp/build-dir/files/bin/factorial",
+      "miDebuggerServerAddress": "localhost:12345",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "cwd": "${workspaceFolder}",
+      "MIMode": "gdb",
+      "preLaunchTask": "Run Flatpak with gdbserver",
+      "setupCommands": [
         {
-            "name": "Debug Flatpak Factorial",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "/usr/bin/flatpak",
-            "args": [
-                "run",
-                "--command=/app/bin/factorial",
-                "--devel",
-                "--filesystem=${workspaceFolder}",
-                "org.example.Factorial"
-            ],
-            "stopAtEntry": false,
-            "cwd": "/media/ssd/Project/revise/flatpak",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "miDebuggerPath": "/usr/bin/flatpak-spawn",
-            "miDebuggerArgs": "--host gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ],
-            "sourceFileMap": {
-                "/app/src": "${workspaceFolder}/src"
-            }
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Load debug symbols",
+          "text": "symbol-file /tmp/build-dir/files/lib/debug/bin/factorial.debug"
+        },
+        {
+          "description": "Set source directory",
+          "text": "dir /media/ssd/Project/revise/flatpak/src"
         }
-    ]
+      ],
+      "sourceFileMap": {
+        "/media/ssd/Project/revise/flatpak/src": "${workspaceFolder}/src"
+      }
+    }
+  ]
 }
