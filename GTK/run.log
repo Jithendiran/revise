@@ -1,0 +1,325 @@
+meson
+gettext
+appstream-util
+catch2
+itstool
+libglibmm-2.68-dev
+libgtkmm-4.0-dev
+libgtop2-dev
+librsvg2-dev
+libadwaita-1-dev
+libsystemd-dev
+uncrustify
+
+1. flatpak run org.gnome.Sdk
+2. flatpak-spawn
+ --host
+ --watch-bus
+
+ --env=COLORTERM=truecolor
+ --env=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+ --env=DESKTOP_SESSION=cinnamon
+ --env=DISPLAY=:0
+ --env=FLATPAK_CONFIG_DIR=/media/ssd/Project/.gnome-builder/flatpak/etc
+ --env=HOME=/home/jidesh
+ --env=LANG=en_IN
+ --env=SHELL=/bin/bash
+ --env=SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
+ --env=TERM=xterm-256color
+ --env=USER=jidesh
+ --env=XAUTHORITY=/home/jidesh/.Xauthority
+ --env=XDG_CURRENT_DESKTOP=X-Cinnamon
+ --env=XDG_SESSION_DESKTOP=cinnamon
+ --env=XDG_SESSION_TYPE=x11
+
+ --forward-fd=2flatpakbuild
+ --with-appdir
+ --allow=devel
+ --die-with-parent
+ --bind-mount=/run/user/1000/doc=/run/user/1000/doc/by-app/org.gnome.SystemMonitor.Devel
+ --bind-mount=/run/host/fonts=/usr/share/fonts
+ --bind-mount=/run/host/local-fonts=/usr/local/share/fonts
+ --bind-mount=/run/host/fonts-cache=/var/cache/fontconfig
+ --filesystem=/home/jidesh/.cache/fontconfig:ro
+ --bind-mount=/run/host/user-fonts-cache=/home/jidesh/.cache/fontconfig
+ --bind-mount=/run/host/font-dirs.xml=/home/jidesh/.cache/font-dirs.xml
+ --filesystem=/media/ssd/Project/.gnome-builder/projects/gnome-system-monitor
+
+ --device=dri
+ --share=ipc
+ --socket=fallback-x11
+ --socket=wayland
+ --share=network
+ --filesystem=host
+ --talk-name=org.gtk.vfs.*
+ --filesystem=xdg-run/gvfsd
+ --filesystem=xdg-run/dconf
+ --filesystem=~/.config/dconf:ro
+ --talk-name=ca.desrt.dconf
+ --env=DCONF_USER_CONFIG_DIR=.config/dconf
+ --add-policy=Tracker3.dbus:org.freedesktop.Tracker3.Miner.Files=tracker:FileSystem
+ --talk-name=org.freedesktop.portal.*
+ --talk-name=org.a11y.Bus
+ --bind-mount=/run/flatpak/at-spi-bus=/run/user/1000/at-spi/bus_0
+ --env=AT_SPI_BUS_ADDRESS=unix:path=/run/flatpak/at-spi-bus,guid=74b26974e2e937f371acbc60689b3e66
+ --filesystem=~/.local/share/fonts:ro/media/ssd/Project/.gnome-builder/projects/gnome-system-monitor/flatpak/staging/x86_64-maingnome-system-monitor
+
+
+
+
+ flatpak-spawn --host --watch-bus --env=COLORTERM=truecolor --env=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus --env=DESKTOP_SESSION=cinnamon --env=DISPLAY=:0 --env=FLATPAK_CONFIG_DIR=/media/ssd/Project/.gnome-builder/flatpak/etc --env=HOME=/home/jidesh --env=LANG=en_IN --env=SHELL=/bin/bash --env=SSH_AUTH_SOCK=/run/user/1000/keyring/ssh --env=TERM=xterm-256color --env=USER=jidesh --env=XAUTHORITY=/home/jidesh/.Xauthority --env=XDG_CURRENT_DESKTOP=X-Cinnamon --env=XDG_SESSION_DESKTOP=cinnamon --env=XDG_SESSION_TYPE=x11 --forward-fd=2flatpakbuild --with-appdir --allow=devel --die-with-parent --bind-mount=/run/user/1000/doc=/run/user/1000/doc/by-app/org.gnome.SystemMonitor.Devel --bind-mount=/run/host/fonts=/usr/share/fonts --bind-mount=/run/host/local-fonts=/usr/local/share/fonts --bind-mount=/run/host/fonts-cache=/var/cache/fontconfig --filesystem=/home/jidesh/.cache/fontconfig:ro --bind-mount=/run/host/user-fonts-cache=/home/jidesh/.cache/fontconfig --bind-mount=/run/host/font-dirs.xml=/home/jidesh/.cache/font-dirs.xml --bind-mount=/run/host/font-dirs.xml=/home/jidesh/.cache/font-dirs.xml --filesystem=/media/ssd/Project/.gnome-builder/projects/gnome-system-monitor --env=COLORTERM=truecolor --env=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus --env=DESKTOP_SESSION=cinnamon --env=DISPLAY=:0 --env=HOME=/home/jidesh --env=INSIDE_GNOME_BUILDER=48.2 --env=LANG=en_IN --env=SHELL=/bin/bash --env=SSH_AUTH_SOCK=/run/user/1000/keyring/ssh --env=TERM=xterm-256color --env=USER=jidesh --env=XAUTHORITY=/home/jidesh/.Xauthority --env=XDG_CURRENT_DESKTOP=X-Cinnamon --env=XDG_SESSION_DESKTOP=cinnamon --env=XDG_SESSION_TYPE=x11 --device=dri --share=ipc --socket=fallback-x11 --socket=wayland --share=network --filesystem=host --talk-name=org.gtk.vfs.* --filesystem=xdg-run/gvfsd --filesystem=xdg-run/dconf --filesystem=~/.config/dconf:ro --talk-name=ca.desrt.dconf --env=DCONF_USER_CONFIG_DIR=.config/dconf --add-policy=Tracker3.dbus:org.freedesktop.Tracker3.Miner.Files=tracker:FileSystem --talk-name=org.freedesktop.portal.* --talk-name=org.a11y.Bus --bind-mount=/run/flatpak/at-spi-bus=/run/user/1000/at-spi/bus_0 --env=AT_SPI_BUS_ADDRESS=unix:path=/run/flatpak/at-spi-bus,guid=74b26974e2e937f371acbc60689b3e66 --filesystem=~/.local/share/fonts:ro/media/ssd/Project/.gnome-builder/projects/gnome-system-monitor/flatpak/staging/x86_64-maingnome-system-monitor
+
+ flatpak run --command=sh --devel --filesystem=/media/ssd/Project org.gnome.Sdk//48  # tmp
+ flatpak override --user --filesystem=/media/ssd/Project org.gnome.Sdk # permenet
+
+
+flatpak-builder  build-dir build-aux/flatpak/org.gnome.SystemMonitor.Devel.json --force-clean
+
+flatpak-builder --run build-dir build-aux/flatpak/org.gnome.SystemMonitor.Devel.json sh
+
+
+flatpak-builder \
+  --state-dir=/media/ssd/flatpak-state \
+  build-dir \
+  build-aux/flatpak/org.gnome.SystemMonitor.Devel.json \
+  --force-clean
+
+/*
+--state-dir → where .flatpak-builder contents will live (sources, downloads, build cache).
+
+build-dir → still the install directory inside the sandbox (can also be a custom path if you want).
+
+Your source tree stays clean because nothing gets dumped in . except the build-dir you specify.
+*/
+
+If you want both state and build to be outside the source repo entirely, you can do:
+
+
+flatpak-builder \
+  --state-dir=/tmp/flatpak-state \
+  /tmp/flatpak-build \
+  /media/ssd/Project/open_source/gnome-system-monitor/gnome-system-monitor/build-aux/flatpak/org.gnome.SystemMonitor.Devel.json \
+  --force-clean
+
+/**
+/media/ssd/flatpak-state → all cached downloads, git clones, extracted source.
+
+/media/ssd/flatpak-build → the build output directory used by --run.
+
+**/
+
+enter build env
+flatpak-builder --run /tmp/flatpak-build \
+    /media/ssd/Project/open_source/gnome-system-monitor/gnome-system-monitor/build-aux/flatpak/org.gnome.SystemMonitor.Devel.json \
+    bash
+
+// build and install
+flatpak-builder --user \
+    --state-dir=/tmp/flatpak-state \
+    --install --force-clean \
+    /tmp/flatpak-build \
+    /media/ssd/Project/open_source/gnome-system-monitor/gnome-system-monitor/build-aux/flatpak/org.gnome.SystemMonitor.Devel.json
+
+
+
+flatpak-builder --user   --state-dir=/tmp/flatpak-state     --install --force-clean     /tmp/flatpak-build     /media/ssd/Project/open_source/gnome-system-monitor/gnome-system-monitor/build-aux/flatpak/org.gnome.SystemMonitor.Devel.json
+
+--filesystem=/usr/bin/meson:create
+
+
+
+ flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+flatpak-builder --user   --state-dir=/tmp/flatpak-state  --install-deps-from=flathub   --install --force-clean     /tmp/flatpak-build     /media/ssd/Project/open_source/gnome-system-monitor/gnome-system-monitor/build-aux/flatpak/org.gnome.SystemMonitor.Devel.json
+
+
+flatpak-builder --arch=x86_64 --ccache --force-clean --disable-updates --disable-download --state-dir /media/ssd/Project/.gnome-builder/flatpak-builder --stop-at=gnome-system-monitor /media/ssd/Project/.gnome-builder/projects/gnome-system-monitor/flatpak/staging/x86_64-main /media/ssd/Project/open_source/gnome-system-monitor/gnome-system-monitor/build-aux/flatpak/org.gnome.SystemMonitor.Devel.json
+
+# vscode
+1. flatpak build-init /media/ssd/Project/open_source/gnome-system-monitor/.flatpak/repo org.gnome.SystemMonitor.Devel org.gnome.Sdk org.gnome.Platform 48
+
+flatpak build --with-appdir --allow=devel --bind-mount=/run/user/1000/doc=/run/user/1000/doc/by-app/org.gnome.SystemMonitor.Devel --device=dri --share=ipc --socket=fallback-x11 --socket=wayland --share=network --filesystem=host --talk-name=org.gtk.vfs.* --filesystem=xdg-run/gvfsd --filesystem=xdg-run/dconf --filesystem=~/.config/dconf:ro --talk-name=ca.desrt.dconf --env=DCONF_USER_CONFIG_DIR=.config/dconf --add-policy=Tracker3.dbus:org.freedesktop.Tracker3.Miner.Files=tracker:FileSystem --talk-name=org.freedesktop.portal.* --talk-name=org.a11y.Bus --bind-mount=/run/flatpak/at-spi-bus=/run/user/1000/at-spi/bus_0 --env=AT_SPI_BUS_ADDRESS=unix:path=/run/flatpak/at-spi-busguid=6fe2a536dcdd44bc5a39da48689eb85d --env=DESKTOP_SESSION=cinnamon --env=LANG=en_IN --env=XDG_CURRENT_DESKTOP=X-Cinnamon --env=XDG_SEAT=seat0 --env=XDG_SESSION_DESKTOP=cinnamon --env=XDG_SESSION_ID=c2 --env=XDG_SESSION_TYPE=x11 --env=XDG_VTNR=7 --env=PATH=/home/jidesh/.local/bin:/home/jidesh/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/jidesh/.lmstudio/bin:/media/ssd/Project/Ji_apps/scripts:/home/jidesh/.lmstudio/bin:/home/jidesh/.lmstudio/bin:/app/bin:/usr/bin --env=LD_LIBRARY_PATH=/app/lib --env=PKG_CONFIG_PATH=/app/lib/pkgconfig:/app/share/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig --share=network --bind-mount=/run/host/fonts=/usr/share/fonts --bind-mount=/run/host/fonts-cache=/var/cache/fontconfig --filesystem=/home/jidesh/.cache/fontconfig:ro --bind-mount=/run/host/user-fonts-cache=/home/jidesh/.cache/fontconfig --bind-mount=/run/host/font-dirs.xml=/home/jidesh/.cache/font-dirs.xml /media/ssd/Project/open_source/gnome-system-monitor/.flatpak/repo /usr/bin/meson "$@"
+flatpak-builder --ccache --force-clean --disable-updates --download-only --state-dir=/media/ssd/Project/open_source/gnome-system-monitor/.flatpak/flatpak-builder --stop-at=gnome-system-monitor /media/ssd/Project/open_source/gnome-system-monitor/.flatpak/repo /media/ssd/Project/open_source/gnome-system-monitor/gnome-system-monitor/build-aux/flatpak/org.gnome.jisy.Devel.json
+
+1. SDK
+
+flatpak run --devel --command=bash org.gnome.Sdk//48
+flatpak run --devel --filesystem=host --command=bash org.gnome.Sdk// # mount the current host (or) below for only given dir
+flatpak run \
+  --devel \
+  --filesystem=/media/ssd/Project/open_source/gnome-system-monitor \
+  --command=bash \
+  org.gnome.Sdk//48
+
+--------------------
+
+flatpak build-init /media/ssd/Project/open_source/gnome-system-monitor/flatpak-cst/repo org.gnome.SystemCst.Devel org.gnome.Sdk org.gnome.Platform 48
+
+flatpak-builder --ccache --force-clean --disable-updates --state-dir=/media/ssd/Project/open_source/gnome-system-monitor/flatpak-cst/build-state --repo=/media/ssd/Project/open_source/gnome-system-monitor/flatpak-cst/repo /media/ssd/Project/open_source/gnome-system-monitor/flatpak-cst/build-dir /media/ssd/Project/open_source/gnome-system-monitor/gnome-system-monitor/build-aux/flatpak/org.gnome.SystemMonitor.Devel.json
+
+
+1. flatpak run --command=sh --devel --filesystem=host --share=network --talk-name=org.freedesktop.Flatpak  org.gnome.Sdk//48
+
+2. flatpak-spawn --host $BUILDER
+
+
+////
+
+flatpak-builder \
+--arch=x86_64 \
+--ccache \
+--force-clean \
+--disable-updates \
+--disable-download \
+--state-dir=/media/ssd/Project/.gnome-builder/flatpak-builder \
+--stop-at=gnome-system-monitor  \ 
+/media/ssd/Project/.gnome-builder/projects/gnome-system-monitor/flatpak/staging/x86_64-main \
+/media/ssd/Project/open_source/gnome-system-monitor/gnome-system-monitor/build-aux/flatpak/org.gnome.SystemMonitor.Devel.json
+
+
+flatpak-builder --arch=x86_64 --ccache --force-clean --disable-updates --disable-download --state-dir=/media/ssd/Project/.gnome-builder/flatpak-builder --stop-at=gnome-system-monitor  /media/ssd/Project/.gnome-builder/projects/gnome-system-monitor/flatpak/staging/x86_64-main  /media/ssd/Project/open_source/gnome-system-monitor/gnome-system-monitor/build-aux/flatpak/org.gnome.SystemMonitor.Devel.json
+
+
+flatpak-builder --arch=x86_64 --ccache --force-clean --disable-updates --disable-download --state-dir=/media/ssd/Project/.gnome-builder/flatpak-builder  /media/ssd/Project/.gnome-builder/projects/gnome-system-monitor/flatpak/staging/x86_64-main  /media/ssd/Project/open_source/gnome-system-monitor/gnome-system-monitor/build-aux/flatpak/org.gnome.SystemMonitor.Devel.json
+
+flatpak-builder --run  /media/ssd/Project/.gnome-builder/projects/gnome-system-monitor/flatpak/staging/x86_64-main  /media/ssd/Project/open_source/gnome-system-monitor/gnome-system-monitor/build-aux/flatpak/org.gnome.SystemMonitor.Devel.json bash
+
+PKG_CONFIG_PATH=/opt/glibmm-2.68/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH
+ pkg-config --modversion glibmm-2.68
+flatpak-builder --force-clean --state-dir=/tmp/gnome-state /tmp/gnome-build org.gnome.jisy.Devel.json
+
+
+ flatpak-builder --force-clean --state-dir=/tmp/gnome-state /tmp/gnome-build org.ji.test.json
+
+ flatpak-builder --force-clean --state-dir=/tmp/state-dir-ji /tmp/build-dir-ji org.ji.test.json
+  flatpak-builder --run  /tmp/build-dir-ji org.ji.test.json bash
+  flatpak-builder --build-shell=glibmm --force-clean --stop-at=glibmm --state-dir=/tmp/state-dir-ji /tmp/build-dir-ji
+  cd /run/build/glibmm 
+  ninja -C _flatpak_build install
+
+flatpak-builder --disable-rofiles-fuse --force-clean build-dir org.ji.test.json
+flatpak-builder --run  build-dir  org.ji.test.json bash
+flatpak-builder --build-shell=pangomm --force-clean --stop-at=pangomm build-dir org.ji.test.json
+
+// don't compile each time
+flatpak-builder --disable-rofiles-fuse --require-changes build-dir org.ji.test.json
+flatpak-builder --run  build-dir org.ji.test.json bash
+flatpak-builder --run  --share=network build-dir org.ji.test.json  gdbserver :12345 /app/bin/gnome-system-monitor
+
+// 
+flatpak-builder --stop-at=gnome-system-monitor --disable-rofiles-fuse --require-changes build-dir org.ji.test.json
+
+flatpak-builder --stop-at=gnome-system-monitor --disable-rofiles-fuse --require-changes --state-dir=/tmp/flatpak-state --jobs=$(nproc) build-dir org.ji.test.json
+
+```
+{
+            "name": "gnome-system-monitor",
+            "builddir": true,
+            "buildsystem": "meson",
+            "run-tests": true,
+            "config-opts": [
+                "-Ddevelopment=true"
+            ],
+            "build-options": {
+                "cxxflags": "-O2 -g -std=c++20",
+                "env": {
+                    "PATH": "/app/bin:/usr/bin:/sbin:$PATH",
+                    "PKG_CONFIG_PATH": "/app/lib64/pkgconfig:/app/lib/pkgconfig:/usr/lib64/pkgconfig:/usr/lib/pkgconfig"
+                }
+            },
+            "sources": [
+                {
+                    "type": "dir",
+                    "path": "./gnome-system-monitor"
+                }
+            ]
+        }
+```
+
+
+1. mkdir -p /tmp/build-tmp
+2. sudo mount -t tmpfs -o size=4G tmpfs /tmp/build-tmp
+3. sudo chown "$USER":"$USER" /tmp/build-tmp
+4. flatpak-builder --run --filesystem=/tmp/build-tmp  --share=network build-dir /media/ssd/Project/open_source/gnome-system-monitor/org.ji.test.json  bash
+5. cd <space> 
+6. export PKG_CONFIG_PATH="/app/lib64/pkgconfig:/app/lib/pkgconfig:/usr/lib64/pkgconfig:/usr/lib/pkgconfig"
+6. meson setup /tmp/build-tmp/build --buildtype debug -Ddevelopment=true
+7. ninja -C /tmp/build-tmp/build
+7. cd /tmp/build-tmp/build
+8. meson devenv
+9. ./src/gnome-system-monitor
+8. ninja -C /tmp/build-tmp/build install (optional)
+9. ninja -C /tmp/build-tmp/build -t clean
+10.rm -rf /tmp/build-tmp/build
+11.sudo umount /tmp/build-tmp
+
+G_RESOURCE_OVERLAYS=/org/gnome/SystemMonitor=/tmp/build-tmp/build/src/gsm.gresource /tmp/build-tmp/build/src/gnome-system-monitor
+
+1. meson setup /tmp/build-tmp/build --buildtype debug -Ddevelopment=true --prefix=/tmp/build-tmp/install
+2.  ninja -C /tmp/build-tmp/build
+3. GSETTINGS_SCHEMA_DIR=/tmp/build-tmp/install/share/glib-2.0/schemas /tmp/build-tmp/install/bin/gnome-system-monitor
+
+3. export GSETTINGS_SCHEMA_DIR=/tmp/build-tmp/install/share/glib-2.0/schemas
+4. gdbserver :12345 /tmp/build-tmp/install/bin/gnome-system-monitor
+
+
+flatpak-builder --arch=x86_64 --disable-rofiles-fuse  --state-dir=/tmp/build-tmp/stage /tmp/build-tmp/build  /media/ssd/Project/open_source/gnome-monitor/org.ji.test.json 
+--- host
+0. flatpak-builder --arch=x86_64 --disable-rofiles-fuse  build-dir  /media/ssd/Project/open_source/gnome-monitor/org.ji.test.json 
+1. mkdir -p /tmp/build-tmp
+2. sudo mount -t tmpfs -o size=4G tmpfs /tmp/build-tmp
+3. sudo chown "$USER":"$USER" /tmp/build-tmp
+4. flatpak-builder --run --filesystem=/tmp/build-tmp --filesystem=host --share=network /media/ssd/Project/open_source/gnome-monitor/build-dir /media/ssd/Project/open_source/gnome-monitor/org.ji.test.json  bash
+--- flatpak
+5. cd /media/ssd/Project/open_source/gnome-monitor/gnome-system-monitor
+6. export PKG_CONFIG_PATH="/app/lib64/pkgconfig:/app/lib/pkgconfig:/usr/lib64/pkgconfig:/usr/lib/pkgconfig"
+7. meson setup /tmp/build-tmp/build --buildtype debug -Ddevelopment=true --prefix=/tmp/build-tmp/install
+8. ninja -C /tmp/build-tmp/build && ninja -C /tmp/build-tmp/build install
+9. export GSETTINGS_SCHEMA_DIR=/tmp/build-tmp/install/share/glib-2.0/schemas
+10. gdbserver :12345 /tmp/build-tmp/install/bin/gnome-system-monitor
+-----
+11. 
+```
+{
+      "name": "Gnome system monitor - 2",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "/tmp/build-tmp/install/bin/gnome-system-monitor",
+      "miDebuggerServerAddress": ":12345",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "cwd": "${workspaceFolder}",
+      "MIMode": "gdb",
+      "logging": {
+        "engineLogging": true
+      },
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      "postRemoteConnectCommands": [
+        {
+          "description": "Set source directory",
+          "text": "dir ${workspaceFolder}/gnome-system-monitor/src"
+        },
+         {
+          "description": "Set source for lib",
+          "text": "set substitute-path /run/build /media/ssd/Project/open_source/gnome-monitor/build-dir/files/lib/debug/source"
+        }
+      ],
+      "stopAtEntry": false
+    }
+```
+
+
+flatpak-builder --run  --share=network /media/ssd/Project/.gnome-builder/projects/gnome-system-monitor/builds/org.gnome.SystemMonitor.Devel.json-flatpak-org.gnome.Platform-master-x86_64-fix-issue /media/ssd/Project/open_source/gnome-monitor/org.ji.test.json  bash
+
+export PKG_CONFIG_PATH="/app/lib64/pkgconfig:/app/lib/pkgconfig:/usr/lib64/pkgconfig:/usr/lib/pkgconfig"
+g++ /tmp/build-tmp/learn/learn.cpp -o learn.out `pkg-config --cflags --libs gtk4`
+
+
+
+check dynamic library path and set the substitute
+ldd /tmp/build-tmp/install/bin/gnome-system-monitor

@@ -1,0 +1,274 @@
+{
+    "app-id": "org.ji.test",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "48",
+    "sdk": "org.gnome.Sdk",
+    "finish-args": [
+        "--env=LD_LIBRARY_PATH=/app/lib:/app/lib64:$LD_LIBRARY_PATH",
+        "--device=dri",
+        "--share=ipc",
+        "--socket=fallback-x11",
+        "--socket=wayland",
+        "--socket=session-bus",
+        "--share=network",
+        "--filesystem=host",
+        "--talk-name=org.gtk.vfs.*",
+        "--filesystem=xdg-run/gvfsd",
+        "--filesystem=xdg-run/dconf",
+        "--filesystem=~/.config/dconf:ro",
+        "--talk-name=ca.desrt.dconf",
+        "--env=DCONF_USER_CONFIG_DIR=.config/dconf",
+        "--add-policy=Tracker3.dbus:org.freedesktop.Tracker3.Miner.Files=tracker:FileSystem"
+    ],
+    "modules": [
+        {
+            "name": "meson",
+            "buildsystem": "simple",
+            "build-options": {
+                "build-args": [
+                    "--share=network"
+                ]
+            },
+            "build-commands": [
+                "pip3 install --ignore-installed --prefix=/app --no-deps meson==1.8.0"
+            ]
+        },
+        {
+            "name": "lib2.84",
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://download.gnome.org/sources/glib/2.84/glib-2.84.4.tar.xz",
+                    "sha256": "8a9ea10943c36fc117e253f80c91e477b673525ae45762942858aef57631bb90"
+                }
+            ]
+        },
+        {
+            "name": "sigc++-3.0",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Dbuild-examples=false",
+                "-Dbuild-documentation=false",
+                "-Dbuild-tests=false"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://download.gnome.org/sources/libsigc++/3.6/libsigc++-3.6.0.tar.xz",
+                    "sha256": "c3d23b37dfd6e39f2e09f091b77b1541fbfa17c4f0b6bf5c89baef7229080e17"
+                }
+            ]
+        },
+        {
+            "name": "cairomm",
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://www.cairographics.org/releases/cairomm-1.18.0.tar.xz",
+                    "sha256": "b81255394e3ea8e8aa887276d22afa8985fc8daef60692eb2407d23049f03cfb"
+                }
+            ],
+            "config-opts": [
+                "-Dbuild-documentation=false",
+                "-Dbuild-examples=false",
+                "-Dmaintainer-mode=false"
+            ]
+        },
+        {
+            "name": "FreeType2",
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://downloads.sourceforge.net/freetype/freetype-2.13.3.tar.xz",
+                    "sha256": "0550350666d427c74daeb85d5ac7bb353acba5f76956395995311a9c6f063289"
+                }
+            ]
+        },
+        {
+            "name": "pango",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Dbuild-testsuite=false",
+                "-Dbuild-examples=false"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://download.gnome.org/sources/pango/1.56/pango-1.56.4.tar.xz",
+                    "sha256": "17065e2fcc5f5a5bdbffc884c956bfc7c451a96e8c4fb2f8ad837c6413cb5a01"
+                }
+            ]
+        },
+        {
+            "name": "mm-common",
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://download.gnome.org/sources/mm-common/1.0/mm-common-1.0.7.tar.xz",
+                    "sha256": "494abfce781418259b1e9d8888c73af4de4b6f3be36cc75d9baa8baa0f2a7a39"
+                }
+            ]
+        },
+        {
+            "name": "glibmm",
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://download.gnome.org/sources/glibmm/2.68/glibmm-2.68.2.tar.xz",
+                    "sha256": "91e0a8618f7b82db4aaf2648932ea2bcfe626ad030068c18fa2d106fd838d8ad"
+                }
+            ],
+            "config-opts": [
+                "-Dbuild-documentation=false",
+                "-Dbuild-examples=false",
+                "-Dmaintainer-mode=false"
+            ]
+        },
+        {
+            "name": "glibmm",
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://download.gnome.org/sources/glibmm/2.84/glibmm-2.84.0.tar.xz",
+                    "sha256": "56ee5f51c8acfc0afdf46959316e4c8554cb50ed2b6bc5ce389d979cbb642509"
+                }
+            ],
+            "config-opts": [
+                "-Dbuild-documentation=false",
+                "-Dbuild-examples=false",
+                "-Dmaintainer-mode=false"
+            ]
+        },
+        {
+            "name": "pangomm",
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://download.gnome.org/sources/pangomm/2.56/pangomm-2.56.1.tar.xz",
+                    "sha256": "539f5aa60e9bdc6b955bb448e2a62cc14562744df690258040fbb74bf885755d"
+                }
+            ],
+            "build-options": {
+                "env": {
+                    "LDFLAGS": "-L/app/lib64",
+                    "PKG_CONFIG_PATH": "/app/lib64/pkgconfig:/app/lib/pkgconfig:/usr/lib64/pkgconfig:/usr/lib/pkgconfig"
+                }
+            },
+            "config-opts": [
+                "-Dbuild-documentation=false",
+                "-Dmaintainer-mode=false"
+            ]
+        },
+        {
+            "name": "libsass",
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/lazka/libsass.git",
+                    "branch": "meson"
+                }
+            ]
+        },
+        {
+            "name": "sassc",
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/lazka/sassc.git",
+                    "branch": "meson"
+                }
+            ]
+        },
+        {
+            "name": "gtk4",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Ddocumentation=false",
+                "-Dbuild-demos=false",
+                "-Dbuild-examples=false",
+                "-Dbuild-tests=false",
+                "-Dvulkan=disabled",
+                "-Dbuild-testsuite=false"
+            ],
+            "build-options": {
+                "cxxflags": "-O2 -g -std=c++20"
+            },
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/GNOME/gtk.git",
+                    "branch": "main"
+                }
+            ]
+        },
+        {
+            "name": "gtkmm",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Dbuild-documentation=false",
+                "-Dbuild-demos=false",
+                "-Dbuild-tests=false"
+            ],
+            "build-options": {
+                "cxxflags": "-O2 -g -std=c++20",
+                "env": {
+                    "PATH": "/app/bin:/usr/bin:$PATH",
+                    "LDFLAGS": "-L/app/lib64",
+                    "PKG_CONFIG_PATH": "/app/lib64/pkgconfig:/app/lib/pkgconfig:/usr/lib64/pkgconfig:/usr/lib/pkgconfig"
+                }
+            },
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/GNOME/gtkmm.git"
+                }
+            ]
+        },
+        {
+            "name": "libgtop-2.0",
+            "buildsystem": "autotools",
+            "config-opts": [
+                "--disable-static",
+                "CFLAGS=-O0 -g3",
+                "CXXFLAGS=-O0 -g3"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/GNOME/libgtop.git"
+                }
+            ]
+        },
+        {
+            "name": "catch2",
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/catchorg/Catch2.git",
+                    "branch": "devel"
+                }
+            ]
+        }
+    ],
+    "build-options": {
+        "build-args": [
+            "--share=network"
+        ],
+        "env": {
+            "PKG_CONFIG_PATH": "/app/lib64/pkgconfig:/app/share/pkgconfig:/app/lib6/pkgconfig:/run/host/usr/lib/x86_64-linux-gnu/pkgconfig:/opt/glibmm-2.68/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH",
+            "LD_LIBRARY_PATH": "/app/lib64:/app/lib:/run/host/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH",
+            "CFLAGS": "-O0 -g3",
+            "CXXFLAGS": "-O0 -g3"
+        }
+    }
+}

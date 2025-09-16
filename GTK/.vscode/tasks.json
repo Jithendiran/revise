@@ -1,0 +1,22 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Gnome System Monitor",
+      "type": "shell",
+      "command": "/tmp/build-tmp/install/bin/gnome-system-monitor",
+      "options": {
+        "env": {
+          "GSETTINGS_SCHEMA_DIR": "/tmp/build-tmp/install/share/glib-2.0/schemas"
+        }
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
