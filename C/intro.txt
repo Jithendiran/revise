@@ -63,6 +63,9 @@ Linker is going to map the functions from c standard library
 16. __attribute(())__
 17. c program execution order
 
+18. extra
+    stackvsheap.c
+
 Memory segments of c (Not only for c, this is how a process see the space, it is depend on OS, Compiler, Language)
 
     Each process assume that one process is only running on the system, Process are managed by OS
