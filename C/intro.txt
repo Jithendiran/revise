@@ -64,7 +64,9 @@ Linker is going to map the functions from c standard library
 17. c program execution order
 
 18. extra
-    stackvsheap.c
+    stringliteral.c
+    stack.c
+    stackcall.c
 
 Memory segments of c (Not only for c, this is how a process see the space, it is depend on OS, Compiler, Language)
 

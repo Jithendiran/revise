@@ -1,147 +1,22 @@
 /*
 * Author: E.K.Jithendiran
-* Date: 17 Sep 2025
+* Date: 19 Sep 2025
 */
 // echo 0 | sudo tee /proc/sys/kernel/randomize_va_space // use this to disable ALSR
-// gcc -g -O0 stackvsheap.c -o /tmp/pgm.out
-/*
-How data is stored in stack and heap
-How it is accessed
-Visualize with address, if impossible in address check the asm, have to prove all
-*/
+// gcc -g -O0 stringliteral.c -o /tmp/pgm.out
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-void func() {
-
 /*
-How stack grow
-stack grow downward high to low
-x address is higher than arr
-eg: x address is 20, 19, 18, 17
-arr starts from 16, 15, 14, 13, 12, 11, 10, 9, 8, 7 
-arr[0] pooint to 7 and arr10 point to 16
-| Address | Contents   |
-|---------|------------|
-|   20    | x (byte 3) |
-|   19    | x (byte 2) |
-|   18    | x (byte 1) |
-|   17    | x (byte 0) |
-|   16    | arr[9]     |
-|   15    | arr[8]     |
-|   14    | arr[7]     |
-|   13    | arr[6]     |
-|   12    | arr[5]     |
-|   11    | arr[4]     |
-|   10    | arr[3]     |
-|   9     | arr[2]     |
-|   8     | arr[1]     |
-|   7     | arr[0]     |
+How string literal is stored
+char *y = "hi"; is different from char y[] = "hi"; or char *y = {'h', 'i', '\0'};
+*y = "hi" is consider as string literal, it is stored in read-only section, remaining are consider as character array, stored in stack
 
-These are throriatically correct but compiler may arrange x at lower address and arr in higher address
-Stack will grow downwords, func() address will be lower than main, but the layout of variable's inside function is depend compiler
-compiler may arrange x then arr or arr then x
-verify this in `objdump -d -M intel -S /tmp/pgm`
+Since string literal is stored in read-only section we can't modify
 */
 
-    int x = 10;     
-    char arr[10] = "hi";
-
-    char *p = malloc(10);
-    strcpy(p, "hi");
-
-/*
-    (Stack)
-    |------------|
-    |     p      | -> points to heap addr
-    |------------|
-
-    (Heap)
-    |------------| <- malloc returns this addr
-    |  'h'       | <- p[0] low
-    |  'i'       | <- p[1]
-    |  '\0'      | <- p[2] high
-    |------------|
-
-*/
-
-strcat(p, " man"); // how this will work?
-}
-
-/*
-dis-asm of func, every thing in hexa deximal for example 0x30 is 3 * 16 + 0 = 48.
-00000000000011a9 <func>:
-    11a9:	f3 0f 1e fa          	endbr64
-    11ad:	55                   	push   rbp
-    11ae:	48 89 e5             	mov    rbp,rsp
-    11b1:	48 83 ec 30          	sub    rsp,0x30     // This reserves 0x30 = 48 bytes of stack space for local variables.
-    11b5:	64 48 8b 04 25 28 00 	mov    rax,QWORD PTR fs:0x28
-    11bc:	00 00 
-    11be:	48 89 45 f8          	mov    QWORD PTR [rbp-0x8],rax
-    11c2:	31 c0                	xor    eax,eax
-    11c4:	c7 45 dc 0a 00 00 00 	mov    DWORD PTR [rbp-0x24],0xa     // int x = 10;  a-> 10
-    11cb:	48 c7 45 ee 68 69 00 	mov    QWORD PTR [rbp-0x12],0x6968  // char arr[10] = "hi"; -> 69 -> h 68 -> i
-    11d2:	00 
-    11d3:	66 c7 45 f6 00 00    	mov    WORD PTR [rbp-0xa],0x0
-    11d9:	bf 0a 00 00 00       	mov    edi,0xa
-    11de:	e8 cd fe ff ff       	call   10b0 <malloc@plt>
-    11e3:	48 89 45 e0          	mov    QWORD PTR [rbp-0x20],rax
-    11e7:	48 8b 45 e0          	mov    rax,QWORD PTR [rbp-0x20]
-    11eb:	66 c7 00 68 69       	mov    WORD PTR [rax],0x6968
-    11f0:	c6 40 02 00          	mov    BYTE PTR [rax+0x2],0x0
-    11f4:	48 8b 45 e0          	mov    rax,QWORD PTR [rbp-0x20]
-    11f8:	48 89 c7             	mov    rdi,rax
-    11fb:	e8 80 fe ff ff       	call   1080 <strlen@plt>
-    1200:	48 89 c2             	mov    rdx,rax
-    1203:	48 8b 45 e0          	mov    rax,QWORD PTR [rbp-0x20]
-    1207:	48 01 d0             	add    rax,rdx
-    120a:	c7 00 20 6d 61 6e    	mov    DWORD PTR [rax],0x6e616d20
-    1210:	c6 40 04 00          	mov    BYTE PTR [rax+0x4],0x0
-    1214:	90                   	nop
-    1215:	48 8b 45 f8          	mov    rax,QWORD PTR [rbp-0x8]
-    1219:	64 48 2b 04 25 28 00 	sub    rax,QWORD PTR fs:0x28
-    1220:	00 00 
-    1222:	74 05                	je     1229 <func+0x80>
-    1224:	e8 67 fe ff ff       	call   1090 <__stack_chk_fail@plt>
-    1229:	c9                   	leave
-    122a:	c3                   	ret
-
-*/
-
-
-/*
-Memory
-High Address
-+---------------------+ <- Stack Top (main, then func frames)
-|    Local vars       |
-|    arr[3]           |
-|    x = 10           |
-+---------------------+
-|     Free space      |
-+---------------------+ <- Heap Start
-|  malloc(3) -> "hi\0" |
-+---------------------+
-|  .data / .rodata    |
-|  "hi" (string literal) |
-+---------------------+
-|  .text (code)       |
-+---------------------+
-Low Address
-
-*/
-
-int main(){
-    // stack
-    int x = 4; // 4 is stored in stack
-    char *y="hi"; // Pointer stored in Stack, string literal stored in Read-Only Data
-    // y is stored in stack, it points to string literal ("hi") which is stored in .ro section
-    // y[0] = 'H'; // error
-    // strcat(y, " there"); // error
-
-     /*
-    * It is not modifiable.
-    * Often shared among functions if same literal is reused.
-    */
+int main() {
+    char *y="hi"; // y is stored in stack, it is a pointer to string literal
 /*
    * How to confirm it is read only
 !! From `readelf` and `info proc mappings` written only required data
@@ -261,9 +136,9 @@ y points to 0x555555556004
 0x555555556005 -> i
 0x555555556004 -> "\0"
 */
-   
-   
-    char a = 'a'; // how this will be stored, directly in stack
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+char a = 'a'; // how this will be stored, directly in stack
     /*
 Breakpoint 1, main () at stackvsheap.c:205
 205	    char a = 'a'; // how this will be stored, directly in stack
@@ -314,30 +189,38 @@ Mapped address spaces:
     // a1[1] -> 0x7fffffffde73 -> B
     // a1[2] -> 0x7fffffffde74 -> \0
     // a1[3] -> 0x7fffffffde75 // next -> C
-    char a2[3] = "CD"; // initially it is string literal then content will be copied to stack
+    char a2[3] = "CD"; 
     // a2[0] -> 0x7fffffffde75 -> C
     // a2[1] -> 0x7fffffffde76 -> D
     a2[0] = 'e';
 
-    // heap
-    // stack top
-    /* (gdb) print $rsp
-       $16 = (void *) 0x7fffffffde50
-    */
+/*
+objdump -d   /tmp/pgm.out
+0000000000001149 <main>:
+    1149:	f3 0f 1e fa          	endbr64
+    114d:	55                   	push   %rbp
+    114e:	48 89 e5             	mov    %rsp,%rbp
+    1151:	48 83 ec 20          	sub    $0x20,%rsp
+    1155:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
+    115c:	00 00 
+    115e:	48 89 45 f8          	mov    %rax,-0x8(%rbp)
+    1162:	31 c0                	xor    %eax,%eax
+    1164:	48 8d 05 99 0e 00 00 	lea    0xe99(%rip),%rax        # 2004 <_IO_stdin_used+0x4>
+    116b:	48 89 45 e8          	mov    %rax,-0x18(%rbp)
+    116f:	c6 45 e7 61          	movb   $0x61,-0x19(%rbp)
+    1173:	66 c7 45 f2 41 42    	movw   $0x4241,-0xe(%rbp)   # 41 -> A, 42 -> B
+    1179:	c6 45 f4 00          	movb   $0x0,-0xc(%rbp)      # 0  -> \0
+    117d:	66 c7 45 f5 43 44    	movw   $0x4443,-0xb(%rbp)   # 43 -> C, 44 -> D
+    1183:	c6 45 f7 00          	movb   $0x0,-0x9(%rbp)
+    1187:	c6 45 f5 65          	movb   $0x65,-0xb(%rbp)
+    118b:	b8 00 00 00 00       	mov    $0x0,%eax
+    1190:	48 8b 55 f8          	mov    -0x8(%rbp),%rdx
+    1194:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx
+    119b:	00 00 
+    119d:	74 05                	je     11a4 <main+0x5b>
+    119f:	e8 ac fe ff ff       	call   1050 <__stack_chk_fail@plt>
+    11a4:	c9                   	leave
+    11a5:	c3                   	ret
 
-    /*
-    (gdb) print &x1
-    $20 = (int **) 0x7fffffffde60
-    */
-    int *x1 = malloc(sizeof(int));
-    *x1 = 4;
-
-    /*
-    (gdb) print &y1
-    $19 = (char **) 0x7fffffffde68
-    */
-    char *y1 = malloc(3);  // For "me" + '\0'
-    strcpy(y1, "me");
-    func();
-    printf("At GDB break here");
+*/
 }
