@@ -102,8 +102,6 @@ int main()
     // cleanup
     munmap(fbdata, fb_data_size);
     close(fbfd);
-
-
 }
 
 
