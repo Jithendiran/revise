@@ -29,6 +29,7 @@ public class Array {
          * null for reference types(object, string)
          */
         int b[] = { 1, 2, 3, 4 }; // it is array init
+        // new int[] { 1, 2, 3, 4 }; internally it will convert like this, int b[] = {...} is short hand notation for  int b[] = new int[] {..}
 
         // below init will throw an error
         // int c[];

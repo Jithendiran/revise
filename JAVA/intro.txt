@@ -52,6 +52,7 @@ start
     * Array.java
     * TwoDimArray.java
     * InnerClass.java
+    * InnerClass2.java
     * Encapsulation.java
     * StringCustom.java
   3. Static

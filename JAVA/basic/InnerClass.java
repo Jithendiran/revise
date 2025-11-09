@@ -12,6 +12,7 @@ class Outer {
     static int k;
     InnerStatic innerStatic;
     InnerPrivate innerPrivate;
+    private int priv = 40;
 
     Outer(int a, int b, int x) {
         this.a = a;
@@ -51,7 +52,9 @@ class Outer {
         void showVariables() {
             System.out.println("Inner x : " + x);
             System.out.println("Outer x :"); // not able to access outer variable with same name
+            System.out.println("Outer x :" + Outer.this.x); // by this we can call the outer variable with same name
             System.out.println("Outer b :" + b);
+            System.out.println("Outer priv : "+ priv);
         }
 
         static void showStaticVariables() {
@@ -86,6 +89,7 @@ public class InnerClass {
          * Inner x : 4
          * Outer x :
          * Outer b :2
+         * Outer priv : 40
          */
         Outer.Inner inner = new Outer(1, 2, 2).new Inner(0, 0);// Inner Class obj
         inner.showVariables();
@@ -94,6 +98,7 @@ public class InnerClass {
          * Inner x : 0
          * Outer x :
          * Outer b :2
+         * Outer priv : 40
          */
 
         // access static
