@@ -19,6 +19,8 @@ package inheritance;
   * Normal Interafce -> with many methods  
   */
  interface Ainterface{
+    // This is implicitly 'public static final'
+    // data member's accesss specifier are always public static final
     int i = 22;
     //int j; variable must be init
     public int j = 1;
@@ -109,7 +111,8 @@ public class Interface {
         imp.pingB();// Ping B
         imp.showInt(12);// Ping A int : 12
         imp.pingSame(); //Ping Same method
-        System.out.println("Imp i : "+imp.i);//Imp i : 22
+        System.out.println("Imp i : "+imp.i);//Imp i : 22 // It is not the recomanded way to access, because of static access sepcifier
+        System.out.println("Ainterface i : " + Ainterface.i); // Ainterface i : 22
 
         // System.out.println("J : "+imp.j);// Error: The field imp.j is ambiguous
         // to avoid ambiguous introduce j in Implementation class
