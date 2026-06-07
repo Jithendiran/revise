@@ -387,7 +387,7 @@ struct S {
     *ptr = 7;        // Writing to it
     ```
 
-Because  cannot take their address, also cannot use the `sizeof()` operator on a bit-field directly (e.g., `sizeof(s.x)` will cause a compilation error). You can only take the `sizeof` the entire struct.
+Because  cannot take their address, also cannot use the `sizeof()` operator on a bit-field directly (e.g., `sizeof(s.x)` will cause a compilation error). A 3-bit bit-field cannot be represented as a whole number of bytes. You can only take the `sizeof` the entire struct.
 
 Consequently, standard pointers lack the mechanics to track "bit-offsets." To manipulate the underlying memory directly, developers must instead reference the address of the containing `struct` itself.
 
@@ -532,14 +532,14 @@ std::move(a) = cast only, no data moved
 
 **Step 3 — Transfer into `b`:**
 
-A move constructor or move assignment takes the contents of `a` at `0x1000` and places them in `b` at `0x1004`. After the transfer, `a` is in a **valid but unspecified state** — the slot at `0x1000` still exists, but the value inside is no longer reliable.
+A move constructor or move assignment takes the contents of `a` at `0x1000` and places them in `b` at `0x1004`. After the transfer, `a` is in a **valid but unspecified state** — the slot at `0x1000` still exists, but the value inside is no longer reliable (for primitive data type, user cannot find any difference, for complex data type the behaviour can be observed).
 
 ```
 Stack after transfer:
 ┌──────────────┬──────────────┬──────────────────────────────┐
 │  Address     │  Variable    │  Stored Value                │
 ├──────────────┼──────────────┼──────────────────────────────┤
-│  0x1000      │      a       │  (unspecified — do not read) │  ← contents transferred out
+│  0x1000      │      a       │  10                          │  ← contents transferred out (since primitive it is present)
 ├──────────────┼──────────────┼──────────────────────────────┤
 │  0x1004      │      b       │  10                          │  ← contents received
 └──────────────┴──────────────┴──────────────────────────────┘
@@ -548,6 +548,155 @@ Stack after transfer:
 The slot at `0x1000` did not disappear. The object `a` still occupies it. Only the contents were transferred. This is the defining trait of an xvalue: the address is still present, but the contents have been surrendered.
 
 ---
+
+#### Memory Behavior — Case 2: Class Type (std::string)
+This is where xvalue and move semantics produce a real difference in behavior and performance.
+ 
+**What a `std::string` Object Contains**
+ 
+A `std::string` object stores three fields inside its stack slot:
+ 
+| Field | What it stores | Size |
+|---|---|---|
+| `ptr` | Address of the heap block holding the characters | 8 bytes (64-bit) |
+| `size` | Number of characters currently in the string | 8 bytes |
+| `capacity` | Total allocated space in the heap block | 8 bytes |
+
+The actual character data lives on the **heap** — a separate memory region from the stack. The stack slot for the string object always occupies the same fixed size (24 bytes on a 64-bit system), regardless of how long the string is.
+ 
+```cpp
+std::string a = "hello";
+std::string b = std::move(a);
+```
+
+ 
+**Step 1 — After `std::string a = "hello";`**
+ 
+The stack slot for `a` is created. A heap block is allocated to hold the characters. The stack slot stores the address of that heap block.
+ 
+```
+Stack:
+┌──────────────┬──────────────┬──────────────────────────────────────────┐
+│  Address     │  Variable    │  Stored Value                            │
+├──────────────┼──────────────┼──────────────────────────────────────────┤
+│  0x1000      │      a       │  ptr=0x5000  size=5  capacity=5          │
+├──────────────┼──────────────┼──────────────────────────────────────────┤
+│  0x1018      │      b       │  (empty — not yet initialized)           │
+└──────────────┴──────────────┴──────────────────────────────────────────┘
+ 
+Heap:
+┌──────────────┬──────────────────────────────────────────────────────────┐
+│  Address     │  Data                                                    │
+├──────────────┼──────────────────────────────────────────────────────────┤
+│  0x5000      │  'h'  'e'  'l'  'l'  'o'  '\0'                           │  ← owned by a
+└──────────────┴──────────────────────────────────────────────────────────┘
+ 
+a.ptr ──────────────────────────────────────────────────────────────────► 0x5000
+```
+
+The 5 characters are stored at heap address `0x5000`. The stack only stores the address `0x5000`, not the characters themselves.
+
+
+**Step 2 — `std::move(a)` is evaluated:**
+ 
+Exactly as before — this is a cast only. No bytes change. `a` still holds `ptr=0x5000`, `size=5`, `capacity=5`. The heap block is untouched.
+ 
+```
+Stack (no change):
+┌──────────────┬──────────────┬──────────────────────────────────────────┐
+│  0x1000      │      a       │  ptr=0x5000  size=5  capacity=5          │  ← unchanged
+│  0x1018      │      b       │  (empty)                                 │
+└──────────────┴──────────────┴──────────────────────────────────────────┘
+ 
+Heap (no change):
+┌──────────────┬──────────────────────────────────────────────────────────┐
+│  0x5000      │  'h'  'e'  'l'  'l'  'o'  '\0'                           │  ← untouched
+└──────────────┴──────────────────────────────────────────────────────────┘
+ 
+Cast only. Nothing moved.
+```
+
+
+**Step 3 — The `std::string` move constructor executes:**
+ 
+The move constructor performs exactly three operations:
+ 
+1. Copies `a`'s three fields (`ptr`, `size`, `capacity`) into `b`.
+2. Sets `a.ptr` to `nullptr`, `a.size` to `0`, `a.capacity` to `0`.
+3. Allocates **no new heap memory**. Copies **no characters**.
+```
+Stack after move:
+┌──────────────┬──────────────┬──────────────────────────────────────────┐
+│  Address     │  Variable    │  Stored Value                            │
+├──────────────┼──────────────┼──────────────────────────────────────────┤
+│  0x1000      │      a       │  ptr=nullptr  size=0  capacity=0         │  ← emptied
+├──────────────┼──────────────┼──────────────────────────────────────────┤
+│  0x1018      │      b       │  ptr=0x5000   size=5  capacity=5         │  ← now owns heap
+└──────────────┴──────────────┴──────────────────────────────────────────┘
+ 
+Heap (no change — same block, same address, same data):
+┌──────────────┬──────────────────────────────────────────────────────────┐
+│  0x5000      │  'h'  'e'  'l'  'l'  'o'  '\0'                           │  ← now owned by b
+└──────────────┴──────────────────────────────────────────────────────────┘
+ 
+b.ptr ──────────────────────────────────────────────────────────────────► 0x5000
+a.ptr ──────────────────────────────────────────────────────────────────► nullptr
+```
+ 
+The heap block at `0x5000` was not copied and not reallocated. Only the address `0x5000` changed ownership — from `a`'s `ptr` field to `b`'s `ptr` field.
+ 
+After the move: `b` is `"hello"` and fully functional. `a` is an empty string `""` — valid and safe to use or destroy, but its data is gone.
+
+#### Copy vs Move — The Core Difference
+ 
+The difference becomes significant with large strings:
+ 
+```cpp
+std::string a = "a very long string with 10000 characters...";
+```
+ 
+**Copy — `std::string b = a;`**
+ 
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│  Step 1: Allocate a NEW heap block (10000 bytes)                     │  ← new allocation
+│  Step 2: Copy all 10000 characters from 0x5000 into the new block    │  ← 10000 byte copy
+│                                                                      │
+│  Cost: grows with string length                                      │
+└──────────────────────────────────────────────────────────────────────┘
+ 
+Stack:                          Heap:
+a → ptr=0x5000                  0x5000: 'a' 'b' 'c' ...  (original — still owned by a)
+b → ptr=0x6000                  0x6000: 'a' 'b' 'c' ...  (new copy — owned by b)
+```
+ 
+**Move — `std::string b = std::move(a);`**
+ 
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│  Step 1: Copy ptr (8 bytes), size (8 bytes), capacity (8 bytes)      │  ← 24 bytes total
+│  Step 2: Set a.ptr = nullptr, a.size = 0                             │  ← 2 field writes
+│                                                                      │
+│  Cost: constant — same cost for 5 characters or 5 million            │
+└──────────────────────────────────────────────────────────────────────┘
+ 
+Stack:                          Heap:
+a → ptr=nullptr                 0x5000: 'a' 'b' 'c' ...  (same block — now owned by b)
+b → ptr=0x5000
+```
+
+#### Why the Two Cases Differ
+ 
+| Type | What lives on the stack | What lives on the heap | Move behavior |
+|---|---|---|---|
+| `int` | The value `10` directly | Nothing | Copy the 4-byte value — move is identical to copy |
+| `std::string` | Control block (ptr + size + capacity) | The characters | Transfer the ptr — no character copying |
+ 
+For `int`, the entire value is on the stack. There is nothing on the heap to transfer. Moving copies the value.
+ 
+For `std::string`, the characters are on the heap. The stack holds only the address of that heap block. Moving copies the address (8 bytes) and clears the source, without touching the characters at all.
+ 
+The xvalue and move semantics system was designed for class types like `std::string`, `std::vector`, and any type that manages heap memory. For primitive types, it compiles and runs correctly but produces no performance benefit over a regular copy.
 
 #### Properties
 
@@ -878,6 +1027,8 @@ int&& ref9 = std::move(a);   // VALID: std::move converts 'a' to an xvalue
 ```
 
 *compiler stuff*
+
+*This is a common internal implementation strategy — the C++ standard does not specify how references are implemented. The guaranteed behavior is the binding rule, not the internal representation.*
 ```cpp
 // What you write:
 int&& ref8 = 20;
@@ -899,6 +1050,23 @@ While an rvalue reference (&&) compiles down to a standard hardware pointer unde
     * The Concept: The expression a + 1 evaluates to the value 11. This 11 is a prvalue (pure rvalue). It is a temporary mathematical result held in a CPU register with no permanent address in RAM, and it is doomed to vanish the moment this line finishes.
     
     * The Rule: Because a + 1 is an rvalue, it is 100% safe to bind to int&&.
+  
+**Named rvalue references are lvalues**
+```cpp
+int&& ref = std::move(a);
+// Now what is ref? It is an lvalue 
+```
+
+```cpp
+int a = 10;
+int&& ref = std::move(a);  // 'std::move(a)' is an rvalue — binding succeeds
+
+// Inside subsequent code:
+ref;        // This expression is an LVALUE — 'ref' has a name and a fixed address
+&ref;       // VALID — lvalue, can take its address
+// int&& r2 = ref;  // INVALID — 'ref' is now an lvalue, cannot bind to T&&
+int&& r2 = std::move(ref);  // VALID — must use std::move again to get an xvalue
+```
      
 **Effect:** An rvalue reference enables **move semantics** — the transfer of contents from one object to another without copying. `std::move` was explained in Chapter 6.3. The rvalue reference (`&&`) is the mechanism that receives the transferred contents.
 
@@ -1225,7 +1393,7 @@ Look at the wall (`*`):
 
 * **Left side of `*`:** `int const` $\rightarrow$ The **data** is frozen (same as `const int`).
 * **Right side of `*`:** `const p` $\rightarrow$ The **pointer** is frozen!
-* **Meaning:** Can change the integer value inside the house all day long, but `p` is permanently locked onto that specific memory address. It can never point anywhere else.
+* **Meaning:** : Everything is completely frozen.
 
 ```cpp
 const int* const p = &houseA; // p points to houseA (10)
