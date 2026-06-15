@@ -3,3 +3,8 @@
 2.  [Operator overloading](./operator-overloading/README.md)
 3.  [Bind vs Assignment](./binding-assignment/README.md)
 4.  [Lvalue](./lvalue/README.md)
+5.  [Pointers Lvalue](./pointer-lvalue/README.md)
+6.  [PRvalue](./prvalue/README.md)
+7.  [Pointers PRvalue](./pointer-prvalue/README.md)
+8.  [Xvalue](./xvalue/README.md)
+9.  [Parent Value](./parentValue/README.md)

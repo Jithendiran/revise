@@ -136,7 +136,7 @@ const int* const ptr2 = &y;
     // **p = 15;   // ERROR: Underlying int value is constant
     // *p = &z;    // ERROR: Intermediate pointer layer is constant
     p = &ptr2;    // ALLOWED: p now points to ptr2
-  ```
+    ```
 6. Constant Pointer to a Pointer to a Constant
     `p` is a constant pointer to a pointer to a constant integer.
     ```c
