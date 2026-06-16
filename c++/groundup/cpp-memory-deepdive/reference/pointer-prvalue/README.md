@@ -140,3 +140,12 @@ const int * const &&ref = &x; // Binds to a prvalue pointer pointing to x
 // ref = &y;                  // ERROR! The pointer component is const.
 // *ref = 30;                 // ERROR! The data component is const.
 ```
+
+### Pointer to reference
+**Pointer to reference is not allowed**
+
+```cpp
+int &&*              // pointer to rvalue ref  - illegal
+int&& &&             // ref to rvalue ref
+int& &&               //illegal in written code (but reference collapsng exists in template)    
+```

@@ -166,3 +166,11 @@ const int * const &ref1 = ptr; // ALLOWED!
 ```
 1. The Secret Rewrite: The compiler realizes `ref1` is a const reference, so it secretly creates a temporary `const int*` pointer on the stack, copies the address from `ptr` into it, and binds `ref1` to that temporary slot.
 2. The Catch: Because `ref1` is now fully const, cannot change the address it holds (`ref1 = &y` is blocked) and cannot change the data it points to (`*ref1 = 20` is blocked). It becomes a purely read-only window.
+
+## Pointer to reference 
+**Pointer to reference is not allowed**
+```cpp
+int& &               // ref to ref not allowed
+int&*                // pointer to lvalue ref  - illegal 
+int& &&               //illegal in written code (but reference collapsng exists in template)    
+```
