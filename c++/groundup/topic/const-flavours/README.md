@@ -82,11 +82,11 @@ int runtime_time = square(input);       // Runs at runtime. (Perfecty allowed!)
 `consteval` completely replaces runtime flexibility. It forces a function to be an **immediate function**. It **must** execute at compile-time, or the program will fail to build.
 
 
-### Variables
+#### Variables
 
 * **NOT ALLOWED:** `consteval` cannot be used on variables. It is strictly a function keyword.
 
-### Functions
+#### Functions
 
 * **Allowed:** Pure logic, loops, branches, and constant inputs.
 * **Not Allowed:** Passing regular runtime variables into its arguments, or calling it outside of a compile-time context.
@@ -111,6 +111,28 @@ int input = 5;
 constexpr int compile_time = square(5); // Runs at compile-time.
 // int runtime_time = square(input);       // NOT ALLOWED
 
+```
+
+### `constinit` (The Static Initialization Savior)
+`constinit` guarantees that a global or static variable is initialized during the compilation phase, before any dynamic runtime code execution begins.
+
+
+#### Variables
+
+* **Allowed:** Can only be applied to variables with **static** or **thread-local** storage duration (globals, namespace variables, static class members).
+* **Not Allowed:** Cannot be applied to local stack variables inside functions. Crucially, **the variable itself remains mutable (changeable) at runtime!**
+
+```cpp
+constinit int global_counter = 100; // ALLOWED: Checked at compile-time.
+
+// Every thread gets its own 'baking_temperature', initialized at compile-time to 180
+constinit thread_local int baking_temperature = 180;
+
+int main() {
+    global_counter = 200; // ALLOWED: It is NOT const! It can be changed at runtime.
+    
+    // constinit int local_var = 5; // NOT ALLOWED: Cannot use on local stack variables.
+}
 ```
 
 ### `const_cast`
