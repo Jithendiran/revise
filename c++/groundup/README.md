@@ -3,3 +3,5 @@
 2. [Const](./Const/README.md)
 3. [Inline](./topic/inline/README.md)
 4. [ODR](./topic/ODR/README.md)
+5. [assert](./topic/assert/README.md)
+6. [Casting](./topic/casting/README.md)
