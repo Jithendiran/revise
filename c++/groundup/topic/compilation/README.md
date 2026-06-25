@@ -173,8 +173,9 @@ This phase processes the core vocabulary of the C++ language. Key categories inc
 * **Type Mismatches**: Attempts to perform incompatible operations, such as assigning a text string to an integer variable without an explicit conversion mechanism.
 * **Declaration Errors**: Attempting to use a variable or call a function that has not been declared or is out of the current scope.
 
-
 6. **View Output**: `g++ -S main.i -o main.s`
+
+[Compilation Phase](./compilephase.md)
 
 ---
 
