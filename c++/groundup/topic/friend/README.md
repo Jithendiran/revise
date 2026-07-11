@@ -144,3 +144,5 @@ private:
 **Rule 4 — The class granting friendship controls it, not the friend.**
 
 The `friend` declaration is always inside the class whose private members are being opened. The entity being named as a friend cannot grant itself access, only the class being accessed can grant it.
+
+[Hacks](./hacks.md)

@@ -146,3 +146,27 @@ BankAccount acc;
 acc.auditAccount();          // COMPILE ERROR: auditAccount is not a member
 auditAccount(acc);           // VALID: called as a free function
 ```
+
+###  Not automatically in scope
+Declaring a friend inside a class does not bring the friend function into global scope automatically. If the friend is only declared inside the class body with no prior declaration, it may only be found through Argument Dependent Lookup (ADL) — the compiler searches the namespace of the argument type when a function call is unresolved.
+
+```cpp
+class BankAccount {
+    double balance;
+
+    // Friend declared ONLY inside the class — no prior declaration anywhere
+    friend void auditAccount(const BankAccount& acc) {
+        std::cout << acc.balance;
+    }
+};
+
+auditAccount(BankAccount{});  // VALID via ADL: compiler searches BankAccount's
+                                 // namespace and finds it there
+// void (*fp)() = auditAccount;  // COMPILE ERROR: not in scope without ADL
+
+// Why? auditAccount is not a static member of BankAccount. It's a free function.
+BankAccount::auditAccount(myAccount);
+```
+
+
+A `friend` function is a standalone function with a key — the key opens the private section of one specific class, but the function must still carry the object through the parameter itself.
