@@ -95,6 +95,67 @@ public:
 
 A raw public member allows any value, including invalid ones, with zero validation. A mutator function is a *checkpoint* — every write request passes through validation logic before the member is actually modified. This is the entire purpose of encapsulation: not to prevent access, but to force access through a controlled gateway, exactly as covered in the earlier encapsulation material.
 
+## Access Is Per-Class, Not Per-Object
+`private` restricts access based on which **class** the accessing code belongs to — not which **object** it belongs to. A member function of `BankAccount` can access the private members of **any** `BankAccount` object, not only the object it was called on.
+
+```cpp
+class BankAccount {
+private:
+    double balance;
+
+public:
+    BankAccount(double b) : balance(b) {}
+
+    bool hasMoreThan(const BankAccount& other) const {
+        return balance > other.balance;   // VALID: accessing other.balance
+                                          // 'other' is a different object,
+                                          // but same class — access is allowed
+    }
+};
+
+BankAccount a(100.0);
+BankAccount b(50.0);
+a.hasMoreThan(b);   // a's member function reads b's private balance directly
+```
+
+This is why the copy constructor and copy assignment operator can directly copy the private members of the source object — both objects belong to the same class.
+
+### `protected` — Access for Derived Classes
+
+#### What `protected` Does
+`protected` sits between `private` and `public`. A `protected` member is:
+
+- **Not accessible** from arbitrary external code (same restriction as `private`)
+- **Accessible** from member functions of the same class (same as `private`)
+- **Accessible** from member functions of derived classes (not available to`private`)
+
+```cpp
+class Vehicle {
+private:
+    int engineSerialNumber;   // only Vehicle's own functions can access this
+
+protected:
+    int speed;                // Vehicle's functions AND derived class functions
+                              // can access this
+
+public:
+    void accelerate(int amount) {
+        speed += amount;      // VALID: same class
+    }
+};
+
+class Car : public Vehicle {
+public:
+    void turboBoost() {
+        speed *= 2;           // VALID: Car is a derived class — protected access
+        // engineSerialNumber = 0;  // COMPILE ERROR: private, not accessible
+    }
+};
+
+Vehicle v;
+// v.speed = 100;   // COMPILE ERROR: protected is not public
+```
+
 ### Friend as an Access Exception 
 `private` and `protected` restrict access to member functions of the class. One documented exception exists: a class can explicitly grant access to a specific outside function or class using the friend keyword.
 
