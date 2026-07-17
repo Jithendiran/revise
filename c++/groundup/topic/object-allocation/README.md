@@ -14,3 +14,6 @@ Each exists because the other three cannot cover its use case.
 
 ##  Content
 1. [Stack](./Stack.md)
+2. [Dynamic](./Dynamic.md)
+3. [Static](./Static.md)
+4. [Pre-allocation](./Pre-allocation.md)
