@@ -1,6 +1,6 @@
 # `noexcept`
 
-## 1. The Problem — What Happens When a Destructor Throws
+## The Problem — What Happens When a Destructor Throws
 
 To understand why `noexcept` exists, the exact failure it prevents must be understood first.
 
@@ -31,7 +31,7 @@ C++ has no mechanism for handling two simultaneous exceptions. The moment a seco
 This is not a hypothetical edge case. It is a fundamental constraint of the exception model. A destructor that throws is capable of terminating any program that uses it, including programs that otherwise handle all their exceptions correctly.
 
 
-## 2. What `noexcept` Is
+## What `noexcept` Is
 
 `noexcept` is a specifier placed on a function declaration that makes a guarantee: **this function will never throw an exception**.
 
@@ -48,9 +48,9 @@ If a `noexcept` function does throw internally and that exception attempts to pr
 1. **Documents the guarantee** — the function signature itself states the contract. A caller reading the declaration knows no exception handling is needed.
 2. **Enables compiler optimizations** — the compiler can generate more efficient code when it knows a function cannot throw, because it does not need to generate exception unwinding tables for those call sites.
 
-## 3. `noexcept` on Destructors
+## `noexcept` on Destructors
 
-### 3.1 Destructors Are Implicitly `noexcept`
+### Destructors Are Implicitly `noexcept`
 
 In C++11 and later, **every destructor is implicitly `noexcept`** unless the destructor's body or a base class/member destructor explicitly violates this. The compiler marks destructors `noexcept` automatically.
 
@@ -104,7 +104,7 @@ public:
 
 If a destructor throws an exception while the program is already processing another exception (stack unwinding), C++ will immediately crash program via `std::terminate()`.
 
-### 3.2 Writing It Explicitly
+### Writing It Explicitly
 
 Writing `noexcept` explicitly on a destructor is self-documenting — it makes the guarantee visible in the code without requiring the reader to know the implicit rule:
 
@@ -118,7 +118,7 @@ public:
 };
 ```
 
-### 3.3 Handling Errors Inside a `noexcept` Destructor
+### Handling Errors Inside a `noexcept` Destructor
 
 Cleanup operations can fail. A file close can fail. A network disconnect can fail. Inside a `noexcept` destructor, these failures must be absorbed — the exception must not escape.
 
@@ -140,11 +140,11 @@ public:
 The `catch (...)` catches every possible exception type. The error can be logged but must not be rethrown.
 
 
-## 4. `noexcept` on Other Functions
+## `noexcept` on Other Functions
 
 `noexcept` is not limited to destructors. It applies to any function.
 
-### 4.1 Regular Functions
+### Regular Functions
 
 ```cpp
 int add(int a, int b) noexcept {
@@ -158,7 +158,7 @@ void swapInts(int& a, int& b) noexcept {
 }
 ```
 
-### 4.2 Move Constructor and Move Assignment
+### Move Constructor
 
 When a `std::vector` runs out of capacity, it must allocate a larger internal array and transfer all existing elements from the old array to the new one.
 
@@ -208,7 +208,7 @@ public:
     // Move Constructor
     // TOGGLE NOEXCEPT HERE: Remove 'noexcept' to see the vector switch to COPY during resize.
     Buffer(Buffer&& other) noexcept : data(other.data), size(other.size) {
-        std::cout << "[MOVE] Fast pointer swap.\n";
+        std::cout << "[MOVE] Fast pointer swap -- size " << other.size << "\n";
         other.data = nullptr;
         other.size = 0;
     }
@@ -235,19 +235,57 @@ int main() {
 
 ```
 --- Inserting first element ---
-[MOVE] Fast pointer swap.  <-- (Call 1: Buffer(100) enters vector)
+[MOVE] Fast pointer swap -- size 100 <-- (Call 1: Buffer(100) is a rvalue so calls move, enters vector)
 
 --- Inserting second element (Forces Vector Resize) ---
-[MOVE] Fast pointer swap.  <-- (Call 2: Vector transfers Buffer(100) to new memory)
-[MOVE] Fast pointer swap.  <-- (Call 3: Buffer(200) enters vector)
+[MOVE] Fast pointer swap -- size 200 <-- (Call 2: Directly construct the new element in the new allocated memory)
+[MOVE] Fast pointer swap -- size 100 <-- (Call 3: Move the 1st element from old memory to new memory)
 ```
 
 **without noexcept**
 ```
 --- Inserting first element ---
-[MOVE] Fast pointer swap.
+[MOVE] Fast pointer swap -- size 100
 
 --- Inserting second element (Forces Vector Resize) ---
-[MOVE] Fast pointer swap.
+[MOVE] Fast pointer swap -- size 200
 [COPY] Deep copying 100 elements.
 ```
+
+## The `noexcept` Operator — Checking at Compile Time
+
+`noexcept` also exists as an **operator** (distinct from the specifier) that queries at compile time whether an expression is guaranteed not to throw. It returns `true` or `false` as a compile-time boolean.
+
+```cpp
+int add(int a, int b) noexcept { return a + b; }
+int risky(int a, int b) { return a / b; }   // could throw
+
+static_assert(noexcept(add(1, 2)));      // true — function is noexcept
+static_assert(!noexcept(risky(1, 2)));   // false — function is not noexcept
+```
+
+## `noexcept` vs `throw()` — Old Syntax
+
+Before C++11, a function that promised not to throw used `throw()`:
+
+```cpp
+void cleanup() throw() {}   // C++03 — do not throw
+```
+
+`throw()` was deprecated in C++11 and removed in C++17. `noexcept` replaces it entirely. `noexcept` is more efficient — `throw()` required the runtime to catch any thrown exception and call `std::unexpected`, adding overhead. `noexcept` directly calls `std::terminate` with zero overhead.
+
+
+## What Happens When `noexcept` Is Violated
+
+If a `noexcept` function allows an exception to escape, the runtime calls `std::terminate` immediately. The stack is **not** unwound — destructors for local objects in the `noexcept` function may not run.
+
+```cpp
+void guaranteed() noexcept {
+    Resource r;                              // constructor runs
+    throw std::runtime_error("oops");        // exception escapes noexcept boundary
+    // std::terminate() called immediately
+    // r's destructor may NOT run — undefined
+}
+```
+
+This is intentional. `noexcept` is a hard contract. Violating it is a program error, not a recoverable condition. The immediate termination prevents the program from continuing in an undefined state.

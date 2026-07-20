@@ -639,6 +639,19 @@ public:
 };
 ```
 
+**Member initializer list runs — in declaration order, not list order**
+```cpp
+class BadExample {
+    Socket socket;
+    Logger logger;
+
+public:
+    // WARNING: socket is STILL initialized BEFORE logger,
+    // even though logger is written first in this list!
+    BadExample() : logger(), socket() {} 
+};
+```
+
 For delegating constructors the sequence extends:
 
 1. Memory allocated
