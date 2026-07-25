@@ -90,6 +90,19 @@ delete p;   // destructor runs here, then memory freed
 
 For heap objects, the destructor only runs when `delete` is called. If `delete` is never called, the destructor never runs and the resource leaks.
 
+```cpp
+delete p; // delete the object
+delete p; // !!! Harmful
+
+For heal allocated object after deleting the object pointer still holds the address of deleted memory, which becomes a dangling pointer. when accidentaly called `delete` again, which cause double free and may cause the program to crash or give undefined behaviour, to prevent this set the pointer to `nullptr` after delete
+
+```cpp
+ p = nullptr;
+ delete p; // no-op, harmless
+```
+* In C++, calling `delete` (or `delete[]`) on a `nullptr` is guaranteed by the language standard to be a harmless no-op (no operation).
+* Destructor Check: The compiler automatically inserts a null check before calling the destructor. Because `p` is `nullptr`, the DataBuffer destructor (~DataBuffer()) is NEVER called.
+
 ### Exception — Stack Unwinding
 When an exception is thrown and propagates up the call stack, every stack object in every scope that is being exited has its destructor called. This process is called **stack unwinding**.
 

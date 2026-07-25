@@ -165,3 +165,157 @@ public:
 Singleton a, b;
 a = b;   // COMPILE ERROR: copy assignment is deleted
 ```
+
+## Move Assignment Operator
+### The Problem — Copying When the Source Is Expiring
+When the right-hand side of an assignment is a temporary or an object about to be destroyed, copy assignment does unnecessary work — it allocates new memory and copies every byte, only to then destroy the source's memory:
+
+```cpp
+DataBuffer a(1000);
+a = DataBuffer(2000);   // DataBuffer(2000) is a temporary
+                         // copy assignment:
+                         // 1. allocate 2000 ints — new heap block
+                         // 2. copy 2000 ints from temporary
+                         // 3. destroy old a block
+                         // 4. temporary destroyed — its block freed
+                         // total: 2 allocations, 2000 copies, 2 frees
+```
+The temporary already owns a heap block with 2000 ints. That block could be stolen directly — no allocation, no copying:
+
+What should happen:
+1. free a's old block
+2. steal the temporary's pointer
+3. null the temporary's pointer
+total: 1 free, 3 integer assignments
+
+The move assignment operator implements this transfer.
+### Signature
+```cpp
+ClassName& operator=(ClassName&& rhs) ;
+//                            ↑↑
+//                  rvalue reference — only binds to temporaries
+//                  and objects explicitly marked expiring with std::move
+```
+
+- Parameter is `T&&` (rvalue reference) — binds only to rvalues
+- Parameter is **not `const`** — the source must be modified (its pointer must be nulled after the transfer)
+- Returns `T&` — same chaining requirement as copy assignment
+
+**Functions which evaluates noexcept**
+```cpp
+ClassName& operator=(ClassName&& rhs) noexcept;
+```
+- `noexcept` is prefered for move because vector like std implementation check for is `noexcept`, if `noexcept` is available they it will perform move, else it would fall back to copy
+- `noexcept` should only performs pointer swaps and integer assignments, which cannot throw. Without `noexcept`, standard containers fall back to copy instead of move (covered in the `noexcept` document)
+
+### Canonical Implementation
+```cpp
+class DataBuffer {
+    int* data;
+    int  size;
+
+public:
+    DataBuffer(int n) : size(n), data(new int[n]) {}
+
+    ~DataBuffer() { delete[] data; }
+
+    DataBuffer& operator=(DataBuffer&& rhs) noexcept {
+        // Step 1: Self-assignment check
+        if (this == &rhs) return *this;
+
+        // Step 2: Release current resources
+        delete[] data;
+
+        // Step 3: Steal the source's resources
+        data = rhs.data;
+        size = rhs.size;
+
+        // Step 4: Null out the source — prevents double free
+        rhs.data = nullptr;
+        rhs.size = 0;
+
+        // Step 5: Return reference to self
+        return *this;
+    }
+};
+```
+
+**Optmized with swap**
+
+
+```cpp
+DataBuffer& operator=(DataBuffer&& rhs) noexcept {
+    std::swap(data, rhs.data);
+    std::swap(size, rhs.size);
+    return *this;
+    // rhs (now holding the old data) destroyed here
+}
+```
+The self-assignment check is not strictly needed here — swapping with self leaves both values unchanged. It is often omitted from move assignment for this reason.
+
+### The Source Object After Move Assignment
+After move assignment, the source object (`rhs`) is in a **valid but unspecified state**. The only guarantee is that its destructor can safely run — hence the `nullptr` assignment to `rhs.data`. A null pointer passed to `delete[]` is a defined no-op.
+
+After a move, the source must not be read from. It may be safely assigned to again (bringing it back to a defined state) or simply destroyed.
+
+```cpp
+DataBuffer a(100);
+DataBuffer b(200);
+
+b = std::move(a);
+
+// a is now valid but unspecified:
+// a.data == nullptr, a.size == 0
+// safe to destroy: a's destructor runs delete[] nullptr — no-op
+// safe to reassign: a = DataBuffer(50) — brings a back to defined state
+// NOT safe to read: a.data[0] — undefined
+```
+
+### Compiler-Generated Move Assignment
+If no move assignment is declared and the class has no user-declared destructor, copy constructor, or copy assignment, the compiler generates a move assignment that performs a **member-by-member move** — calling `std::move` on each member.
+
+## When Each Assignment Operator Is Invoked
+The compiler selects copy or move assignment based on the value category of the right-hand side.
+| Right-hand side | Value category | Operator invoked |
+|---|---|---|
+| Named variable: `b = a` | lvalue | Copy assignment |
+| Temporary: `b = DataBuffer(5)` | prvalue | Move assignment |
+| `std::move`: `b = std::move(a)` | xvalue | Move assignment |
+| Named rvalue ref: `DataBuffer&& r = ...; b = r` | lvalue (named) | Copy assignment |
+
+The last row is the named rvalue reference trap established in the Value Categories document: giving a variable a name makes it an lvalue in subsequent code, regardless of its declared type. `b = r` copies even though `r` is declared `DataBuffer&&`.
+
+```cpp
+DataBuffer a(5);
+DataBuffer b(10);
+DataBuffer c(3);
+
+b = a;                   // copy assignment — a is lvalue
+b = DataBuffer(20);      // move assignment — temporary is prvalue
+b = std::move(a);        // move assignment — std::move produces xvalue
+
+DataBuffer&& r = DataBuffer(7);
+b = r;                   // COPY assignment — r is named, therefore lvalue
+b = std::move(r);        // move assignment — std::move on r produces xvalue
+```
+
+## `= default` and `= delete`
+```cpp
+class Widget {
+public:
+    // Restore compiler-generated versions after they were suppressed
+    Widget& operator=(const Widget&) = default;
+    Widget& operator=(Widget&&) noexcept = default;
+};
+
+class Unique {
+public:
+    // Prevent copying — must be moved or not transferred
+    Unique& operator=(const Unique&) = delete;
+    Unique& operator=(Unique&&) noexcept = default;   // move still allowed
+};
+
+Unique a, b;
+b = a;               // COMPILE ERROR: copy assignment deleted
+b = std::move(a);    // VALID: move assignment allowed
+```
