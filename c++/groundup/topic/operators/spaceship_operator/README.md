@@ -317,6 +317,129 @@ a != b;   // VALID: generated from == → true
 a > b;    // VALID: generated from <=> → false
 ```
 
+#### Lexicographic Comparison
+The default comparison compares members in declaration order. The first member that differs determines the result. Only if all preceding members are equal does comparison proceed to the next member.
+
+```cpp
+class Version {
+    int major;
+    int minor;
+    int patch;
+public:
+    Version(int major, int minor, int patch)
+        : major(major), minor(minor), patch(patch) {}
+
+    auto operator<=>(const Version&) const = default;
+};
+
+Version v1{2, 10, 3};
+Version v2{2, 11, 0};
+Version v3{2, 10, 3};
+
+v1 < v2;    // major equal (2==2), minor: 10 < 11 → true (patch not examined)
+v1 == v3;   // all members equal → true
+v2 > v1;    // major equal, minor: 11 > 10 → true
+```
+
+#### When `= default` Is Not Appropriate
+`= default` is not suitable when:
+
+1. The comparison key is different from the stored representation
+
+```cpp
+class CaseInsensitiveString {
+    std::string value;
+public:
+    // Cannot use = default: comparison must ignore case
+    // but storage preserves case
+    std::weak_ordering operator<=>(const CaseInsensitiveString& rhs) const {
+        // custom comparison that lowercases before comparing
+    }
+};
+```
+2. Only some members participate in ordering
+
+```cpp
+class Employee {
+    int    employeeId;    // ordering key
+    std::string name;     // NOT part of ordering — two employees with the
+                          // same ID are the same employee regardless of name
+public:
+    auto operator<=>(const Employee& rhs) const {
+        return employeeId <=> rhs.employeeId;
+        // name deliberately excluded
+    }
+};
+```
+
 **Return type deduction:**
 
 When `auto` is used as the return type with `= default`, the compiler deduces the return type from the `<=>` of each member, taking the weakest ordering that applies. For `int` members, this is `strong_ordering`. If any member used `double`, the deduced type would be `partial_ordering`.
+
+## Automatic Generation of `!=` From `==` (C++20)
+### The Problem
+Before C++20, defining `operator==` did not automatically provide `operator!=`. Both had to be written:
+```cpp
+// C++17 and earlier — both required
+bool operator==(const Temperature& rhs) const { return celsius == rhs.celsius; }
+bool operator!=(const Temperature& rhs) const { return !(*this == rhs); }
+```
+
+`operator!=` contains no independent logic — it is always `!(operator==)`. Writing it manually is pure boilerplate.
+
+### The C++20 Rule
+In C++20, if `operator==` is defined, the compiler **automatically generates `operator!=`** as its logical negation.
+
+```cpp
+class Temperature {
+    double celsius;
+public:
+    Temperature(double c) : celsius(c) {}
+
+    bool operator==(const Temperature& rhs) const {
+        return celsius == rhs.celsius;
+    }
+    // operator!= is automatically available — no definition needed
+};
+
+Temperature a(20.0), b(30.0);
+a != b;   // VALID in C++20: compiler generates !(a == b)
+```
+
+**This is a source-breaking change from C++17 in one edge case:** if a class explicitly defined `operator!=` with behavior different from `!(operator==)`, that custom behavior is still used — the explicit definition takes priority over the generated one. The generation only applies when no explicit `operator!=` exists.
+
+### Rewritten Candidates — Reverse Argument Lookup
+Before C++20, a symmetric comparison required defining both argument orders:
+```cpp
+// C++17 — must define both
+bool operator==(const Temperature& lhs, const Temperature& rhs);
+bool operator==(double lhs, const Temperature& rhs);       // double on left
+bool operator==(const Temperature& lhs, double rhs);       // double on right
+```
+In C++20, when the compiler cannot find an `operator==` matching a given call, it also considers the **reversed** form — swapping left and right operands. If `a == b` fails, the compiler tries `b == a`.
+
+```cpp
+class Temperature {
+    double celsius;
+public:
+    Temperature(double c) : celsius(c) {}
+
+    bool operator==(const Temperature& rhs) const {
+        return celsius == rhs.celsius;
+    }
+};
+
+Temperature t(20.0);
+t == 20.0;    // VALID: t.operator==(Temperature{20.0}) — direct match
+20.0 == t;    // C++17: COMPILE ERROR — no match
+              // C++20: VALID — compiler tries t == 20.0 (reversed)
+              //        finds t.operator==(Temperature{20.0}) — succeeds
+```
+
+The same rewriting applies to `<=>` and the operators generated from it. If `a < b` cannot be resolved directly, the compiler tries `b <=> a` and checks whether the result is greater-than.
+
+```cpp
+20 > t; // changes to t < 20;
+```
+
+This eliminates the need to define both argument-order variants of symmetric operators for mixed-type comparisons.
