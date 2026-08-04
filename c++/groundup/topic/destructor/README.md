@@ -59,6 +59,13 @@ void process() {
 }   // destructor runs here automatically — heap freed
 ```
 
+The compiler does generate a destructor automatically if programmer don't write one, but it doesn't know what raw pointers are pointing to.
+* When  a raw pointer like `int* data;`, the compiler only sees a variable that holds a memory address (typically 4 or 8 bytes). It has no way of knowing:
+  * Whether a points to `data` single object (`new int()`), an array (`new int[10]`), or external memory.
+  * Whether A actually owns that memory or is just borrowing it.
+  * 
+Because raw pointers provide zero context, the compiler plays it safe. Its automatically generated destructor only destroys the pointer variable itself (reclaiming those 4 or 8 bytes on the stack), but it will not call delete on the address stored inside it. That is why programmer must write an explicit destructor to tell it to clean up the heap memory.
+
 The programmer never calls a destructor by name in normal usage. The compiler calls it at the correct point automatically.
 
 ## When the Destructor Runs
