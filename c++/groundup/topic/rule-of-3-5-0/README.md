@@ -302,3 +302,7 @@ public:
 ```
 
 The Rule of Zero — define none of the five special functions when members manage their own resources — is covered in the Rule of Five document.
+
+## Contents
+1. [Rule 5](./5.md) 
+2. [Rule 0](./0.md)
