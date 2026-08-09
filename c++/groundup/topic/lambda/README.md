@@ -224,3 +224,40 @@ The square brackets [] at the beginning of a lambda expression form the capture 
         }
     };
     ```
+### The dangling pointer risk:
+```cpp
+#include <functional>
+#include <iostream>
+
+class BankAccount {
+    double balance;
+public:
+    BankAccount(double b) : balance(b) {}
+
+    std::function<void()> getReporter() {
+        return [this]() {
+            std::cout << balance << "\n";  // accesses this->balance
+        };
+    }
+};
+
+int main() {
+    std::function<void()> report;
+
+    {
+        BankAccount acc(1000.0);
+        report = acc.getReporter();  // lambda captures 'this' = &acc
+    }   // acc destroyed here — this inside the lambda now points to freed stack memory
+
+    report();   // UNDEFINED BEHAVIOR: reads balance from destroyed object
+                // may print garbage, may crash, may appear to work
+}
+```
+**The fix — capture *this by value**
+```cpp
+std::function<void()> getReporter() {
+    return [*this]() {           // copies the entire BankAccount object
+        std::cout << balance << "\n";   // reads from the copy, not the original
+    };
+}
+```
