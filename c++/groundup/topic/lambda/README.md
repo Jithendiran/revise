@@ -69,6 +69,15 @@ __lambda_1 triple(factor);   // lambda expression constructs the object
 Every rule about lambdas follows directly from this transformation:
 - Captures become data members — value captures are copies, reference captures are references
 - `mutable` lifts the `const` from `operator()` — allowing captured copies to be modified
+  ```cpp
+    int counter = 0;
+
+    // Compiles successfully because 'mutable' allows internal modification
+    auto incrementer = [counter]() mutable {
+        counter++; 
+        return counter;
+    };
+  ``` 
 - The closure object has a size equal to the sum of its captured members
 - The closure type is unique and unnamed — only `auto` can store it directly
 
