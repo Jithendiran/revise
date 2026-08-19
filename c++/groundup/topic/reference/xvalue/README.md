@@ -149,3 +149,46 @@ Here is the exact behavior of all three scenarios when using `std::string x = "h
     * `r2` is a read-only alias for `x`.
     * `x` still contains "hi".
     * The data cannot be modified or moved through `r2` because of the const restriction.
+
+### Example
+```cpp
+#include <iostream>
+
+void second_wrapper(int p1){
+    ++p1;
+}
+
+void wrapper(int && p){
+    ++p;
+    std::cout<<"Wrapper address :: "<<&p<<"\n";
+    std::cout<<"Wrapper :: "<<p<<"\n";
+    second_wrapper(p);
+}
+
+int main()
+{
+    int a = 4;
+    std::cout<<"Main address : "<<&a<<"\n";
+    std::cout<<"Main : "<<a<<"\n";
+    wrapper(std::move(a));
+    std::cout<<"Main : "<<a<<"\n";
+
+    return 0;
+}
+```
+**Output**
+```
+Main : 0x7fff7588998c
+Main : 4
+Wrapper :: 0x7fff7588998c
+Wrapper :: 5
+Main : 5
+```
+
+`&&` is a pass by reference or a pointer copy not a call by value even with primitive
+
+1. Main allocate a stack memory for `a`
+2. `std::move(a)` will cast the `a` as `&&`, move won't move it is just a casting
+3. The call happens (internally `p` is more are less same as pointer, just compiler won't allow to do the pointer operation, it copied the a's address to p's value) `p` is pointed to `a` 
+4. Increment the `p` (internally dereference the `p` and increment). 
+5. `p` is treated as regular variable, it become lvalue when calling second wrapper the contents are copied to the `second_wrapper` not linked with reference
