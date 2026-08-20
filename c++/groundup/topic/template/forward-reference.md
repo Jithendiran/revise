@@ -1,4 +1,19 @@
 # Forwarding References
+
+## Reference and templates
+```cpp
+template<typename T>
+void func(T& param); 
+//-------------
+template<typename T>
+void func(T&& param);
+```
+### How compiler read
+1. `void func(T& param);` as `void func( <need to fill>& param)`
+2. `void func(T&& param);` as `void func( <need to fill>&& param)`
+
+The `&`, `&&` is already written. The compiler's only job is to fill in the blank.
+
 ## The Problem — Losing Value Category When Passing Arguments
 
 Consider a wrapper function that takes an argument and passes it to anotherfunction. The goal is for the inner function to receive the argument exactly as the caller passed it — same type, same value category.
@@ -10,6 +25,7 @@ Even if the caller passes a temporary *rvalue*, the moment it enters wrapper and
 void process(int& x)  { std::cout << "lvalue\n"; }    // for lvalues
 void process(int&& x) { std::cout << "rvalue\n"; }    // for rvalues
 
+template<typename T>
 void wrapper(T&& arg) {
                     // arg now become lvalue, arg own's the content
     process(arg);   // how to forward arg without losing its value category?
@@ -65,7 +81,9 @@ void wrapper(T&& arg) { process(arg); }
 `T&&` is a forwarding reference only when both conditions are met:
 * Condition 1: `T` is a type parameter being DEDUCED by the compiler
 * Condition 2: The form is exactly `T&&` — no other qualifiers
+
 **FORWARDING REFERENCE**
+
 In C++, a forwarding reference (`T &&`) isn't a separate type; it's a magic trick performed by the compiler using Template Type Deduction and Reference Collapsing
 ```cpp
 // T is deduced from the call
@@ -126,7 +144,7 @@ The compiler cannot represent `int& &&` directly — no reference-to-reference e
 
 ```
 int& && → & (case: lvalue passed, T = int&)
-int&& → && (case: rvalue passed, T = int)
+int&& && → && (case: rvalue passed, T = int&&)
 ```
 
 ## How Deduction Works — The Two Cases
@@ -152,7 +170,7 @@ foo(a);   // a is lvalue(&), param is rvalue(&&); & + && = &
 The compiler deduces T as a **plain type** (no reference):
 
 ```cpp
-foo(5);            // 5 is prvalue
+foo(5);            // 5 is prvalue  && + && = &&
 foo(std::move(a)); // xvalue  && + && = &&
 ```
 
@@ -205,3 +223,39 @@ wrapper(a);            // T = int&  → forward returns int&  → lvalue overloa
 wrapper(5);            // T = int   → forward returns int&& → rvalue overload
 wrapper(std::move(a)); // T = int   → forward returns int&& → rvalue overload
 ```
+
+## C++ standard for a forwarding reference
+Reference Collapsing is great for understanding, but c++ internally works bit different
+```cpp
+template<typename T>
+void wrapper(T&& arg) { process(arg); }
+```
+
+### when `wrapper(5)` is passed
+`T` become only `int` not as `int&&`, Deduced `int` will combine with parameter's `&&` become `int&&`
+
+### when `wrapper(a)` is passed
+`T` become `int&`, When combined with parameter's `&&`, `&` + `&&` = `&`
+
+Collapsing rule is only used when passing lvalue
+```
+wrapper(5):   T = int     (plain int — no && added — collapse NOT used)
+wrapper(a):   T = int&    (int& added — collapse IS used: int& && → int&)
+```
+The collapse table is a real language rule — not just for human understanding. But it is only triggered in the lvalue case.
+
+### Why the Asymmetry Exists
+The C++ standard committee designed template deduction with this rule deliberately:
+> For a forwarding reference `T&&`, if the argument is an lvalue of type `X`, `T` is deduced as `X&`. If the argument is an rvalue of type `X`, `T` is deduced as `X`.
+This is not derived from a deeper principle. It is a chosen rule — written into the standard exactly this way so that:
+1. The rvalue case needs no collapse (`T` = plain type, `T&&` = `X&&`, done)
+2. The lvalue case uses collapse to convert `T&&` into an lvalue reference (`T` = `X&`, `T&&` = `X& &&` = `X&`)
+Without this asymmetry, there would be no way for a single `T&&` parameter to accept both lvalues and rvalues and preserve both correctly.
+
+### Why Not `T` = `int&&` for Rvalues
+If the rule were symmetric — `T` = `int&&` for rvalues, `T` = `int&` for lvalues — the result would be the same parameter types.
+
+The real reason the standard chose `T` = plain type for rvalues is simplicity and consistency:
+* `T` always represents the base type — never carries a reference for the rvalue case
+* The `&&` in the declaration is the only source of `&&` for rvalues
+* `T` carries `&` only when it needs to — for lvalues — to trigger collapse
