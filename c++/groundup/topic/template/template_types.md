@@ -172,8 +172,6 @@ struct Storage<bool> {                     // full spec: bool stored as a flag
 };
 ```
 
-//--------------------------------------------------------- TODO
-
 ## Partial Specialization
 
 Partial specialization locks in some parameters while leaving others generic. The `template<...>` line still has parameters — the ones that remain generic.
@@ -189,40 +187,96 @@ struct Converter<T, std::string> {  // only U is locked to std::string
 
 **Rules:**
 - The parameters in `template<...>` are the ones still generic
-- The parameters in `<...>` after the class name show the pattern being matched — some are concrete, some use the remaining generic parameters
+- The parameters in `<...>` after the class/struct/function name show the pattern being matched — some are concrete, some use the remaining generic parameters
 - More than one partial specialization can exist for the same template
 
 **When to use:**
 - The same alternative logic works for a whole family of types (all pointers, all types paired with `std::string`, etc.)
+    ```cpp
+    // 1. General template: Two completely generic types
+    template<typename T, typename U>
+    struct Logger {
+        static void log(T a, U b) {
+            std::cout << "Standard logging\n";
+        }
+    };
+
+    // 2. Partial Specialization: Works for ANY 'T', as long as 'U' is a std::string
+    template<typename T>
+    struct Logger<T, std::string> {
+        static void log(T a, std::string b) {
+            std::cout << "Special string-optimized logging!\n";
+        }
+    };
+
+    // Usage:
+    Logger<int, double>::log(5, 3.14);       // Uses general (T, U)
+    Logger<int, std::string>::log(5, "hi");  // Uses partial specialization (T, std::string)
+    Logger<User, std::string>::log(u, "hi"); // Also uses the partial specialization!
+    ```
 - Detecting type patterns at compile time (is it a pointer? a reference? a pair of same types?)
+  - Sometimes developer don't care what the type is (like int, double, or a custom class), but we care about how it is wrapped or structured (is it a pointer? a reference? a vector?). Partial specialization acts like a pattern matcher to strip away wrappers.
+    ```cpp
+    // General template
+    template<typename T>
+    struct TypeChecker {
+        static void print() { std::cout << "It's a regular value type.\n"; }
+    };
+
+    // Pointer specialization
+    template<typename T>
+    struct TypeChecker<T*> {
+        static void print() { std::cout << "It's a pointer!\n"; }
+    };
+
+    // Lvalue reference specialization (T&)
+    template<typename T>
+    struct TypeChecker<T&> {
+        static void print() { std::cout << "It's an lvalue reference!\n"; }
+    };
+
+    // Rvalue reference specialization (T&&)
+    template<typename T>
+    struct TypeChecker<T&&> {
+        static void print() { std::cout << "It's an rvalue reference!\n"; }
+    };
+
+    // Usage:
+    TypeChecker<int>::print();     // Regular value type
+    TypeChecker<int*>::print();    // Pointer
+    TypeChecker<int&>::print();    // Lvalue reference
+    TypeChecker<int&&>::print();   // Rvalue reference
+    ```
+    * This pattern-matching ability is how C++ template metaprogramming works under the hood. Libraries use this to figure out if a type is const, volatile, an array, a pointer, or a reference at compile time so they can optimize how they copy or move data.
 
 **Support**
 1. Classes and Structs: Fully supported, allowing to specialize for a subset of types (e.g., `template<typename T> class MyClass<T*>`).
 2. Functions: Not supported. C++ does not allow partial specialization of function templates. To achieve similar behavior, rely on regular function overloading or wrap the function inside a helper class template.
-3. Variables: Fully supported for variable templates (e.g., specializing a variable template for pointer types).
+    * Function templates omit partial specialization primarily because function overloading already solves this problem natively.
+    * Overload Resolution Complexity: Allowing partial specialization alongside function overloading would make overload resolution exceptionally convoluted. The compiler would face severe challenges determining whether to select a function overload or a partially specialized template, frequently resulting in unresolvable ambiguities.
+1. Variables: Fully supported for variable templates (e.g., specializing a variable template for pointer types).
+    ```cpp
+    #include <iostream>
 
-```cpp
-// Partial spec for ALL pointer types
-template<typename T>
-struct Storage<T*> {
-    T* ptr;
-    void print() { std::cout << "pointer → " << *ptr; }
-};
+    // 1. Primary Variable Template: Default case assumes it is NOT a pointer
+    template<typename T>
+    bool is_pointer_v = false;
 
-// Partial spec when both types are the same
-template<typename T>
-struct Converter<T, T> {
-    static void convert(T from, T to) {
-        std::cout << "[same type]\n";
+    // 2. Partial Specialization: Matches ANY pointer type (T*) and sets value to true
+    template<typename T>
+    bool is_pointer_v<T*> = true;
+
+    int main() {
+        std::cout << std::boolalpha;
+
+        std::cout << is_pointer_v<int> << "\n";     // Evaluates to false (uses primary)
+        std::cout << is_pointer_v<int*> << "\n";    // Evaluates to true (uses partial specialization for T*)
+        std::cout << is_pointer_v<double*> << "\n"; // Evaluates to true (uses partial specialization for T*)
     }
-};
-```
+    ```
 
-### Why Function Partial Specialization Is Disallowed
-Function templates omit partial specialization primarily because function overloading already solves this problem natively.
-* Overload Resolution Complexity: Allowing partial specialization alongside function overloading would make overload resolution exceptionally convoluted. The compiler would face severe challenges determining whether to select a function overload or a partially specialized template, frequently resulting in unresolvable ambiguities.
 
-### How Variable Template Partial Specialization Works
+## How Variable Template Partial Specialization Works
 Introduced in C++14, variable templates allow to parameterize constants. Much like class templates, variable templates fully support partial specialization to target specific type patterns rather than exact matches.
 
 ```cpp
