@@ -166,6 +166,8 @@ modify(x);   // T deduced as int — parameter type is int& (reference to int)
 
 When a parameter is `T&&` ([forwarding reference](./forward-reference.md)), deduction uses value category.
 
+## [Compiler and template](./template_compiler.md)
+
 ## Non-Type Template Parameters
 
 Template parameters are not limited to types. A non-type template parameter is a compile-time constant value — an integer, pointer, reference, or (C++20) floating-point or structural class type.
@@ -223,6 +225,7 @@ FixedArray<double, 5> doubles;
 | Class type                    | YES (C++20) | Must satisfy structural type requirements |
 | std::string, std::vector      | NO     | Non-structural types                     |
 
+*When the C++ compiler instantiates a template, it substitutes the template arguments into the template's signature and body.*
 
 ## Default Template Arguments
 
@@ -275,5 +278,7 @@ void good();   // VALID: trailing defaults
 
 ## Content
 1. [Class Template](./Class_Template.md)
-2. [Deduction](./deduction.md)
-3. [Advanced Concept](./Advanced_template.md)
+2. [Template types](./template_types.md)
+3. [Deduction](./deduction.md)
+4. [Variable](./variable.md)
+5. [Advanced Concept](./Advanced_template.md)
