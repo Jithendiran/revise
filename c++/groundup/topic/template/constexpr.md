@@ -96,6 +96,27 @@ serialize("Hello");
 //  could not convert ‘value’ from ‘double’ to ‘std::string’ {aka ‘std::__cxx11::basic_string’}
 ```
 
+### Replacing Recursive Variadic Base Case
+
+```cpp
+// Before C++17 — two functions required:
+void print() {}
+template<typename First, typename... Rest>
+void print(First f, Rest... r) { 
+    std::cout << f << " "; 
+    print(r...); 
+}
+
+// C++17 — single function:
+template<typename First, typename... Rest>
+void print(First f, Rest... r) {
+    std::cout << f << " ";
+    if constexpr (sizeof...(r) > 0) {
+        print(r...);   // only compiled when rest is non-empty
+    }
+}
+```
+
 ### if constexpr vs Regular if
 
 | Property               | if           | if constexpr         |
