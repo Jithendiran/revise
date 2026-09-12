@@ -72,25 +72,96 @@ static_assert(AlwaysTrue1<void*>);       // true
 ```
 It is valid. It is useless. It constrains nothing.
 
-### Simple Requirement — Expression Must Be Valid
+## The Parameter List — "Pretend" Variables
+The parentheses right after `requires` can optionally declare notional parameters — fictional variables that exist only so that member-access and operator expressions can be written naturally in the body. These variables are never constructed. No memory is allocated for them. They are a naming convenience for the compiler's type-checker only.
 
 ```cpp
 template<typename T>
 concept HasSize = requires(T c) {
-    c.size();   // T must have size() — no return type check
+    //            ↑
+    //  'c' is a PRETEND object of type T
+    //  it is never actually created
+    //  it only exists so 'c.size()' can be written below
+    c.size();
 };
 ```
 
+* *When a parameter is needed*: whenever the checks involve calling a member function, using an operator, or otherwise needing an actual object to write the expression against.
+    ```cpp
+        requires(T a, T b) {
+            a + b;        // needs two pretend objects to write a binary operator
+        };
+    ```
+* *When no parameter is needed*: whenever the checks only involve the type itself — no object required.
+    ```cpp
+        requires {
+            typename T::value_type;   // checks something about the TYPE — no object needed
+            sizeof(T);                 // sizeof works on a type directly — no object needed
+        };
+    ```
+
+## The Four Requirement Kinds
+The body of a requires-expression is a list of requirements, each ending in a semicolon. There are exactly four kinds. Each kind checks a different thing.
+### Simple Requirement — Expression Must Be Valid
+
+**Syntax:**
+```
+expression;
+```
+**What is checked** : precisely one thing; does this expression compile for the given type? That is the entire check. Nothing else.
+
+```cpp
+template<typename T>
+concept HasSize = requires(T c) {
+    c.size();   // T must have size()
+};
+
+```
+The compiler does not look at what `c.size()` returns. It could return `int`, `std::size_t`, `void`, `std::string` — anything at all. As long as writing `c.size()` compiles without error, the requirement passes.
+
+```cpp
+struct A { int    size() { return 1; } };   // returns int
+struct B { void   size() {}          };   // returns void
+struct C { std::string size() { return ""; } };  // returns std::string
+
+static_assert(HasSize<A>);   // true — c.size() compiles, return type irrelevant
+static_assert(HasSize<B>);   // true — c.size() compiles, return type irrelevant
+static_assert(HasSize<C>);   // true — c.size() compiles, return type irrelevant
+
+struct D { };   // no size() member at all
+static_assert(!HasSize<D>);  // false — c.size() does NOT compile
+```
+
+`HasSize` accepts `A`, `B`, and `C` equally — the simple requirement only asks "does this compile," not "what does it produce."
+
 ### Type Requirement — Type Must Exist
+
+**Syntax:**
+```
+typename type-name;
+```
+**What is checked**  does this named type exist and is it well-formed? No object needed — this checks the type system directly.
 
 ```cpp
 template<typename T>
 concept HasValueType = requires {
     typename T::value_type;
 };
+
+truct HasIt   { using value_type = int; };
+struct HasntIt { };
+
+static_assert(HasValueType<HasIt>);     // true — HasIt::value_type exists
+static_assert(!HasValueType<HasntIt>);  // false — HasntIt::value_type does not exist
 ```
 
 ### Compound Requirement — Valid AND Return Type Constrained
+
+**Syntax:**
+
+```
+{ expression } noexcept[optional] -> type-constraint[optional];
+```
 
 ```cpp
 template<typename T>
