@@ -157,10 +157,52 @@ static_assert(!HasValueType<HasntIt>);  // false — HasntIt::value_type does no
 
 ### Compound Requirement — Valid AND Return Type Constrained
 
+`decltype` — What It Is First
+
+Before compound requirements can make sense, `decltype` must be established.
+
+`decltype` is a keyword that asks the compiler one question:
+```
+"What TYPE would this expression produce if it were evaluated?"
+```
+It never evaluates the expression. It never runs any code. It only inspects the type.
+
+```cpp
+int x = 5;
+decltype(x)      // answer: int
+decltype(x + 1)  // answer: int   (int + int = int)
+decltype(x * 2.0)// answer: double (int * double = double)
+
+std::string s = "hello";
+decltype(s.size())  // answer: std::size_t  (that is what size() returns)
+decltype(s)         // answer: std::string
+```
+The expression inside `decltype(...)` is never executed. The compiler just reads it and figures out what type it would produce.
+
+```cpp
+int i = 0;
+decltype(i++)   // answer: int
+                // i is NOT actually incremented — never runs
+```
+
 **Syntax:**
 
 ```
 { expression } noexcept[optional] -> type-constraint[optional];
+```
+
+This is the form that combines braces `{}` with `->`. Both symbols need separate, precise explanations.
+
+What `{}` means: the braces mark the boundary of the expression being checked. 
+Everything inside `{}` is the expression. This is required syntax whenever a *return-type constraint* (`->`) follows — the braces exist specifically to separate the expression from the `->` part that comes after it.
+
+**What is checked — TWO separate things, in order:**
+```
+Check 1: Does the expression inside {} compile?
+         (exactly the same check as a simple requirement)
+             │
+             ▼ if it compiles
+Check 2: Does the TYPE of that expression satisfy the concept named after ->?
 ```
 
 ```cpp
@@ -170,15 +212,123 @@ concept Sizeable = requires(T c) {
     // size() must exist AND return type must convert to size_t
 };
 ```
+Critically — `->` is NOT a plain return type slot. It must be followed by a `concept name`, never a `plain type`. This is a common mistake:
+```cpp
+// ILLEGAL — std::size_t is a TYPE, not a CONCEPT
+{ c.size() } -> std::size_t;
+// COMPILE ERROR: type-constraint must name a concept
+
+// LEGAL — std::convertible_to is a CONCEPT that takes std::size_t as an argument
+{ c.size() } -> std::convertible_to<std::size_t>;
+
+// LEGAL — std::same_as is also a concept
+{ c.size() } -> std::same_as<std::size_t>;
+```
+
+What actually happens behind `->`: the type of the expression `(decltype((c.size())))` is silently inserted as the first template argument of the concept named after `->`. So: `{ c.size() } -> std::convertible_to<std::size_t>;` really means: `std::convertible_to<decltype((c.size())), std::size_t>`
+
+`std::convertible_to<From, To>` checks whether From converts to To. The expression's own type fills the From slot automatically — that is the entire mechanism behind the `->` syntax.
+
+Full worked pass/fail example:
+```cpp
+struct Good { std::size_t size() { return 5; } };  // returns size_t — convertible to size_t ✓
+struct Weird { std::string size() { return ""; } }; // returns string — NOT convertible to size_t ✗
+struct Missing { };                                  // no size() at all — Check 1 fails ✗
+
+static_assert(Sizeable<Good>);     // true  — both checks pass
+static_assert(!Sizeable<Weird>);   // false — Check 1 passes, Check 2 fails
+static_assert(!Sizeable<Missing>); // false — Check 1 fails immediately, Check 2 never even runs
+```
+
+**The optional noexcept:**
+```cpp
+{ c.size() } noexcept -> std::convertible_to<std::size_t>;
+//            ↑
+//  ADDS a third check: must c.size() ALSO be marked noexcept?
+```
+```cpp
+struct A { std::size_t size() noexcept { return 5; } };    // satisfies noexcept check
+struct B { std::size_t size()          { return 5; } };    // does NOT satisfy noexcept check
+
+template<typename T>
+concept NoexceptSizeable = requires(T c) {
+    { c.size() } noexcept -> std::convertible_to<std::size_t>;
+};
+
+static_assert(NoexceptSizeable<A>);    // true
+static_assert(!NoexceptSizeable<B>);   // false — c.size() is not noexcept
+```
 
 ### Nested Requirement — Boolean Condition Inside
 
+**Syntax:**
+```
+requires constant-boolean-expression;
+```
+
+Why this exists — the exact problem it solves:
+
+The most common mistake when first learning `requires` is trying to check a compile-time boolean condition using a simple requirement:
+```cpp
+// WRONG — does NOT do what it looks like it does
+template<typename T>
+concept SmallType = requires {
+    sizeof(T) <= 8;   // looks like a check... but is it?
+};
+```
+Recall from a simple requirement only checks whether the expression compiles — it never looks at the expression's value.
+
+`sizeof(T) <= 8` is always a perfectly valid, well-formed boolean expression for any type `T` — whether `T` is 1 byte or 1000 bytes.
+
+The expression compiles in every case. As a simple requirement, this check always passes, regardless of the actual size of T.
+```cpp
+struct Big { char data[1000]; };   // 1000 bytes
+
+static_assert(SmallType<Big>);   // TRUE — even though Big is 1000 bytes!
+// This is WRONG behavior — the concept is broken
+// sizeof(Big) <= 8 compiles fine (it's valid C++), so the simple
+// requirement passes, even though the actual VALUE is false
+```
+This is the bug that nested requirements exist to prevent.
+
+**The fix — wrap the condition with requires:**
 ```cpp
 template<typename T>
 concept SmallType = requires {
-    requires sizeof(T) <= 8;   // T must fit in 8 bytes
+    requires sizeof(T) <= 8;   // NOW this checks the VALUE, not just validity
+};
+
+struct Small { char data[4]; };    // 4 bytes
+struct Big   { char data[1000]; }; // 1000 bytes
+
+static_assert(SmallType<Small>);    // true  — sizeof(Small) = 4, 4 <= 8 is TRUE
+static_assert(!SmallType<Big>);     // false — sizeof(Big) = 1000, 1000 <= 8 is FALSE
+```
+**How to read requires requires**: the first requires starts the requires-expression. Inside its body, a nested requirement is written as the word requires followed by a constant boolean expression and a semicolon. The nested requirement asserts: this condition must evaluate to true, not merely this condition must compile.
+
+```cpp
+requires {                    ← outer requires: starts the expression
+    requires sizeof(T) <= 8;  ← inner requires: a NESTED REQUIREMENT
+    //  ↑
+    //  "requires" here means: check the TRUTH of what follows,
+    //  not just whether it compiles
 };
 ```
+How it executes: the boolean expression after the nested requires is evaluated as a compile-time constant. If it evaluates to true, the nested requirement is satisfied. If false, the whole requires-expression becomes false at that point.
+
+## How the Whole requires-Expression Evaluates
+A requires-expression's body can contain any number of requirements of any of the four kinds, in any order. The entire expression evaluates to true only if every single requirement inside is satisfied. If any one requirement fails, the whole expression is false.
+```cpp
+template<typename T>
+concept Container = requires(T c) {
+    typename T::value_type;                              // type requirement
+    { c.begin() } -> std::input_iterator;                // compound requirement
+    { c.end()   } -> std::input_iterator;                // compound requirement
+    c.size();                                             // simple requirement
+    requires sizeof(T) <= 64;                             // nested requirement
+};
+```
+`Container<T>` is `true` only if all five requirements hold for `T`. Miss even one, and `Container<T>` is `false`.
 
 ### Standalone requires Clause
 
