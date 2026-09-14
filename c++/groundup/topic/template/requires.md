@@ -330,12 +330,4 @@ concept Container = requires(T c) {
 ```
 `Container<T>` is `true` only if all five requirements hold for `T`. Miss even one, and `Container<T>` is `false`.
 
-### Standalone requires Clause
-
-```cpp
-template<typename T>
-    requires (sizeof(T) <= 8 && std::is_trivially_copyable_v<T>)
-void fastCopy(T* dest, const T* src, std::size_t n) {
-    std::memcpy(dest, src, n * sizeof(T));
-}
-```
+[clause](./requires-clause.md)

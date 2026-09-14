@@ -281,4 +281,65 @@ void good();   // VALID: trailing defaults
 2. [Template types](./template_types.md)
 3. [Deduction](./deduction.md)
 4. [Variable](./variable.md)
-5. [Advanced Concept](./Advanced_template.md)
+5. [Varadic template](./varadic_parameter.md)
+6. [constexpr](./constexpr.md)
+7. [Concept](./Concept.md)
+8. [Requires](./requires.md)
+9. [Requires-clause](./requires-clause.md)
+10. [Auto](./auto.md)
+
+## Complete Summary
+
+### Template Variants
+
+| Variant          | Syntax                                    | Purpose                                |
+|------------------|-------------------------------------------|----------------------------------------|
+| Function template | `template<typename T> T f(T)`             | Algorithm for any type                 |
+| Class template   | `template<typename T> class C {}`         | Data structure parameterized by type   |
+| Variable template | `template<typename T> constexpr T pi = ...` | Type-dependent constants             |
+| Alias template   | `template<typename T> using V = vector<T>` | Parameterized type alias              |
+| Variadic template | `template<typename... Args>`              | Zero or more type parameters           |
+
+### Template Parameter Kinds
+
+| Kind                    | Syntax                        | Represents                    |
+|-------------------------|-------------------------------|-------------------------------|
+| Type parameter          | `typename T` or `class T`     | Any type                      |
+| Non-type parameter      | `int N`, `std::size_t N`      | Compile-time constant value   |
+| Template template param | `template<typename> typename C` | A template itself            |
+| Type pack               | `typename... Args`            | Zero or more types            |
+| Non-type pack           | `auto... Ns`                  | Zero or more values           |
+
+### Specialization
+
+| Kind                | Applies to     | What it does                                  |
+|---------------------|----------------|-----------------------------------------------|
+| Full specialization | Functions, classes | Custom implementation for exact arguments |
+| Partial specialization | Classes only | Custom implementation for a pattern        |
+
+### Constraint Mechanisms by Era
+
+| Mechanism         | C++ version | Readability | Power   |
+|-------------------|-------------|-------------|---------|
+| SFINAE + enable_if | C++11      | Poor        | High    |
+| if constexpr      | C++17       | Good        | Medium  |
+| Concepts          | C++20       | Excellent   | High    |
+| requires          | C++20       | Excellent   | Highest |
+| Abbreviated templates | C++20   | Excellent   | Medium  |
+
+### Key Rules
+
+| Rule | Detail |
+|---|---|
+| Full definition in headers | Templates must be visible at point of use — definition in .cpp fails |
+| Argument deduction | Compiler deduces type parameters from function arguments automatically |
+| Conflicting deduction | Same parameter deduced as two different types — compile error |
+| SFINAE scope | Only applies to immediate context — not function body |
+| typename for dependent types | Required before T::nested_type in templates (relaxed by concepts in C++20) |
+| Partial specialization | Class and variable templates only — not function templates |
+| Concept subsumption | More constrained overload selected when constraints imply each other |
+| if constexpr discarded branch | Not compiled — validity not checked for current instantiation |
+| CTAD | Class template arguments deduced from constructor in C++17 |
+| sizeof... | Returns count of elements in a parameter pack |
+| Fold empty pack | Unary fold on empty pack: compile error (except &&, ||, comma) |
+| Named vs auto params | Named T enforces same type across positions — auto makes each independent |
