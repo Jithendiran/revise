@@ -615,3 +615,8 @@ Pointer Base: 24
 ```
 
 Up cast on regular stack object  copied only `Base` object, even with vtable only calls base class `show` because dervived object were not copied.
+
+## Contents
+1. [Virtual](./Virtual.md)
+2. [Vtable access](./vtable-access.md)
+3. [Object creation](./obj-construction.md)
