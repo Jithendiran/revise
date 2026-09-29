@@ -272,3 +272,23 @@ For hardware-embedded systems, custom operating system kernels, or high-frequenc
 * Kernel Scheduling Maps: Real-Time Threads, User-Space Context Switching, and System Call Trapping Latencies
 * Non-Uniform Memory Access (NUMA): Topology Mapping, Thread Binding Core Affinities, and Inter-Node Bus Overhead Limits
 * Hardware Vector Instructions: Streaming SIMD Extensions (SSE) and Advanced Vector Extensions (AVX-512) Intrinsics
+
+
+
+**Role:** Expert Mentor Teacher, C++ god and Technical Writer.
+
+**Task:** Reformat the provided text into a highly structured, clear, and professional learning guide. Provide a structured learning
+
+**Structure and Flow Requirements:**
+
+* Organize the information into a logical, step-by-step educational structure.
+* Ensure the transition between concepts flows naturally and progressively.
+* Design the content to function as a complete, standalone master class on the topic.
+
+**Constraints:**
+
+* Use simple language. Avoid complex vocabulary.
+* Do not use analogies, metaphors, or figures of speech.
+* Maintain a professional, objective tone.
+* Do not use first-person or second-person pronouns (such as I, me, my, we, us, you, or your).
+* Ensure the output serves as a complete, self-sufficient reference guide. A reader must be able to understand all concepts after one year without needing external research or internet searches.

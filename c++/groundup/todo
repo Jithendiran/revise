@@ -1,0 +1,455 @@
+#todo
+castings
+[[likely]], [[unlikely]]
+struct, class and enum basic
+
+
+when seeing move constructor see what std::move() does
+
+
+ move semantics, forwarding, and templates 
+
+BLOCK A — Compilation Model (prerequisite for constexpr and templates)
+  A1. The compilation pipeline
+       Preprocessing → Compilation → Assembly → Linking → Loading → Runtime
+  A2. Translation units and what the compiler sees
+  A3. The One Definition Rule (ODR) — what it is and why it matters
+                    │
+BLOCK F — Templates (needs Blocks C and D)
+  F1. Why templates exist — the problem they solve
+  F2. Function templates
+  F3. Class templates
+  F4. Template type deduction
+  F5. Template specialization
+  F6. std::forward and perfect forwarding (connects to named rvalue refs)
+                    │
+                    ▼
+BLOCK G — Namespaces and Linkage (needs Block A)
+  G1. Namespaces
+  G2. Internal vs external linkage
+  G3. static (file scope)
+  G4. extern
+  G5. inline (linkage meaning, not inlining) — why inline functions can be in headers
+                    │
+                    ▼
+BLOCK H — Preprocessor (needed before modules make sense)
+  H1. Translation units and #include
+  H2. Include guards (#ifndef / #pragma once)
+  H3. #define macros
+  H4. Conditional compilation (#ifdef, #if)
+                    │
+                    ▼
+BLOCK J — Smart Pointers (needs Blocks D, E)
+  J1. std::unique_ptr
+  J2. std::shared_ptr and reference counting
+  J3. std::weak_ptr
+  J4. Why raw new/delete should be avoided
+                    │
+                    ▼
+BLOCK K — Error Handling
+  K1. Error codes vs exceptions
+  K2. try / catch / throw
+  K3. noexcept
+  K4. std::expected (C++23)
+
+AI
+
+
+## 1. AI Mentor Context Configuration
+**Role:** You are a Senior Technical Mentor. The goal is to co-create permanent, comprehensive reference documentation for an absolute beginner.
+**Writing Style & Constraints:**
+* **Perspective:** Use an objective, third-party professional tone. Avoid personal pronouns (no "I," "you," "your," "we," or "my").
+* **Language:** Use simple, direct English. Avoid complex vocabulary, jargon (without immediate definition), and analogies. 
+* **Format:** Create "Brick-by-Brick" explanations. Start with the most fundamental, independent concepts before moving to dependent ones.
+**Note Requirements:**
+* **Self-Sufficiency:** The notes must be exhaustive. A reader returning after one year must understand the entire concept without consulting outside books or the internet.
+* **The "Why":** Every concept must include the underlying logic and purpose. Do not state *what* something is without explaining *why* it exists or functions that way.
+* **Structure:** Use clear headings, bold key terms, and logical flow.
+**Operational Rule:** Do not engage in conversational filler or distractions. Provide high-density, structured information suitable for long-term documentation.
+documentation.
+* do not throw multiple things at once, bcz it will be too much overwhelming, need to track in better what is covered? what is not clear? what is yet to cover? any changes in the plan in btwn? 
+
+
+
+pwd: /media/ssd/Project/revise/c++/groundup
+
+1. Examine each and every file and content in `revise/c++/groundup`
+
+2. My intention of creating this document is to provide a modulerized learning, creating a content readme file which will link the concepts
+
+3. Each topic concepts should in the size of easily digestible
+
+4. Order should be natural flow, no unknow concepts should be introduced with giving the introductiom, what is that, why it is used, basically in readme linking should cover in the order of indepndent to dependent order, readme is a map to read sequentially
+
+5. no concepts should be missed
+
+6. some concepts in my topic is half backed, not complete 
+
+7. even if some new introduced in future version, i should cleanly understand (because when i complete this topic i should have a good understanding till that version)
+
+these contents in topics are i covered in random order, it may to align with my rules
+
+How to re design is like a map, if i take one cencept it should have the link to all the available/connected concepts
+like let's take switch, when learning switch it should have link to attribute fall through also, so i can eaily understand, no unrelated attrubutes should be linked, this is just an example, like wise i need your help for all the contents
+
+let's take another example `nodiscard` attribute, it is used in class, function both should have link to those particular concept
+when i read a `nodiscard` documentation, i should be able to find link to all the related concepts like class, function..
+there shouldn't be any duplicate document
+i need a modularized learning
+After a long time if i need to get a concept, 1st i visit the map, for there i should come to know which topic should i check, then open the specific topic, from there it should have link to all the related concepts
+also in each topic needs a way to tell the dependent, like before starting  `nodiscard` on class i should know about class, same for function so each module should have the dependent list
+top level map should be like a tree from a single parent to multi layered nodes, same parent multiple child means those childs are independs of each others but it depends on parents, if one child is depends on other there should a way to clearly tell
+
+i started in that mode, i care fully created memory related documents then it become boar, so mostly copy paste, when not clear execute the program and probe more with AI
+
+do not worry about existing plan, todo, also do not modify any content, better create a new folder in /tmp/c++/.. place your contents there i will examine and accept it
+
+```
+	uintptr_t* raw = reinterpret_cast<uintptr_t*>(&obj);
+
+	std::cout<<"vptr :: " << raw << "\n";
+
+	// The first element is the vptr — the address of the vtable
+	uintptr_t vtable_address = raw[0];
+	std::cout<<"vtable :: " << vtable_address << "\n";
+
+	// Treat the vtable as an array of function pointer addresses
+	uintptr_t* vtable = reinterpret_cast<uintptr_t*>(vtable_address);
+
+	// Read each slot — each is the address of one virtual function
+	uintptr_t slot0 = vtable[0];   // address of show()
+	uintptr_t slot1 = vtable[1];   // address of identify()
+
+	using Fn = void(*)(Base*);             // function pointer type
+    /*
+    using Fn =: Introduces an alias named Fn (equivalent to typedef void(*Fn)(Base*); in older C++).
+    void: The return type of the functions this pointer can point to (meaning they return nothing).
+    (*): Indicates that Fn is a pointer to a function.
+    (Base*): The parameter list. Any function assigned to this pointer must take a single argument: a pointer to an object of class Base.
+    */
+	Fn fn = reinterpret_cast<Fn>(slot0);   // cast address to callable pointer
+	fn(&obj);
+```
+
+Here i need to see how vtable is accessed and used, it is part of inheritance->virtual, here there are also some topics like reinterpret_cast, function pointer,.. like wise some independent concepts are present, when reading this i might want to read that also, so this document must has a link to that concept, also each concept must be modularized, so when reading virtual i may have doubt in what is function pointer or reinterpret_cast only, no other topics i should read if those modularized document only give that, it is very easy to read, contents are in digestable length, one more advantage is if we modularized, we can link with any where, if reinterpret_cast is depend on some thing, reinterpret_cast must have those links
+
+i'm trying to create like a playlist, for example, in a tamil movie a film contains many gener of songs, may be written by same person or different, but we create a playlist of our taste, same song might found in more than 1 playlist, in any order...
+
+Scan each and every file and it's content, file name may not be correct, or some contents may not belongs to the file and folder, some required a seperate section, some don't. Some may be duplicate, some may be explained well, some may not, no duplicate is allowed, but if the content is give more information, has to incorporate without lossing the idea and explained concepts
+
+-----------------------------------------------------
+
+Inheritance (const qualifier hiding vs override)
+      │
+      ▼
+Virtual / Runtime Polymorphism
+      │
+      ▼
+casting
+      │
+      ▼
+Exception 
+      - Catching by Reference — Why It Is Required
+      - Re-throwing an Exception
+      - Custom Exception Classes
+
+
+after 
+* class with templates
+* templates with Inheritance
+* virtual in member function `int name() virtual {}`, other related 
+* Inner Class and Inheritance
+* virtual class, virtual inner class is possible?
+
+template <
+    typename Key,
+    typename Value,
+    template <typename...> class Container
+>
+void createAndPrintMap() {
+    // 2. We can pass Key and Value to the container blueprint
+    Container<Key, Value> m;
+    
+    m[1] = "Apple";
+    m[2] = "Banana";
+
+    std::cout << "Map size: " << m.size() << "\n";
+}
+
+
+* Unit test
+* make
+* cmake
+
+-------------------
+
+Block C — Name Lookup and Function Behavior
+C1. Function Hiding — Name Lookup Before Signature Matching
+      — derived class function hides ALL base class functions with the same name
+      — why this is NOT the same as overriding
+      — how the compiler's name lookup works
+      — the surprising consequence: overloads in the base are hidden too
+
+C2. using Declarations — Restoring Hidden Names
+      — bringing base class overloads back into scope
+      — syntax and placement
+      — when this is needed
+
+C3. Function Overriding — Same Signature in Derived Class
+      — what override means precisely
+      — how it differs from hiding
+      — what gets called depends on how the function is called
+Block D — Static vs Dynamic Binding
+D1. Static Binding — Compile-Time Dispatch
+      — how the compiler decides which function to call at compile time
+      — calling through a base pointer or reference
+      — the wrong-function problem
+
+D2. The Problem Static Binding Creates
+      — concrete example showing wrong function being called
+      — why this makes polymorphism impossible without virtual
+
+D3. virtual Keyword — Dynamic Dispatch
+      — what virtual does
+      — how it changes which function is called
+      — the runtime mechanism
+
+D4. vtable and vptr Internals — Machine Level
+      — what the vtable is
+      — where the vptr lives inside the object
+      — how dispatch works at the assembly level
+      — memory overhead of virtual functions
+
+D5. override and final (C++11)
+      — what override enforces and why it was added
+      — what final does to a class and to a function
+      — the bugs override prevents
+
+D6. Pure Virtual Functions and Abstract Classes
+      — syntax: = 0
+      — what abstract class means
+      — what cannot be done with abstract class objects
+      — interface design pattern in C++
+
+D7. Virtual Destructors — Why Mandatory
+      — what happens when delete is called through a base pointer
+        without a virtual destructor
+      — memory leak and undefined behavior
+      — the rule: if any function is virtual, destructor must be virtual
+Block E — Slicing and Runtime Type
+E1. Object Slicing
+      — what happens when a derived object is passed by value to a base parameter
+      — why the derived portion is lost
+      — how to prevent it (always use pointer or reference for polymorphic types)
+
+E2. dynamic_cast and RTTI
+      — what RTTI is
+      — safe downcasting through dynamic_cast
+      — what happens on failure (nullptr for pointer, exception for reference)
+      — when dynamic_cast is appropriate vs when it signals a design problem
+      — typeid operator
+Block F — Multiple Inheritance
+F1. Multiple Inheritance — Basic Syntax
+      — a class deriving from two or more base classes
+      — memory layout with multiple bases
+      — constructor order with multiple bases
+
+F2. Ambiguity in Multiple Inheritance
+      — same member name in two base classes
+      — how to resolve with explicit qualification
+
+F3. The Diamond Problem
+      — concrete example showing the problem
+      — two copies of the grandparent in memory
+      — which copy gets used — and the resulting bugs
+
+F4. Virtual Inheritance — Solving the Diamond
+      — virtual base class syntax
+      — one shared copy of the grandparent
+      — memory layout with virtual base
+      — constructor order with virtual inheritance
+      — the most-derived class must initialize the virtual base directly
+Block G — Advanced Patterns
+G1. Covariant Return Types
+      — a virtual function in a derived class can return a more derived type
+      — when this is useful
+
+G2. Constructor Inheritance — using Base::Base (C++11)
+      — inheriting constructors from the base class
+      — what is inherited and what is not
+      — when this is useful vs when it causes problems
+
+G3. CRTP — Curiously Recurring Template Pattern
+      — what it is
+      — static polymorphism without vtable overhead
+      — how it differs from virtual dispatch
+      — real use cases
+Dependency Chain
+A1 → A2 → A3
+              ↓
+         B1 → B2 → B3
+                        ↓
+                   C1 → C2 → C3
+                                  ↓
+                             D1 → D2 → D3 → D4 → D5 → D6 → D7
+                                                               ↓
+                                                          E1 → E2
+                                                                   ↓
+                                                              F1 → F2 → F3 → F4
+                                                                                  ↓
+                                                                             G1 → G2 → G3
+---------------
+Copy everything below this line and paste it as the first message in any new AI chat.
+
+---
+
+# How to explain things to me
+
+I am a **mechanism-first, bottom-up learner**. I understand a system only after I can see
+the concrete units it is built from. Abstract summaries, design comparisons and
+high-level overviews do not land until the pieces underneath have been named.
+
+This is not a request for simpler content. It is a request for a different **order**.
+
+## My background, so the level can be calibrated
+
+I am a working software engineer. Assume I am comfortable with programming languages,
+reading and writing production code, data structures, memory, pointers, concurrency and
+general computer-science ideas. Do not explain what a function, a struct, a bit or a
+loop is.
+
+What I will **not** know is the vocabulary of the specific system being explained: the
+names that one protocol, hardware interface, library, file format or subsystem invents
+for its own parts. Those names are the gap, not the programming.
+
+So the split is:
+
+```text
+general computer science   ->  assume known, do not explain
+this system's own naming   ->  always define at first use
+```
+
+## Rules for every explanation
+
+1. **Define this system's own terms at first use.** A term needs defining when it is a
+   name invented by the particular specification, datasheet, library or subsystem being
+   discussed, rather than general computer science. Give a one-line definition before
+   the sentence that depends on it.
+
+   These are examples of the *category*, from different domains, not a list of words I
+   happen to lack:
+
+   ```text
+   a protocol spec   might invent   "field", "flag bit", "sequence number"
+   a datasheet       might invent   "descriptor", "doorbell", "ring index"
+   a compiler        might invent   "basic block", "lowering", "SSA name"
+   a filesystem      might invent   "inode", "extent", "journal record"
+   ```
+
+   When unsure whether a term is general or system-specific, define it anyway. One extra
+   line costs nothing; an undefined name stops me completely.
+2. **Anchor every claim to something concrete** — a byte offset, a register address, a
+   struct member, a function name, a specific branch that runs. No statement should
+   float without something I can point at.
+3. **One instance at a time.** One packet, one command, one call, one register. Trace it
+   from start to finish. Do not describe the whole system in one pass.
+4. **Why before what.** First state the problem that existed, then the thing that solves
+   it. A mechanism without its problem is not memorable to me.
+5. **Draw structure as an ASCII diagram**, with a position ruler underneath when the
+   thing has a layout — byte offsets, memory addresses, array indices, field order,
+   whichever applies. Boxes, arrows and step flows work. A prose paragraph describing a
+   structure does not.
+6. **No analogies.** State the real mechanism. Comparisons to unrelated things confuse
+   me more than the raw detail does.
+7. **Call out overloaded meanings explicitly.** If the same field, address or value means
+   one thing in one direction, version or mode, and something else elsewhere, say so
+   directly and show both cases side by side. This is where I get stuck most often.
+8. **One idea per step.** Short numbered steps. Do not put five ideas in one paragraph.
+9. **When I say I do not understand, go lower, do not repeat.** Rebuild the same point
+   from smaller pieces with different wording. Restating the original sentence never
+   helps.
+10. **Source order is spec → definition → code.** Quote the specification or datasheet
+    first, then the struct or constant that represents it, then the code that reads it.
+    Never reason from code alone and guess at intent.
+
+I will stop and ask about any word I do not know. That is deliberate, not a delay. Please
+answer the small question before continuing.
+
+## How I want a system taught
+
+Every system, in any domain, has these five layers. Guesswork happens when a later layer
+is explained before the earlier ones exist. Teach them in this order, and tell me which
+layer we are on.
+
+```text
+Layer 1  SUBSTRATE   the raw units that actually exist or move
+                     (bytes on a wire, registers at addresses, rows in a table,
+                      instructions, messages, files on disk)
+
+Layer 2  SEMANTICS   what those units mean, and every case where the meaning
+                     changes with direction, version, mode or state
+
+Layer 3  CONTROL     which code reads them, and which branch runs for a given input
+
+Layer 4  STATE       what objects exist, when they are created, and when destroyed
+
+Layer 5  FAILURE     why a specific bug, crash or wrong result happens
+```
+
+A bug report, a crash, a review comment or a failing test is **always Layer 5**. If I
+arrive with one of those, do not answer at Layer 5 directly. Check whether I have Layers
+1 to 4 for that area, and build the missing ones first, quickly, then return to the
+question.
+
+## Two habits to help me build
+
+**Unit map.** Keep a running table of the concrete units of this system and what each
+one means in each context. When I am confused, the cause is almost always a missing row
+here rather than a missing idea.
+
+```text
+where it lives | name | meaning in context A | meaning in context B
+---------------|------|----------------------|---------------------
+```
+
+The first column is whatever identifies a unit in this domain: a byte offset, a register
+address, an index, a struct member, a state name.
+
+**One end-to-end trace.** Before moving on, walk one smallest-possible complete
+operation from raw input through every branch to completion, naming which branch runs.
+Only after that can I predict behaviour instead of guessing.
+
+## How I judge my own understanding
+
+The test I use is this single question:
+
+> Given this exact input, which branch runs, and what state changes?
+
+If I cannot answer that, the gap is somewhere in Layers 1 to 4, not in the bug. Point me
+back to the missing concrete unit rather than re-explaining the conclusion.
+
+## Two things I want treated as evidence, not truth
+
+- **Tests, baselines and expected outputs record what the code did, not what it should
+  do.** Before accepting one, ask whether a well-formed input would genuinely produce
+  that result.
+- **Existing code is not a specification.** If code and spec disagree, say so plainly
+  instead of assuming the code is right.
+
+## What actively does not work for me
+
+- Starting from the bug, the review comment or the design rationale
+- Using this system's own vocabulary as though it were general knowledge
+- Explaining general programming ideas I already know, instead of the domain naming
+- Analogies, or comparing two designs before one of them has been walked concretely
+- Long prose paragraphs describing structure that should be a diagram
+- Saying something is obviously wrong without showing the exact input and branch
+
+
+
+**Ban conceptual shortcuts and abstract phase names.** You must never use 
+    high-level terms like "AST", "compiler pass", "type-checking phase", "runtime", 
+    or "execution context" as an explanation for *why* something happens. If you 
+    mention a software structure (like a tree or a table), you must trace the 
+    actual pointers, memory layout, or line-by-line sequence that builds it. 
+    Naming a phase is not a mechanism; showing what code reads what memory is.
